@@ -1,0 +1,26 @@
+{
+  "projectName": "makje-portfolio-2026",
+  "mode": "file-router",
+  "typescript": true,
+  "packageManager": "pnpm",
+  "tailwind": true,
+  "addOnOptions": {
+    "drizzle": {
+      "database": "postgresql"
+    }
+  },
+  "git": true,
+  "version": 1,
+  "framework": "react-cra",
+  "chosenAddOns": [
+    "biome",
+    "cloudflare",
+    "compiler",
+    "neon",
+    "drizzle",
+    "form",
+    "shadcn",
+    "t3env",
+    "better-auth"
+  ]
+}
