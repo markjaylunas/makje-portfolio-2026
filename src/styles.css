@@ -143,6 +143,31 @@
   html {
     @apply font-sans;
     }
+    .animated-gradient-text {
+  @apply relative mx-auto flex max-w-fit flex-row items-center justify-center;
+  @apply overflow-hidden backdrop-blur-[10px];
+  @apply transition-shadow duration-500 ease-out;
+}
+
+.animated-gradient-text.with-border {
+  /* 0.75rem matches px-3, 0.35rem is custom */
+  @apply py-[0.35rem] px-3;
+}
+
+.gradient-overlay {
+  @apply absolute inset-0 z-0 pointer-events-none rounded-[inherit];
+}
+
+.gradient-overlay::before {
+  @apply content-[''] absolute left-1/2 top-1/2 z-[-1];
+  @apply w-[calc(100%-2px)] h-[calc(100%-2px)];
+  @apply -translate-x-1/2 -translate-y-1/2;
+  @apply bg-[#060010] rounded-[inherit];
+}
+
+.text-content {
+  @apply inline-block relative z-[2] bg-clip-text text-transparent;
+}
 }
 
 
