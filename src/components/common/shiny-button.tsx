@@ -14,7 +14,7 @@ export default function ShinyButton({
 				"cursor-pointer shadow-[0_0_0_0_transparent]",
 
 				// Hover State
-				"hover:bg-primary hover:text-white hover:shadow-[0_0_30px_5px_rgba(78.959,69.779,228.76,0.815)] hover:ease-out",
+				"hover:bg-primary hover:text-white hover:shadow-[0_0_30px_5px_rgba(82.992,38.977,254.99,0.815)] hover:ease-out",
 
 				// Active State
 				"active:shadow-none active:transition-shadow active:duration-200",
