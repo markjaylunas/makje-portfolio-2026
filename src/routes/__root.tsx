@@ -16,7 +16,17 @@ export const Route = createRootRoute({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "TanStack Start Starter",
+				title: "Makje | Mark Jay Lunas",
+			},
+			{
+				name: "description",
+				content:
+					"Portfolio of Mark Jay Lunas, a web developer. Next-gen web development for ambitious goals.",
+			},
+			{
+				name: "keywords",
+				content:
+					"Web Developer, Full Stack Developer, Mark Jay Lunas, TypeScript, React 19, Next.js, PostgreSQL, Supabase, Drizzle ORM, Tailwind CSS, Google Gemini AI, Vercel, Cloudflare, Software Engineer Lipa City, Responsive Design, Enterprise Applications",
 			},
 		],
 		links: [
