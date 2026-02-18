@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react";
 export default function GradientText({
 	children,
 	className = "",
-	colors = ["#5327FF", "#5327FF", "#5327FF", "#B19EEF", "#006DFF"],
+	colors = ["#5327FF", "#5327FF", "#B19EEF", "#006DFF"],
 	animationSpeed = 8,
 }: {
 	children: React.ReactNode;
