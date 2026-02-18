@@ -19,7 +19,7 @@ export default function HeroSection() {
 					</GradientText>
 				</h1>
 
-				<p className="prose mt-2 md:mt-4 text-center text-muted-foreground tracking-wide text-pretty text-sm md:text-2xl">
+				<p className="prose mt-2 md:mt-4 text-center text-muted-foreground text-pretty text-sm md:text-xl font-light">
 					Next-gen web development <br className="block md:hidden" /> for
 					ambitious goals
 				</p>
