@@ -8,8 +8,8 @@ export default function ShinyButton({
 	return (
 		<button
 			className={cn(
-				"border-primary relative rounded-[7px] border px-5 py-2.5",
-				"text-primary  font-semibold tracking-[2px] uppercase",
+				"border-primary relative rounded-full border px-5 py-2.5",
+				"text-primary tracking-widest uppercase text-sm",
 				"overflow-hidden bg-transparent transition-all duration-200 ease-in",
 				"cursor-pointer shadow-[0_0_0_0_transparent]",
 
