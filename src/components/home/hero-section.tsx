@@ -2,7 +2,7 @@ import { Email, Github, Linkedin01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { GITHUB_URL, LINKEDIN_URL, PRIMARY_EMAIL } from "@/lib/constants";
 import ShinyButton from "../common/shiny-button";
-import GradientText from "../GradientText";
+import GradientText from "../gradient-text";
 
 export default function HeroSection() {
 	return (
