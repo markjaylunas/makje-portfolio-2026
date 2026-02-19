@@ -12,10 +12,6 @@ export default function ExperienceTimelineSection() {
 			aria-labelledby={sectionHeadingId}
 		>
 			<H2 id={sectionHeadingId}>Work Experience</H2>
-			<p className="prose text-pretty text-muted-foreground mt-4">
-				I have worked on a variety of projects, from small personal projects to
-				large enterprise applications. Here are some of my recent projects:
-			</p>
 
 			<ol className="relative ml-3 border-l-2 border-muted mt-12">
 				{experiences.map((exp) => (

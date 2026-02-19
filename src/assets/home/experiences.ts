@@ -51,6 +51,7 @@ export const experiences: Experience[] = [
 		description:
 			"Developed and maintained enterprise web applications focusing on scalability and performance.",
 		responsibilities: [
+			"Eliminated manual overhead by engineering custom digital form builders, replacing legacy paper-based workflows with an efficient, automated approval system.",
 			"Built full-stack solutions using React.js, Next.js, and Supabase to streamline complex data workflows.",
 			"Engineered responsive interfaces using Mantine UI, focusing on cross-platform accessibility.",
 			"Leveraged Supabase for real-time database solutions and secure authentication.",
