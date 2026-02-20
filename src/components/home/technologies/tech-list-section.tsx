@@ -61,7 +61,7 @@ export default function TechListSection() {
 					onClick={handleToggle}
 					variant="outline"
 					size="lg"
-					className="gap-2"
+					className="gap-2 rounded-full px-6 hover:cursor-pointer"
 				>
 					<HugeiconsIcon icon={icon} size={20} />
 					{label}
