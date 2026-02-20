@@ -9,7 +9,7 @@ export default function ExperienceTimelineSection() {
 
 	return (
 		<section
-			className="mx-auto max-w-(--breakpoint-sm) px-6 py-12 md:py-20"
+			className="mx-auto max-w-(--breakpoint-sm) px-6"
 			aria-labelledby={sectionHeadingId}
 		>
 			<H2 id={sectionHeadingId} className="flex justify-start">
