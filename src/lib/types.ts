@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 export type Experience = {
 	title: string;
 	company: string;
@@ -12,5 +10,6 @@ export type Experience = {
 export type Technology = {
 	name: string;
 	url: string;
-	icon?: ReactNode;
+	icon?: string;
+	colors?: string;
 };

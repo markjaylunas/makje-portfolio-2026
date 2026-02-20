@@ -305,7 +305,7 @@ export default function PixelCard({
 		// biome-ignore lint/a11y/noStaticElementInteractions: <false  positive>
 		<div
 			ref={containerRef}
-			className={`min-size-10 relative overflow-hidden grid place-items-center aspect-square border border-[#27272a] rounded-[25px] isolate transition-colors duration-200 ease-[cubic-bezier(0.5,1,0.89,1)] select-none ${className}`}
+			className={`min-size-10 relative overflow-hidden grid place-items-center aspect-square  isolate transition-colors duration-200 ease-[cubic-bezier(0.5,1,0.89,1)] select-none ${className}`}
 			onMouseEnter={onMouseEnter}
 			onMouseLeave={onMouseLeave}
 			onFocus={finalNoFocus ? undefined : onFocus}
