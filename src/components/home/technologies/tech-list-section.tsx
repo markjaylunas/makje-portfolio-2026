@@ -2,8 +2,8 @@ import { ChevronDown, ChevronUp } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { technologies } from "@/assets/home/technologies";
+import GradientText from "@/components/common/gradient-text";
 import H2 from "@/components/common/H2";
-import GradientText from "@/components/gradient-text";
 import { Button } from "@/components/ui/button";
 import TechCard from "./card";
 

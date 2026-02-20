@@ -1,7 +1,7 @@
 import { useId } from "react";
 import { experiences } from "@/assets/home/experiences";
+import GradientText from "@/components/common/gradient-text";
 import H2 from "@/components/common/H2";
-import GradientText from "@/components/gradient-text";
 import { ExperienceItem } from "./timeline-item";
 
 export default function ExperienceTimelineSection() {

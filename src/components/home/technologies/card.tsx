@@ -1,4 +1,4 @@
-import PixelCard from "@/components/PixelCard";
+import PixelCard from "@/components/common/pixel-card";
 import type { Technology } from "@/lib/types";
 
 export default function TechCard({ tech }: { tech: Technology }) {
