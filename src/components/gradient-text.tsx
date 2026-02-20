@@ -1,5 +1,7 @@
 import {
-	motion,
+	domAnimation,
+	LazyMotion,
+	m,
 	useAnimationFrame,
 	useMotionValue,
 	useTransform,
@@ -62,13 +64,15 @@ export default function GradientText({
 	};
 
 	return (
-		<motion.span className={`animated-gradient-text ${className}`}>
-			<motion.span
-				className="text-content"
-				style={{ ...gradientStyle, backgroundPosition }}
-			>
-				{children}
-			</motion.span>
-		</motion.span>
+		<LazyMotion features={domAnimation} strict>
+			<m.span className={`animated-gradient-text ${className}`}>
+				<m.span
+					className="text-content"
+					style={{ ...gradientStyle, backgroundPosition }}
+				>
+					{children}
+				</m.span>
+			</m.span>
+		</LazyMotion>
 	);
 }
