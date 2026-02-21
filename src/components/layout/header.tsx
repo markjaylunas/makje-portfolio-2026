@@ -33,13 +33,6 @@ const navLinks = linkOptions([
 		title: "Tech Stack",
 		description: "The modern tools and languages I use to bring ideas to life.",
 	},
-	{
-		to: "/",
-		hash: "contact",
-		title: "Contact",
-		description:
-			"Let’s connect—reach out for collaborations or just to say hi.",
-	},
 ]);
 
 export default function Header({ children }: { children: React.ReactNode }) {
