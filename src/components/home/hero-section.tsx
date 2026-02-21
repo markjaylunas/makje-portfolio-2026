@@ -6,7 +6,7 @@ import ShinyButton from "../common/shiny-button";
 
 export default function HeroSection() {
 	return (
-		<section className="flex min-h-dvh flex-col items-center justify-center gap-2 px-4 sm:px-6">
+		<section className="flex min-h-[calc(100dvh-64px)] flex-col items-center justify-center gap-2 px-4 sm:px-6">
 			<div className="relative flex flex-col items-center justify-center gap-2">
 				<div className="to-primary pointer-events-none absolute top-1/2 left-1/2 -z-10 h-dvh w-full max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-[100%] bg-linear-to-br from-emerald-300 from-0% to-60%  opacity-12 blur-[60px] md:h-100 md:opacity-20 md:blur-[90px]"></div>
 
