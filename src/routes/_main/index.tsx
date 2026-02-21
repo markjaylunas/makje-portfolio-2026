@@ -1,6 +1,5 @@
 /** biome-ignore-all lint/correctness/useUniqueElementIds: <ignore for home section navigation ids> */
 import { createFileRoute } from "@tanstack/react-router";
-import { ThemeToggle } from "@/components/common/theme-toggle";
 import ExperienceTimelineSection from "@/components/home/experience/timeline-section";
 import HeroSection from "@/components/home/hero-section";
 import TechListSection from "@/components/home/technologies/tech-list-section";
@@ -18,7 +17,6 @@ function App() {
 			<ContentMotion id="tech-stack" className="pt-24 md:pt-32">
 				<TechListSection />
 			</ContentMotion>
-			<ThemeToggle />
 		</>
 	);
 }
