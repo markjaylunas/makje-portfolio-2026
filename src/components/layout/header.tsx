@@ -2,12 +2,20 @@ import { Menu02Icon, SentIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
 import makjeLogoDark from "@/assets/svg/makje-dark.svg";
+import { useScrollDirection } from "@/hooks/use-scroll-direction";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "../ui/button";
 
 export default function Header() {
+	const isVisible = useScrollDirection(80);
+
 	return (
-		<header className="sticky top-4 m-4 rounded-full  z-50  h-16 mx-auto max-w-(--breakpoint-sm) bg-primary/10 px-4 backdrop-blur-sm grid grid-cols-3 items-center">
+		<header
+			className={cn(
+				"sticky top-0 rounded-full  z-50  h-16 mx-auto max-w-(--breakpoint-sm) bg-primary/10 px-4 backdrop-blur-sm grid grid-cols-3 items-center transition-transform duration-300 ease-in-out",
+				isVisible ? "translate-y-4" : "-translate-y-full",
+			)}
+		>
 			<Navigation />
 
 			<div className="flex items-center gap-2 justify-self-center">
