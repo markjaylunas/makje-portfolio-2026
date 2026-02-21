@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import makjeLogo from "@/assets/svg/makje.svg";
+import makjeLogoDark from "@/assets/svg/makje-dark.svg";
 import { Button, buttonVariants } from "../ui/button";
 
 export default function Header() {
@@ -9,7 +9,7 @@ export default function Header() {
 
 			<div className="flex items-center gap-2">
 				<Link to="/" className="flex items-center space-x-2">
-					<img src={makjeLogo} alt="Logo" className="size-10" />
+					<img src={makjeLogoDark} alt="Logo" className="size-10" />
 					<span className="text-xl font-medium tracking-wide">Makje</span>
 				</Link>
 			</div>
