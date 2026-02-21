@@ -42,7 +42,7 @@ export default function Header({ children }: { children: React.ReactNode }) {
 	return (
 		<header
 			className={cn(
-				"sticky top-0 rounded-full  z-50  h-16 mx-auto max-w-(--breakpoint-sm) bg-primary/10 px-4 backdrop-blur-sm grid grid-cols-3 items-center transition-transform duration-300 ease-in-out",
+				"sticky top-0 rounded-full z-50 h-16 mx-auto max-w-(--breakpoint-sm) bg-primary/10 px-4 backdrop-blur-sm grid grid-cols-3 items-center transition-transform duration-300 ease-in-out",
 				isVisible ? "translate-y-4" : "-translate-y-full",
 			)}
 		>

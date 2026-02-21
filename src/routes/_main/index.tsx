@@ -1,4 +1,5 @@
 /** biome-ignore-all lint/correctness/useUniqueElementIds: <ignore for home section navigation ids> */
+
 import { createFileRoute } from "@tanstack/react-router";
 import ExperienceTimelineSection from "@/components/home/experience/timeline-section";
 import HeroSection from "@/components/home/hero-section";
@@ -11,12 +12,17 @@ function App() {
 	return (
 		<>
 			<HeroSection />
-			<ContentMotion id="experience" className="pt-24 md:pt-32">
-				<ExperienceTimelineSection />
-			</ContentMotion>
-			<ContentMotion id="tech-stack" className="pt-24 md:pt-32">
-				<TechListSection />
-			</ContentMotion>
+
+			<div id="experience" className="pt-24 md:pt-32">
+				<ContentMotion>
+					<ExperienceTimelineSection />
+				</ContentMotion>
+			</div>
+			<div id="tech-stack" className="pt-12 md:pt-24">
+				<ContentMotion>
+					<TechListSection />
+				</ContentMotion>
+			</div>
 		</>
 	);
 }
