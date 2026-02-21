@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
-import Header from "@/components/layout/header";
+import HeaderNav from "@/components/layout/header-nav";
 
 export const Route = createFileRoute("/_main")({
 	component: LayoutComponent,
@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_main")({
 function LayoutComponent() {
 	return (
 		<>
-			<Header />
+			<HeaderNav />
 			<Outlet />
 		</>
 	);

@@ -4,9 +4,14 @@ import { useEffect, useState } from "react";
  * @param threshold - The number of pixels to scroll before the hide logic kicks in.
  * @returns boolean - true if the header should be visible, false if hidden.
  */
-export const useScrollDirection = (threshold: number = 100): boolean => {
+export const useScrollDirection = (threshold: number = 100) => {
 	const [isVisible, setIsVisible] = useState<boolean>(true);
 	const [lastScrollY, setLastScrollY] = useState<number>(0);
+	const [isShowMenu, setIsShowMenu] = useState<boolean>(false);
+
+	const handleCloseMenu = (): void => {
+		setIsShowMenu(false);
+	};
 
 	useEffect(() => {
 		const updateScrollDirection = (): void => {
@@ -20,6 +25,7 @@ export const useScrollDirection = (threshold: number = 100): boolean => {
 				setIsVisible(true);
 			} else if (currentScrollY > lastScrollY) {
 				setIsVisible(false);
+				setIsShowMenu(false);
 			} else if (currentScrollY < lastScrollY) {
 				setIsVisible(true);
 			}
@@ -34,5 +40,5 @@ export const useScrollDirection = (threshold: number = 100): boolean => {
 		};
 	}, [lastScrollY, threshold]);
 
-	return isVisible;
+	return { isVisible, isShowMenu, setIsShowMenu, handleCloseMenu };
 };

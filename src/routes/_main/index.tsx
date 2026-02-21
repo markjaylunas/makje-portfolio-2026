@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/correctness/useUniqueElementIds: <ignore for home section navigation ids> */
 import { createFileRoute } from "@tanstack/react-router";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import ExperienceTimelineSection from "@/components/home/experience/timeline-section";
@@ -11,10 +12,10 @@ function App() {
 	return (
 		<>
 			<HeroSection />
-			<ContentMotion>
+			<ContentMotion id="experience" className="pt-24 md:pt-32">
 				<ExperienceTimelineSection />
 			</ContentMotion>
-			<ContentMotion className="mt-24 md:mt-32">
+			<ContentMotion id="tech-stack" className="pt-24 md:pt-32">
 				<TechListSection />
 			</ContentMotion>
 			<ThemeToggle />

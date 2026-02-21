@@ -8,6 +8,7 @@ export function getRouter() {
 		scrollRestoration: true,
 		defaultPreload: "intent",
 		defaultPreloadStaleTime: 0,
+		defaultHashScrollIntoView: { behavior: "smooth" },
 		defaultNotFoundComponent: () => {
 			return <p>This page doesn't exist!</p>;
 		},

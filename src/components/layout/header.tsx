@@ -1,13 +1,50 @@
-import { Menu02Icon, SentIcon } from "@hugeicons/core-free-icons";
+import { Menu02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Link } from "@tanstack/react-router";
-import makjeLogoDark from "@/assets/svg/makje-dark.svg";
+import { Link, type LinkProps, linkOptions } from "@tanstack/react-router";
+import {
+	NavigationMenu,
+	NavigationMenuContent,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import { useScrollDirection } from "@/hooks/use-scroll-direction";
 import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "../ui/button";
+import { buttonVariants } from "../ui/button";
 
-export default function Header() {
-	const isVisible = useScrollDirection(80);
+const navLinks = linkOptions([
+	{
+		to: "/",
+		hash: "experience",
+		title: "Experience",
+		description: "A timeline of my professional journey and key contributions.",
+	},
+	{
+		to: "/",
+		hash: "projects",
+		title: "Projects",
+		description:
+			"Showcasing featured work, open-source tools, and side experiments.",
+	},
+	{
+		to: "/",
+		hash: "tech-stack",
+		title: "Tech Stack",
+		description: "The modern tools and languages I use to bring ideas to life.",
+	},
+	{
+		to: "/",
+		hash: "contact",
+		title: "Contact",
+		description:
+			"Let’s connect—reach out for collaborations or just to say hi.",
+	},
+]);
+
+export default function Header({ children }: { children: React.ReactNode }) {
+	const { isVisible, isShowMenu, setIsShowMenu, handleCloseMenu } =
+		useScrollDirection(80);
 
 	return (
 		<header
@@ -16,33 +53,61 @@ export default function Header() {
 				isVisible ? "translate-y-4" : "-translate-y-full",
 			)}
 		>
-			<Navigation />
-
-			<div className="flex items-center gap-2 justify-self-center">
-				<Link to="/" className="flex items-center space-x-2">
-					<img src={makjeLogoDark} alt="Logo" className="size-8" />
-					<span className="text-xl font-medium tracking-wide">Makje</span>
-				</Link>
-			</div>
-
-			<Link
-				to="/contact"
-				className={cn(buttonVariants(), "rounded-full w-fit justify-self-end")}
-			>
-				<HugeiconsIcon icon={SentIcon} />
-				<span className="sr-only md:not-sr-only text-xs">Connect</span>
-			</Link>
+			<NavigationMenu value={isShowMenu} onValueChange={setIsShowMenu}>
+				<NavigationMenuList>
+					<NavigationMenuItem>
+						<NavigationMenuTrigger
+							className={buttonVariants({
+								variant: "ghost",
+								size: "icon",
+								className: "bg-transparent",
+							})}
+						>
+							<HugeiconsIcon icon={Menu02Icon} />
+							<span className="sr-only">Menu</span>
+						</NavigationMenuTrigger>
+						<NavigationMenuContent>
+							<ul className="w-96">
+								{navLinks.map((link) => (
+									<ListItem
+										linkProps={link}
+										key={link.title}
+										title={link.title}
+										onClick={handleCloseMenu}
+									>
+										{link.description}
+									</ListItem>
+								))}
+							</ul>
+						</NavigationMenuContent>
+					</NavigationMenuItem>
+				</NavigationMenuList>
+			</NavigationMenu>
+			{children}
 		</header>
 	);
 }
 
-function Navigation() {
+function ListItem({
+	title,
+	children,
+	linkProps,
+	...props
+}: React.ComponentPropsWithoutRef<"li"> & { linkProps: LinkProps }) {
 	return (
-		<nav>
-			<Button variant="ghost" size="icon">
-				<HugeiconsIcon icon={Menu02Icon} />
-				<span className="sr-only">Menu</span>
-			</Button>
-		</nav>
+		<li {...props}>
+			<NavigationMenuLink
+				render={
+					<Link to={linkProps.to} hash={linkProps.hash}>
+						<div className="flex flex-col gap-1 text-sm">
+							<div className="leading-none font-medium">{title}</div>
+							<div className="text-muted-foreground line-clamp-2">
+								{children}
+							</div>
+						</div>
+					</Link>
+				}
+			/>
+		</li>
 	);
 }
