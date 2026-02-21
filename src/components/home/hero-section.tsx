@@ -10,10 +10,10 @@ export default function HeroSection() {
 			<div className="relative flex flex-col items-center justify-center gap-2">
 				<div className="to-primary pointer-events-none absolute top-1/2 left-1/2 -z-10 h-dvh w-full max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-[100%] bg-linear-to-br from-emerald-300 from-0% to-60%  opacity-12 blur-[60px] md:h-100 md:opacity-20 md:blur-[90px]"></div>
 
-				<h1 className="text-center text-4xl font-bold drop-shadow-2xl sm:text-5xl md:text-7xl lg:text-8xl">
+				<h1 className="text-center text-4xl font-bold drop-shadow-2xl xs:text-5xl md:text-6xl lg:text-7xl">
 					<GradientText>
 						Mark Jay Lunas <br />
-						<span className="font-medium uppercase tracking-widest text-2xl sm:text-4xl md:text-6xl lg:text-7xl">
+						<span className="font-medium uppercase tracking-wider text-2xl xs:text-4xl md:text-5xl lg:text-6xl">
 							Web Developer
 						</span>
 					</GradientText>
