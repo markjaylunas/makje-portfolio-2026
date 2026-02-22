@@ -1,6 +1,6 @@
 import { Menu02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Link, type LinkProps, linkOptions } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import {
 	NavigationMenu,
 	NavigationMenuContent,
@@ -10,30 +10,9 @@ import {
 	NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { useScrollDirection } from "@/hooks/use-scroll-direction";
+import { type NavigationLink, navigationLinks } from "@/lib/link-options";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "../ui/button";
-
-const navLinks = linkOptions([
-	{
-		to: "/",
-		hash: "experience",
-		title: "Experience",
-		description: "A timeline of my professional journey and key contributions.",
-	},
-	{
-		to: "/",
-		hash: "projects",
-		title: "Projects",
-		description:
-			"Showcasing featured work, open-source tools, and side experiments.",
-	},
-	{
-		to: "/",
-		hash: "tech-stack",
-		title: "Tech Stack",
-		description: "The modern tools and languages I use to bring ideas to life.",
-	},
-]);
 
 export default function Header({ children }: { children: React.ReactNode }) {
 	const { isVisible, isShowMenu, setIsShowMenu, handleCloseMenu } =
@@ -61,11 +40,11 @@ export default function Header({ children }: { children: React.ReactNode }) {
 						</NavigationMenuTrigger>
 						<NavigationMenuContent>
 							<ul className="w-96">
-								{navLinks.map((link) => (
+								{navigationLinks.map((link) => (
 									<ListItem
 										linkProps={link}
-										key={link.title}
-										title={link.title}
+										key={link.name}
+										title={link.name}
 										onClick={handleCloseMenu}
 									>
 										{link.description}
@@ -86,16 +65,19 @@ function ListItem({
 	children,
 	linkProps,
 	...props
-}: React.ComponentPropsWithoutRef<"li"> & { linkProps: LinkProps }) {
+}: React.ComponentPropsWithoutRef<"li"> & { linkProps: NavigationLink }) {
 	return (
 		<li {...props}>
 			<NavigationMenuLink
 				render={
 					<Link to={linkProps.to} hash={linkProps.hash}>
-						<div className="flex flex-col gap-1 text-sm">
-							<div className="leading-none font-medium">{title}</div>
-							<div className="text-muted-foreground line-clamp-2">
-								{children}
+						<div className="flex items-start text-sm gap-2">
+							<HugeiconsIcon icon={linkProps.icon} className="size-8" />
+							<div className="flex flex-col gap-1">
+								<div className="leading-none font-medium">{title}</div>
+								<div className="text-muted-foreground line-clamp-2">
+									{children}
+								</div>
 							</div>
 						</div>
 					</Link>

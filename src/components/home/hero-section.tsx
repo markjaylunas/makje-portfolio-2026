@@ -1,6 +1,5 @@
-import { Email, Github, Linkedin01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { GITHUB_URL, LINKEDIN_URL, PRIMARY_EMAIL } from "@/lib/constants";
+import { socialLinks } from "@/lib/constants";
 import GradientText from "../common/gradient-text";
 import ShinyButton from "../common/shiny-button";
 
@@ -26,41 +25,20 @@ export default function HeroSection() {
 			</div>
 
 			<div className="mt-12 md:mt-20 grid w-full max-w-lg grid-cols-1 gap-4 md:gap-8 md:grid-cols-3">
-				<a
-					href={GITHUB_URL}
-					target="_blank"
-					rel="noopener noreferrer"
-					className="w-full"
-				>
-					<ShinyButton className="flex w-full items-center justify-center gap-2">
-						<HugeiconsIcon icon={Github} size={20} />
-						Github
-					</ShinyButton>
-				</a>
-
-				<a
-					href={LINKEDIN_URL}
-					target="_blank"
-					rel="noopener noreferrer"
-					className="w-full"
-				>
-					<ShinyButton className="flex w-full items-center justify-center gap-2">
-						<HugeiconsIcon icon={Linkedin01Icon} size={20} />
-						LinkedIn
-					</ShinyButton>
-				</a>
-
-				<a
-					href={`mailto:${PRIMARY_EMAIL}`}
-					target="_blank"
-					rel="noopener noreferrer"
-					className="w-full"
-				>
-					<ShinyButton className="flex w-full items-center justify-center gap-2">
-						<HugeiconsIcon icon={Email} size={20} />
-						Email
-					</ShinyButton>
-				</a>
+				{socialLinks.map((social) => (
+					<a
+						href={social.href}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="w-full"
+						key={social.name}
+					>
+						<ShinyButton className="flex w-full items-center justify-center gap-2">
+							<HugeiconsIcon icon={social.icon} size={20} />
+							{social.name}
+						</ShinyButton>
+					</a>
+				))}
 			</div>
 		</section>
 	);
