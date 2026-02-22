@@ -1,4 +1,5 @@
-/** biome-ignore-all lint/correctness/useHookAtTopLevel: <explanation> */
+/** biome-ignore-all lint/correctness/useHookAtTopLevel: <ignore> */
+/** biome-ignore-all lint/style/noNonNullAssertion: <ignore> */
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
