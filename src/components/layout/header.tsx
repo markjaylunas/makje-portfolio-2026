@@ -51,9 +51,9 @@ export default function Header({ children }: { children: React.ReactNode }) {
 					<NavigationMenuItem>
 						<NavigationMenuTrigger
 							className={buttonVariants({
-								variant: "ghost",
+								variant: "secondary",
 								size: "icon",
-								className: "bg-transparent",
+								className: "rounded-full ",
 							})}
 						>
 							<HugeiconsIcon icon={Menu02Icon} />
