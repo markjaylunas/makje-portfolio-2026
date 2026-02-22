@@ -1,14 +1,15 @@
 import { HugeiconsIcon } from "@hugeicons/react";
 import { socialLinks } from "@/lib/constants";
-import GradientText from "../common/gradient-text";
-import ShinyButton from "../common/shiny-button";
+import GradientText from "../../common/gradient-text";
+import ShinyButton from "../../common/shiny-button";
+import HeroLogo from "./logo";
 
 export default function HeroSection() {
 	return (
 		<section className="flex min-h-[calc(100dvh-128px)] flex-col items-center justify-center gap-2 px-4 sm:px-6">
 			<div className="relative flex flex-col items-center justify-center gap-2">
 				<div className="to-primary pointer-events-none absolute top-1/2 left-1/2 -z-10 h-dvh w-full max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-[100%] bg-linear-to-br from-emerald-300 from-0% to-60%  opacity-12 blur-[60px] md:h-100 md:opacity-20 md:blur-[90px]"></div>
-
+				<HeroLogo />
 				<h1 className="text-center text-4xl font-bold drop-shadow-2xl xs:text-5xl md:text-6xl lg:text-7xl">
 					<GradientText>
 						Mark Jay Lunas <br />

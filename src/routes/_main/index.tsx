@@ -2,7 +2,7 @@
 
 import { createFileRoute } from "@tanstack/react-router";
 import ExperienceTimelineSection from "@/components/home/experience/timeline-section";
-import HeroSection from "@/components/home/hero-section";
+import HeroSection from "@/components/home/hero/hero-section";
 import TechListSection from "@/components/home/technologies/tech-list-section";
 import ContentMotion from "@/components/motion/content-motion";
 
