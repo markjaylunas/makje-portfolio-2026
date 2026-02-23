@@ -1,5 +1,5 @@
 import logo from "@/assets/svg/makje.svg";
-import MetallicPaint from "../../MetallicPaint";
+import MetallicPaint from "../../common/metallic-paint";
 
 export default function HeroLogo() {
 	return (
