@@ -322,9 +322,26 @@ export default function MetallicPaint({
 	const speedRef = useRef(speed);
 	const mouseRef = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 });
 	const mouseAnimRef = useRef(mouseAnimation);
+	const containerRef = useRef<HTMLDivElement>(null);
 
+	const [isInView, setIsInView] = useState(true);
 	const [ready, setReady] = useState(false);
 	const [textureReady, setTextureReady] = useState(false);
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				setIsInView(entry.isIntersecting);
+			},
+			{ threshold: 0 }, // 0 means it triggers as soon as 1px is visible/hidden
+		);
+
+		if (containerRef.current) {
+			observer.observe(containerRef.current);
+		}
+
+		return () => observer.disconnect();
+	}, []);
 
 	useEffect(() => {
 		speedRef.current = speed;
@@ -511,7 +528,7 @@ export default function MetallicPaint({
 	]);
 
 	useEffect(() => {
-		if (!ready || !textureReady) return;
+		if (!ready || !textureReady || !isInView) return;
 
 		const gl = glRef.current;
 		const u = uniformsRef.current;
@@ -551,7 +568,7 @@ export default function MetallicPaint({
 			if (rafRef.current) cancelAnimationFrame(rafRef.current);
 			canvas.removeEventListener("mousemove", handleMouseMove);
 		};
-	}, [ready, textureReady]);
+	}, [ready, textureReady, isInView]);
 
 	return (
 		<div className="relative size-48">
