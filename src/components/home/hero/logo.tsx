@@ -1,4 +1,5 @@
 import logo from "@/assets/svg/makje.svg";
+import logoDark from "@/assets/svg/makje-dark.svg";
 import MetallicPaint from "../../common/metallic-paint";
 
 export default function HeroLogo() {
@@ -6,13 +7,14 @@ export default function HeroLogo() {
 		<div className="my-12">
 			<MetallicPaint
 				imageSrc={logo}
+				imageSrcPlaceholder={logoDark}
 				// Pattern
 				seed={42}
 				scale={4}
 				patternSharpness={1}
 				noiseScale={0.5}
 				// Animation
-				speed={0.3}
+				speed={0.15}
 				liquid={0.75}
 				mouseAnimation={false}
 				// Visual

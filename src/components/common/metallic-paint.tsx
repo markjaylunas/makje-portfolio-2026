@@ -3,7 +3,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Skeleton } from "../ui/skeleton";
 
 const vertexShader = `#version 300 es
 precision highp float;
@@ -146,6 +145,7 @@ void main(){
 
 interface MetallicPaintProps {
 	imageSrc: string;
+	imageSrcPlaceholder?: string;
 	seed?: number;
 	scale?: number;
 	refraction?: number;
@@ -289,6 +289,7 @@ function hexToRgb(hex: string): [number, number, number] {
 
 export default function MetallicPaint({
 	imageSrc,
+	imageSrcPlaceholder,
 	seed = 42,
 	scale = 4,
 	refraction = 0.01,
@@ -324,6 +325,7 @@ export default function MetallicPaint({
 	const mouseAnimRef = useRef(mouseAnimation);
 	const containerRef = useRef<HTMLDivElement>(null);
 
+	const [isVisible, setIsVisible] = useState(false);
 	const [isInView, setIsInView] = useState(true);
 	const [ready, setReady] = useState(false);
 	const [textureReady, setTextureReady] = useState(false);
@@ -558,6 +560,12 @@ export default function MetallicPaint({
 
 			gl.uniform1f(u.u_time, animTimeRef.current);
 			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+			// After the VERY FIRST draw call, trigger the fade-in
+			if (!isVisible) {
+				requestAnimationFrame(() => setIsVisible(true));
+			}
+
 			rafRef.current = requestAnimationFrame(render);
 		};
 
@@ -568,14 +576,27 @@ export default function MetallicPaint({
 			if (rafRef.current) cancelAnimationFrame(rafRef.current);
 			canvas.removeEventListener("mousemove", handleMouseMove);
 		};
-	}, [ready, textureReady, isInView]);
+	}, [ready, textureReady, isInView, isVisible]);
 
 	return (
-		<div className="relative size-48">
-			<canvas ref={canvasRef} className="block h-full w-full object-contain" />
-			{ready || textureReady ? null : (
-				<Skeleton className="absolute top-0 left-0 size-full rounded-full block " />
-			)}
+		<div className="relative size-48 overflow-hidden rounded-full bg-black/5">
+			{/* The Static Placeholder */}
+			<img
+				src={imageSrcPlaceholder}
+				alt=""
+				aria-hidden="true"
+				className={`absolute inset-0 size-full object-contain transition-opacity duration-1000 ease-in-out ${
+					isVisible ? "opacity-0 pointer-events-none" : "opacity-100"
+				}`}
+			/>
+
+			{/* The Canvas */}
+			<canvas
+				ref={canvasRef}
+				className={`relative block h-full w-full object-contain transition-opacity duration-1000 ease-in-out ${
+					isVisible ? "opacity-100" : "opacity-0"
+				}`}
+			/>
 		</div>
 	);
 }
