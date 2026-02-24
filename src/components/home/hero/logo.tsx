@@ -5,7 +5,7 @@ import { defaultLiquidMetalParams } from "@/components/common/liquid-metal/param
 
 export default function HeroLogo() {
 	return (
-		<div className="my-12 w-full h-56 aspect-square">
+		<div className="my-8 sm:my-12 mx-auto size-42 sm:size-56">
 			<LiquidMetalCanvas
 				imageSrc={logo}
 				params={defaultLiquidMetalParams}
