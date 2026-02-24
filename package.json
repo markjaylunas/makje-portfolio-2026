@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.2.0",
-    "@cloudflare/vite-plugin": "^1.13.8",
     "@fontsource-variable/geist": "^5.2.8",
     "@hugeicons/core-free-icons": "^3.1.1",
     "@hugeicons/react": "^1.1.5",
@@ -50,6 +49,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
+    "@cloudflare/vite-plugin": "^1.13.8",
     "@tanstack/devtools-vite": "^0.3.11",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
