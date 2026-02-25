@@ -13,16 +13,14 @@ function App() {
 		<>
 			<HeroSection />
 
-			<div id="experience" className="pt-12 md:pt-24">
-				<ContentMotion>
-					<ExperienceTimelineSection />
-				</ContentMotion>
-			</div>
-			<div id="tech-stack" className="pt-12 md:pt-24">
-				<ContentMotion>
-					<TechListSection />
-				</ContentMotion>
-			</div>
+			<div id="experience" className="h-12 md:h-24" />
+			<ContentMotion>
+				<ExperienceTimelineSection />
+			</ContentMotion>
+			<div id="tech-stack" className="h-24" />
+			<ContentMotion>
+				<TechListSection />
+			</ContentMotion>
 		</>
 	);
 }
