@@ -80,7 +80,9 @@ function NavLinkGroupCard({
 			{...props}
 		>
 			<CardHeader>
-				<CardTitle className="text-xs">{title}</CardTitle>
+				<CardTitle className="text-xs font-mono uppercase tracking-wider text-accent-foreground/80">
+					{title}
+				</CardTitle>
 			</CardHeader>
 			<CardContent>{children}</CardContent>
 		</Card>
