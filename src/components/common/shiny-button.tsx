@@ -1,38 +1,39 @@
 import { cn } from "@/lib/utils";
 
-export default function ShinyButton({
+interface ShinyButtonProps<T extends React.ElementType> {
+	as?: T;
+	children: React.ReactNode;
+	className?: string;
+}
+
+type Props<T extends React.ElementType> = ShinyButtonProps<T> &
+	Omit<React.ComponentPropsWithoutRef<T>, keyof ShinyButtonProps<T>>;
+
+export default function ShinyButton<T extends React.ElementType = "button">({
+	as,
 	className,
 	children,
 	...rest
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+}: Props<T>) {
+	const Component = as || "button";
+
 	return (
-		<button
+		<Component
 			className={cn(
-				"border-primary relative rounded-full border px-5 py-2.5",
+				"border-primary relative inline-flex items-center justify-center rounded-full border px-5 py-2.5",
 				"text-primary tracking-widest uppercase text-sm",
 				"overflow-hidden bg-transparent transition-all duration-200 ease-in",
 				"cursor-pointer shadow-[0_0_0_0_transparent]",
-
-				// Hover State
 				"hover:bg-primary hover:text-white hover:shadow-[0_0_30px_5px_rgba(82.992,38.977,254.99,0.815)] hover:ease-out",
-
-				// Active State
-				"active:shadow-none active:transition-shadow active:duration-200",
-
-				// The "Shine" Effect (Pseudo-element)
 				"before:absolute before:block before:h-[86%] before:w-0 before:content-['']",
 				"before:top-[7%] before:left-0 before:bg-white before:opacity-0",
 				"before:-skew-x-20 before:shadow-[0_0_50px_30px_#fff]",
-
-				// Trigger Animation on Hover
 				"hover:before:animate-glow-slide",
-
-				// Allow custom classes to be passed in
 				className,
 			)}
 			{...rest}
 		>
 			{children}
-		</button>
+		</Component>
 	);
 }

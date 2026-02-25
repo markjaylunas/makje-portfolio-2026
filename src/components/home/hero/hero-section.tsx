@@ -31,10 +31,13 @@ export default function HeroSection() {
 						href={social.href}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="w-full"
+						className="rounded-full"
 						key={social.name}
 					>
-						<ShinyButton className="flex w-full items-center justify-center gap-2">
+						<ShinyButton
+							as="span"
+							className="flex w-full items-center justify-center gap-2"
+						>
 							<HugeiconsIcon icon={social.icon} size={20} />
 							{social.name}
 						</ShinyButton>
