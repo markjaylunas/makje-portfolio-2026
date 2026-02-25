@@ -1,4 +1,3 @@
-import { Menu02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
 import {
@@ -12,6 +11,7 @@ import {
 import { useScrollDirection } from "@/hooks/use-scroll-direction";
 import { type NavigationLink, navigationLinks } from "@/lib/link-options";
 import { cn } from "@/lib/utils";
+import { MenuToggleIcon } from "../common/menu-toggle-icon";
 import { buttonVariants } from "../ui/button";
 
 export default function Header({ children }: { children: React.ReactNode }) {
@@ -35,7 +35,7 @@ export default function Header({ children }: { children: React.ReactNode }) {
 								className: "rounded-full ",
 							})}
 						>
-							<HugeiconsIcon icon={Menu02Icon} />
+							<MenuToggleIcon open={isShowMenu} />
 							<span className="sr-only">Menu</span>
 						</NavigationMenuTrigger>
 						<NavigationMenuContent>
