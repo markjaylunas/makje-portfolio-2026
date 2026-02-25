@@ -2,7 +2,6 @@ import { Sent02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
 import makjeLogoDark from "@/assets/svg/makje-dark.svg";
-import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { MenuToggleIcon } from "../common/menu-toggle-icon";
 import { MenuProvider, useMenu } from "../providers/nav-menu-provider";
@@ -15,7 +14,7 @@ export default function Header() {
 		<HeaderContainer>
 			<MenuProvider>
 				<nav>
-					<div className="grid grid-cols-3 items-center h-16 bg-primary/20 px-4 backdrop-blur-md border border-transparent rounded-full">
+					<div className="flex flex-row-reverse justify-between sm:grid grid-cols-3 items-center h-18 bg-primary/20 px-4 backdrop-blur-md border border-transparent rounded-full">
 						<NavMenu />
 						<NavLogo />
 						<ConnectButtonLink />
@@ -57,18 +56,16 @@ function NavMenu() {
 }
 
 function ConnectButtonLink() {
-	const isMobile = useMediaQuery("(max-width: 768px)");
-
 	return (
 		<Link
 			to="/contact"
 			className={cn(
-				buttonVariants({ size: isMobile ? "icon-lg" : "lg" }),
-				"rounded-full justify-self-end",
+				buttonVariants({ size: "lg" }),
+				"rounded-full justify-self-end sm:flex hidden",
 			)}
 		>
 			<HugeiconsIcon icon={Sent02Icon} className="size-5" />
-			<span className="sr-only md:not-sr-only text-xs">Connect</span>
+			<span className="text-xs">Connect</span>
 		</Link>
 	);
 }
