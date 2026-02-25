@@ -1,88 +1,74 @@
+import { Sent02Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
-import {
-	NavigationMenu,
-	NavigationMenuContent,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-	NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import { useScrollDirection } from "@/hooks/use-scroll-direction";
-import { type NavigationLink, navigationLinks } from "@/lib/link-options";
+import makjeLogoDark from "@/assets/svg/makje-dark.svg";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { MenuToggleIcon } from "../common/menu-toggle-icon";
-import { buttonVariants } from "../ui/button";
+import { MenuProvider, useMenu } from "../providers/nav-menu-provider";
+import { Button, buttonVariants } from "../ui/button";
+import HeaderContainer from "./header-container";
+import NavExpanded from "./nav-expanded";
 
-export default function Header({ children }: { children: React.ReactNode }) {
-	const { isVisible, isShowMenu, setIsShowMenu, handleCloseMenu } =
-		useScrollDirection(80);
-
+export default function Header() {
 	return (
-		<header
-			className={cn(
-				"sticky top-0 rounded-full z-50 h-16 mx-4 sm:mx-auto max-w-(--breakpoint-sm) bg-primary/10 px-4 backdrop-blur-sm grid grid-cols-3 items-center transition-transform duration-300 ease-in-out",
-				isVisible ? "translate-y-4" : "-translate-y-full",
-			)}
-		>
-			<NavigationMenu value={isShowMenu} onValueChange={setIsShowMenu}>
-				<NavigationMenuList>
-					<NavigationMenuItem>
-						<NavigationMenuTrigger
-							className={buttonVariants({
-								variant: "secondary",
-								size: "icon",
-								className: "rounded-full ",
-							})}
-						>
-							<MenuToggleIcon open={isShowMenu} />
-							<span className="sr-only">Menu</span>
-						</NavigationMenuTrigger>
-						<NavigationMenuContent>
-							<ul className="w-96">
-								{navigationLinks.map((link) => (
-									<ListItem
-										linkProps={link}
-										key={link.name}
-										title={link.name}
-										onClick={handleCloseMenu}
-									>
-										{link.description}
-									</ListItem>
-								))}
-							</ul>
-						</NavigationMenuContent>
-					</NavigationMenuItem>
-				</NavigationMenuList>
-			</NavigationMenu>
-			{children}
-		</header>
+		<HeaderContainer>
+			<MenuProvider>
+				<nav>
+					<div className="grid grid-cols-3 items-center h-16 bg-primary/20 px-4 backdrop-blur-md border border-transparent rounded-full">
+						<NavMenu />
+						<NavLogo />
+						<ConnectButtonLink />
+					</div>
+
+					<NavExpanded />
+				</nav>
+			</MenuProvider>
+		</HeaderContainer>
 	);
 }
 
-function ListItem({
-	title,
-	children,
-	linkProps,
-	...props
-}: React.ComponentPropsWithoutRef<"li"> & { linkProps: NavigationLink }) {
+function NavLogo() {
 	return (
-		<li {...props}>
-			<NavigationMenuLink
-				render={
-					<Link to={linkProps.to} hash={linkProps.hash}>
-						<div className="flex items-start text-sm gap-2">
-							<HugeiconsIcon icon={linkProps.icon} className="size-8" />
-							<div className="flex flex-col gap-1">
-								<div className="leading-none font-medium">{title}</div>
-								<div className="text-muted-foreground line-clamp-2">
-									{children}
-								</div>
-							</div>
-						</div>
-					</Link>
-				}
-			/>
-		</li>
+		<div className="flex items-center gap-2 justify-self-center">
+			<Link to="/" className="flex items-center space-x-2">
+				<img src={makjeLogoDark} alt="Logo" className="size-10" />
+				<span className="text-xl font-medium tracking-wide">Makje</span>
+			</Link>
+		</div>
+	);
+}
+
+function NavMenu() {
+	const { menuOpen, toggleMenu } = useMenu();
+	return (
+		<Button
+			size="icon-lg"
+			variant="ghost"
+			className={cn(
+				"rounded-full text-foreground hover:text-primary hover:border-primary transition-colors duration-300 ease-in-out hover:cursor-pointer border border-foreground bg-primary/10",
+				menuOpen && "text-primary border-primary",
+			)}
+			onClick={toggleMenu}
+		>
+			<MenuToggleIcon open={menuOpen} className="size-5" />
+		</Button>
+	);
+}
+
+function ConnectButtonLink() {
+	const isMobile = useMediaQuery("(max-width: 768px)");
+
+	return (
+		<Link
+			to="/contact"
+			className={cn(
+				buttonVariants({ size: isMobile ? "icon-lg" : "lg" }),
+				"rounded-full justify-self-end",
+			)}
+		>
+			<HugeiconsIcon icon={Sent02Icon} className="size-5" />
+			<span className="sr-only md:not-sr-only text-xs">Connect</span>
+		</Link>
 	);
 }

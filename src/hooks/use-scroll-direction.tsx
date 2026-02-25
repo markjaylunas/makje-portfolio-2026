@@ -1,44 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-/**
- * @param threshold - The number of pixels to scroll before the hide logic kicks in.
- * @returns boolean - true if the header should be visible, false if hidden.
- */
 export const useScrollDirection = (threshold: number = 100) => {
 	const [isVisible, setIsVisible] = useState<boolean>(true);
-	const [lastScrollY, setLastScrollY] = useState<number>(0);
 	const [isShowMenu, setIsShowMenu] = useState<boolean>(false);
 
-	const handleCloseMenu = (): void => {
-		setIsShowMenu(false);
-	};
+	// 1. Use a Ref for the scroll position to avoid re-triggering the Effect
+	const lastScrollY = useRef<number>(0);
+
+	const handleCloseMenu = (): void => setIsShowMenu(false);
 
 	useEffect(() => {
 		const updateScrollDirection = (): void => {
 			const currentScrollY = window.scrollY;
+			const previousScrollY = lastScrollY.current;
 
-			// Logic:
-			// 1. Show if we're near the top
-			// 2. Hide if scrolling down past threshold
-			// 3. Show if scrolling up
+			let nextVisible = isVisible;
+
 			if (currentScrollY <= threshold) {
-				setIsVisible(true);
-			} else if (currentScrollY > lastScrollY) {
-				setIsVisible(false);
+				nextVisible = true;
+			} else if (currentScrollY > previousScrollY) {
+				// Scrolling Down
+				nextVisible = false;
+				// Only update Menu state if it's actually open
 				setIsShowMenu(false);
-			} else if (currentScrollY < lastScrollY) {
-				setIsVisible(true);
+			} else if (currentScrollY < previousScrollY) {
+				// Scrolling Up
+				nextVisible = true;
 			}
 
-			setLastScrollY(currentScrollY);
+			// 2. Only update state if the value actually changed
+			if (nextVisible !== isVisible) {
+				setIsVisible(nextVisible);
+			}
+
+			lastScrollY.current = currentScrollY;
 		};
 
-		window.addEventListener("scroll", updateScrollDirection);
+		// 3. Passive listener improves scroll performance
+		window.addEventListener("scroll", updateScrollDirection, { passive: true });
 
-		return () => {
-			window.removeEventListener("scroll", updateScrollDirection);
-		};
-	}, [lastScrollY, threshold]);
+		return () => window.removeEventListener("scroll", updateScrollDirection);
+	}, [isVisible, threshold]); // Effect only restarts when visibility flips
 
 	return { isVisible, isShowMenu, setIsShowMenu, handleCloseMenu };
 };

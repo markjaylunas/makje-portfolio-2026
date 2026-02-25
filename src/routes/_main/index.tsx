@@ -13,7 +13,7 @@ function App() {
 		<>
 			<HeroSection />
 
-			<div id="experience" className="pt-24 md:pt-32">
+			<div id="experience" className="pt-12 md:pt-24">
 				<ContentMotion>
 					<ExperienceTimelineSection />
 				</ContentMotion>
