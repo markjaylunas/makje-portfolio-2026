@@ -1,6 +1,18 @@
+import {
+	ArrowRight02Icon,
+	ArrowUpRight01Icon,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
-import { Activity } from "react";
-import { navigationLinks } from "@/lib/link-options";
+import { Activity, type ComponentProps } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { socialLinks } from "@/lib/constants";
+import {
+	aboutLinks,
+	type NavigationLink,
+	projectLinks,
+} from "@/lib/link-options";
+import { cn } from "@/lib/utils";
 import SlideDownMotion from "../motion/slide-down-motion";
 import { useMenu } from "../providers/nav-menu-provider";
 
@@ -18,21 +30,103 @@ export default function NavExpanded() {
 export function NavLinks() {
 	const { toggleMenu } = useMenu();
 	return (
-		<SlideDownMotion>
-			<ul className="flex flex-col gap-1 bg-primary/20 p-4  border border-transparent rounded-[16px] mt-4 ">
-				{navigationLinks.map((link) => (
-					<li key={link.to}>
-						<Link
-							to={link.to}
-							hash={link.hash}
-							onClick={toggleMenu}
-							className="flex items-center  px-4 py-3 text-sm font-medium transition-colors hover:text-primary hover:bg-accent active:scale-95 rounded-[16px]"
-						>
-							{link.name}
-						</Link>
-					</li>
-				))}
-			</ul>
+		<SlideDownMotion className="bg-primary/20 p-4  border border-transparent rounded-[16px] mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+			<NavLinkGroupCard title="About">
+				<ul className="flex flex-col">
+					{aboutLinks.map((link) => (
+						<li key={link.to}>
+							<InternalLink {...link} onClick={toggleMenu} />
+						</li>
+					))}
+				</ul>
+			</NavLinkGroupCard>
+			<NavLinkGroupCard title="Projects">
+				<ul className="flex flex-col">
+					{projectLinks.map((link) => (
+						<li key={link.to}>
+							<InternalLink {...link} onClick={toggleMenu} />
+						</li>
+					))}
+				</ul>
+			</NavLinkGroupCard>
+			<NavLinkGroupCard title="Socials">
+				<ul className="flex flex-col">
+					{socialLinks.map((social) => (
+						<li key={social.name}>
+							<ExternalLink
+								href={social.href}
+								name={social.name}
+								icon={social.icon}
+								onClick={toggleMenu}
+							/>
+						</li>
+					))}
+				</ul>
+			</NavLinkGroupCard>
 		</SlideDownMotion>
+	);
+}
+
+function NavLinkGroupCard({
+	title,
+	children,
+	className,
+	...props
+}: ComponentProps<"div"> & { title: string }) {
+	return (
+		<Card
+			size="sm"
+			className={cn("rounded-[12px] bg-black/60", className)}
+			{...props}
+		>
+			<CardHeader>
+				<CardTitle className="text-xs">{title}</CardTitle>
+			</CardHeader>
+			<CardContent>{children}</CardContent>
+		</Card>
+	);
+}
+
+function InternalLink(props: NavigationLink & { onClick: () => void }) {
+	return (
+		<Link
+			className={cn(
+				"flex items-center  px-4 py-3 text-xs transition-colors hover:text-white hover:bg-accent active:scale-95 rounded-[16px] gap-2 ease-in-out duration-300",
+			)}
+			to={props.to}
+			hash={props.hash}
+			hashScrollIntoView={true}
+			onClick={props.onClick}
+		>
+			<HugeiconsIcon icon={props.icon} size={20} />
+			{props.name}
+			<HugeiconsIcon icon={ArrowRight02Icon} className="size-5 ml-auto" />
+		</Link>
+	);
+}
+
+function ExternalLink({
+	name,
+	href,
+	icon,
+	onClick,
+}: {
+	name: string;
+	href: string;
+	icon: IconSvgElement;
+	onClick: () => void;
+}) {
+	return (
+		<a
+			target="_blank"
+			rel="noopener noreferrer"
+			onClick={onClick}
+			className="flex items-center  px-4 py-3 text-xs  transition-colors hover:bg-accent active:scale-95 rounded-[16px] gap-2 ease-in-out duration-300"
+			href={href}
+		>
+			<HugeiconsIcon icon={icon} size={20} />
+			{name}
+			<HugeiconsIcon icon={ArrowUpRight01Icon} className="size-5 ml-auto" />
+		</a>
 	);
 }
