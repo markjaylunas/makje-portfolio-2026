@@ -64,8 +64,17 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
 					<span className="sr-only">Technologies used:</span>
 					<div className="flex flex-wrap gap-2">
 						{technologies.map((tech) => (
-							<a href={tech.url} key={tech.name}>
-								<Badge className="rounded-full" variant="secondary">
+							<a
+								href={tech.url}
+								key={tech.name}
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label={`Learn more about ${tech.name}`}
+							>
+								<Badge
+									className="rounded-full hover:opacity-80"
+									variant="secondary"
+								>
 									{tech.name}
 								</Badge>
 							</a>
