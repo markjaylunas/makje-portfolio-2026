@@ -36,6 +36,7 @@ export const auth = betterAuth({
 			onLinkAccount: async ({ anonymousUser, newUser }) => {
 				console.log("onLinkAccount", { anonymousUser, newUser });
 				// TODO: move user data from anonymous user to new user
+				// TODO: delete anonymous users  weekly (cron job)
 			},
 		}),
 		admin(),

@@ -1,6 +1,7 @@
 import { HeartAddIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 import AnonymousButton from "@/components/auth/anon-button";
 import OAuthButtons from "@/components/auth/oauth-buttons";
 import { Badge } from "@/components/ui/badge";
@@ -13,11 +14,19 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 
+const searchSchema = z.object({
+	callbackURL: z.string().optional(),
+	isLinkAccount: z.boolean().optional(),
+});
+
 export const Route = createFileRoute("/_auth/login")({
 	component: RouteComponent,
+	validateSearch: searchSchema,
 });
 
 function RouteComponent() {
+	const { isLinkAccount } = Route.useSearch();
+
 	return (
 		<main className="flex min-h-screen items-center justify-center bg-background p-4">
 			<Card className="w-full max-w-md border-border/50 shadow-xl rounded-[16px]">
@@ -39,21 +48,29 @@ function RouteComponent() {
 					</CardDescription>
 				</CardHeader>
 
-				<CardContent className="grid gap-4">
+				<CardContent className="grid gap-6">
 					<OAuthButtons />
 
-					<div className="relative">
-						<div className="absolute inset-0 flex items-center">
-							<span className="w-full border-t" />
-						</div>
-						<div className="relative flex justify-center text-xs uppercase">
-							<Badge variant="secondary" className="rounded-full">
-								Or stay private
-							</Badge>
-						</div>
-					</div>
+					{isLinkAccount ? (
+						<p className="text-center text-xs font-medium mt-2">
+							Choose a provider to link your account
+						</p>
+					) : (
+						<>
+							<div className="relative">
+								<div className="absolute inset-0 flex items-center">
+									<span className="w-full border-t" />
+								</div>
+								<div className="relative flex justify-center text-xs uppercase">
+									<Badge variant="secondary" className="rounded-full">
+										Or stay private
+									</Badge>
+								</div>
+							</div>
 
-					<AnonymousButton />
+							<AnonymousButton />
+						</>
+					)}
 
 					<CardFooter>
 						<p className="text-center text-xs text-muted-foreground mt-2">

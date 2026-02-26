@@ -9,8 +9,12 @@ export default function AuthButton({
 	...props
 }: ButtonProps & { wasLastUsed?: boolean }) {
 	return (
-		<div>
-			{wasLastUsed && <Badge className="rounded-full">Last Used</Badge>}
+		<div className="relative">
+			{wasLastUsed && (
+				<Badge className="absolute -top-2 right-0 rounded-full">
+					Last Used
+				</Badge>
+			)}
 			<Button
 				variant="outline"
 				size="lg"

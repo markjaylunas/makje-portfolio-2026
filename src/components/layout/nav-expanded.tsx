@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import SlideDownMotion from "../motion/slide-down-motion";
 import { useMenu } from "../providers/nav-menu-provider";
+import AuthNavCard from "./auth-nav-card";
 
 export default function NavExpanded() {
 	const { menuOpen } = useMenu();
@@ -63,6 +64,9 @@ export function NavLinks() {
 					))}
 				</ul>
 			</NavLinkGroupCard>
+			<NavLinkGroupCard title="Auth">
+				<AuthNavCard />
+			</NavLinkGroupCard>
 		</SlideDownMotion>
 	);
 }
@@ -89,7 +93,9 @@ function NavLinkGroupCard({
 	);
 }
 
-function InternalLink(props: NavigationLink & { onClick: () => void }) {
+export function InternalLink(
+	props: NavigationLink & { onClick: () => void; callbackURL?: string },
+) {
 	return (
 		<Link
 			className={cn(
@@ -97,6 +103,9 @@ function InternalLink(props: NavigationLink & { onClick: () => void }) {
 			)}
 			to={props.to}
 			hash={props.hash}
+			search={{
+				callbackURL: props.callbackURL,
+			}}
 			hashScrollIntoView={true}
 			onClick={props.onClick}
 		>
