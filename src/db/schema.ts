@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
 	boolean,
 	index,
@@ -186,6 +186,27 @@ export const projectToTags = pgTable("project_to_tags", {
 		.references(() => tag.id, { onDelete: "cascade" }),
 });
 
+export const experience = pgTable("experience", {
+	id: uuid().defaultRandom().primaryKey(),
+	title: text().notNull(),
+	company: text().notNull(),
+	period: text().notNull(),
+	description: text(),
+	// Responsibilities stored as a JSON string array for easy mapping in the frontend
+	responsibilities: text().array().notNull().default(sql`'{}'::text[]`),
+	...timestamps,
+});
+
+export const experienceToTechnologies = pgTable("experience_to_technologies", {
+	id: uuid().defaultRandom().primaryKey(),
+	experienceId: uuid()
+		.notNull()
+		.references(() => experience.id, { onDelete: "cascade" }),
+	technologyId: uuid()
+		.notNull()
+		.references(() => technology.id, { onDelete: "cascade" }),
+});
+
 // --- Relations ---
 
 export const projectRelations = relations(project, ({ many }) => ({
@@ -196,10 +217,15 @@ export const projectRelations = relations(project, ({ many }) => ({
 
 export const technologyRelations = relations(technology, ({ many }) => ({
 	projects: many(projectToTechnologies),
+	experiences: many(experienceToTechnologies),
 }));
 
 export const tagRelations = relations(tag, ({ many }) => ({
 	projects: many(projectToTags),
+}));
+
+export const experienceRelations = relations(experience, ({ many }) => ({
+	technologies: many(experienceToTechnologies),
 }));
 
 export const projectLikeRelations = relations(projectLike, ({ one }) => ({
@@ -234,3 +260,17 @@ export const projectToTagsRelations = relations(projectToTags, ({ one }) => ({
 	}),
 	tag: one(tag, { fields: [projectToTags.tagId], references: [tag.id] }),
 }));
+
+export const experienceToTechnologiesRelations = relations(
+	experienceToTechnologies,
+	({ one }) => ({
+		experience: one(experience, {
+			fields: [experienceToTechnologies.experienceId],
+			references: [experience.id],
+		}),
+		technology: one(technology, {
+			fields: [experienceToTechnologies.technologyId],
+			references: [technology.id],
+		}),
+	}),
+);
