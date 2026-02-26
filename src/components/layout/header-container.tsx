@@ -3,9 +3,11 @@ import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 import { useScrollDirection } from "@/hooks/use-scroll-direction";
 import { cn } from "@/lib/utils";
 import { useMenu } from "../providers/nav-menu-provider";
+import { Header } from "./header";
 
 export default function HeaderContainer({
 	children,
+	className,
 	...props
 }: HTMLProps<HTMLHeadElement>) {
 	const { isVisible } = useScrollDirection(80);
@@ -19,15 +21,15 @@ export default function HeaderContainer({
 	});
 
 	return (
-		<header
+		<Header
 			ref={headerRef}
 			className={cn(
-				"fixed inset-x-0 top-0 z-50 mx-4 sm:mx-auto max-w-(--breakpoint-sm)  transition-all duration-300 ease-in-out  shadow-[0_0_20px_rgba(0,0,0,0.1)]",
 				isVisible ? "translate-y-4" : "-translate-y-full",
+				className,
 			)}
 			{...props}
 		>
 			{children}
-		</header>
+		</Header>
 	);
 }
