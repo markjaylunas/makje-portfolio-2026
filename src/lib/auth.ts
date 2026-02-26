@@ -1,7 +1,8 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { admin, anonymous } from "better-auth/plugins";
+import { admin, anonymous, lastLoginMethod } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
+
 import { env } from "@/env";
 import { db } from "../db";
 
@@ -26,6 +27,7 @@ export const auth = betterAuth({
 		},
 	},
 	plugins: [
+		lastLoginMethod(),
 		anonymous({
 			generateRandomEmail: () => {
 				const id = crypto.randomUUID();
