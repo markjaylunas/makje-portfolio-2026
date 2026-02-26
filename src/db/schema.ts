@@ -1,5 +1,15 @@
 import { relations } from "drizzle-orm";
-import { boolean, index, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import {
+	boolean,
+	index,
+	integer,
+	pgTable,
+	text,
+	timestamp,
+	uuid,
+} from "drizzle-orm/pg-core";
+
+// --- Better Auth Tables ---
 
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),
@@ -86,6 +96,7 @@ export const verification = pgTable(
 export const userRelations = relations(user, ({ many }) => ({
 	sessions: many(session),
 	accounts: many(account),
+	likes: many(projectLike),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -100,4 +111,126 @@ export const accountRelations = relations(account, ({ one }) => ({
 		fields: [account.userId],
 		references: [user.id],
 	}),
+}));
+
+// --- Helper Columns ---
+
+const createdAt = timestamp().defaultNow().notNull();
+const updatedAt = timestamp()
+	.defaultNow()
+	.$onUpdate(() => new Date())
+	.notNull();
+
+const timestamps = { createdAt, updatedAt };
+
+// --- Core Tables ---
+
+export const project = pgTable("project", {
+	id: uuid().defaultRandom().primaryKey(),
+	name: text().notNull(),
+	description: text(),
+	content: text(),
+	coverImageUrl: text(),
+	repositoryUrl: text(),
+	liveUrl: text(),
+	likesCount: integer().default(0).notNull(),
+	...timestamps,
+});
+
+export const technology = pgTable("technology", {
+	id: uuid().defaultRandom().primaryKey(),
+	name: text().notNull(),
+	url: text(),
+	icon: text(),
+	brandColor: text(),
+	...timestamps,
+});
+
+export const tag = pgTable("tag", {
+	id: uuid().defaultRandom().primaryKey(),
+	name: text().notNull().unique(),
+	slug: text().unique(),
+	createdAt,
+});
+
+// --- Interaction & Join Tables ---
+
+export const projectLike = pgTable("project_like", {
+	id: uuid().defaultRandom().primaryKey(),
+	projectId: uuid()
+		.notNull()
+		.references(() => project.id, { onDelete: "cascade" }),
+	userId: text()
+		.notNull()
+		.references(() => user.id, { onDelete: "cascade" }),
+	createdAt,
+});
+
+export const projectToTechnologies = pgTable("project_to_technologies", {
+	id: uuid().defaultRandom().primaryKey(),
+	projectId: uuid()
+		.notNull()
+		.references(() => project.id, { onDelete: "cascade" }),
+	technologyId: uuid()
+		.notNull()
+		.references(() => technology.id, { onDelete: "cascade" }),
+});
+
+export const projectToTags = pgTable("project_to_tags", {
+	id: uuid().defaultRandom().primaryKey(),
+	projectId: uuid()
+		.notNull()
+		.references(() => project.id, { onDelete: "cascade" }),
+	tagId: uuid()
+		.notNull()
+		.references(() => tag.id, { onDelete: "cascade" }),
+});
+
+// --- Relations ---
+
+export const projectRelations = relations(project, ({ many }) => ({
+	likes: many(projectLike),
+	technologies: many(projectToTechnologies),
+	tags: many(projectToTags),
+}));
+
+export const technologyRelations = relations(technology, ({ many }) => ({
+	projects: many(projectToTechnologies),
+}));
+
+export const tagRelations = relations(tag, ({ many }) => ({
+	projects: many(projectToTags),
+}));
+
+export const projectLikeRelations = relations(projectLike, ({ one }) => ({
+	user: one(user, {
+		fields: [projectLike.userId],
+		references: [user.id],
+	}),
+	project: one(project, {
+		fields: [projectLike.projectId],
+		references: [project.id],
+	}),
+}));
+
+export const projectToTechnologiesRelations = relations(
+	projectToTechnologies,
+	({ one }) => ({
+		project: one(project, {
+			fields: [projectToTechnologies.projectId],
+			references: [project.id],
+		}),
+		technology: one(technology, {
+			fields: [projectToTechnologies.technologyId],
+			references: [technology.id],
+		}),
+	}),
+);
+
+export const projectToTagsRelations = relations(projectToTags, ({ one }) => ({
+	project: one(project, {
+		fields: [projectToTags.projectId],
+		references: [project.id],
+	}),
+	tag: one(tag, { fields: [projectToTags.tagId], references: [tag.id] }),
 }));
