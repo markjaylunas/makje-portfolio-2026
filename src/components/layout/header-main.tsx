@@ -27,7 +27,7 @@ export default function HeaderMain() {
 	);
 }
 
-function NavLogo() {
+export function NavLogo() {
 	const { closeMenu } = useMenu();
 	return (
 		<div className="flex items-center gap-2 justify-self-center">
