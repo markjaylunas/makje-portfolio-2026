@@ -1,4 +1,5 @@
 import { createContext, type ReactNode, useContext, useState } from "react";
+import useLockBodyScroll from "@/hooks/use-scroll-body-lock";
 
 interface MenuContextType {
 	menuOpen: boolean;
@@ -19,6 +20,8 @@ export const MenuProvider = ({ children }: MenuProviderProps) => {
 	const openMenu = () => setMenuOpen(true);
 	const closeMenu = () => setMenuOpen(false);
 	const toggleMenu = () => setMenuOpen((prev) => !prev);
+
+	useLockBodyScroll(menuOpen);
 
 	return (
 		<MenuContext value={{ menuOpen, openMenu, closeMenu, toggleMenu }}>
