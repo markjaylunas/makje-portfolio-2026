@@ -2,8 +2,9 @@ import { createContext, type ReactNode, useContext, useState } from "react";
 
 interface MenuContextType {
 	menuOpen: boolean;
+	openMenu: () => void;
+	closeMenu: () => void;
 	toggleMenu: () => void;
-	setMenuOpen: (open: boolean) => void;
 }
 
 const MenuContext = createContext<MenuContextType | null>(null);
@@ -15,10 +16,12 @@ interface MenuProviderProps {
 export const MenuProvider = ({ children }: MenuProviderProps) => {
 	const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
+	const openMenu = () => setMenuOpen(true);
+	const closeMenu = () => setMenuOpen(false);
 	const toggleMenu = () => setMenuOpen((prev) => !prev);
 
 	return (
-		<MenuContext value={{ menuOpen, setMenuOpen, toggleMenu }}>
+		<MenuContext value={{ menuOpen, openMenu, closeMenu, toggleMenu }}>
 			{children}
 		</MenuContext>
 	);

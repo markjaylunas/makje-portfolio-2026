@@ -11,8 +11,8 @@ import NavExpanded from "./nav-expanded";
 
 export default function Header() {
 	return (
-		<HeaderContainer>
-			<MenuProvider>
+		<MenuProvider>
+			<HeaderContainer>
 				<nav>
 					<div className="flex flex-row-reverse justify-between sm:grid grid-cols-3 items-center h-18 bg-primary/20 px-4 backdrop-blur-md border border-transparent rounded-full">
 						<NavMenu />
@@ -22,15 +22,16 @@ export default function Header() {
 
 					<NavExpanded />
 				</nav>
-			</MenuProvider>
-		</HeaderContainer>
+			</HeaderContainer>
+		</MenuProvider>
 	);
 }
 
 function NavLogo() {
+	const { closeMenu } = useMenu();
 	return (
 		<div className="flex items-center gap-2 justify-self-center">
-			<Link to="/" className="flex items-center space-x-2">
+			<Link to="/" className="flex items-center space-x-2" onClick={closeMenu}>
 				<img src={makjeLogoDark} alt="Logo" className="size-10" />
 				<span className="text-xl font-medium tracking-wide">Makje</span>
 			</Link>
@@ -56,6 +57,7 @@ function NavMenu() {
 }
 
 function ConnectButtonLink() {
+	const { closeMenu } = useMenu();
 	return (
 		<Link
 			to="/contact"
@@ -63,6 +65,7 @@ function ConnectButtonLink() {
 				buttonVariants({ size: "lg" }),
 				"rounded-full justify-self-end sm:flex hidden",
 			)}
+			onClick={closeMenu}
 		>
 			<HugeiconsIcon icon={Sent02Icon} className="size-5" />
 			<span className="text-xs">Connect</span>
