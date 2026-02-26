@@ -19,7 +19,9 @@ export default function Footer() {
 					<div className="flex items-center gap-2 justify-self-center">
 						<Link to="/" className="flex items-center space-x-2">
 							<img src={makjeLogoDark} alt="Logo" className="size-8" />
-							<span className="text-3xl font-medium tracking-wide">Makje</span>
+							<span className="text-3xl font-medium tracking-wide uppercase">
+								Makje
+							</span>
 						</Link>
 					</div>
 

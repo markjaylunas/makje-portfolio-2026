@@ -33,7 +33,9 @@ function NavLogo() {
 		<div className="flex items-center gap-2 justify-self-center">
 			<Link to="/" className="flex items-center space-x-2" onClick={closeMenu}>
 				<img src={makjeLogoDark} alt="Logo" className="size-10" />
-				<span className="text-xl font-medium tracking-wide">Makje</span>
+				<span className="text-xl uppercase font-medium tracking-wide">
+					Makje
+				</span>
 			</Link>
 		</div>
 	);
