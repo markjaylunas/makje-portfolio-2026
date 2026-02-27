@@ -44,7 +44,7 @@ export default function Footer() {
 									<Link
 										to={link.to}
 										hash={link.hash}
-										className="text-sm text-accent-foreground flex items-center gap-2"
+										className="text-sm text-accent-foreground flex items-center gap-2 hover:underline"
 									>
 										<HugeiconsIcon icon={link.icon} className="size-4" />
 										{link.name}
@@ -66,7 +66,7 @@ export default function Footer() {
 										href={social.href}
 										target="_blank"
 										rel="noopener noreferrer"
-										className="text-sm text-accent-foreground flex items-center gap-2"
+										className="text-sm text-accent-foreground flex items-center gap-2 hover:underline"
 									>
 										<HugeiconsIcon icon={social.icon} className="size-4" />
 										{social.name}
