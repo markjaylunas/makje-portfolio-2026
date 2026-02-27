@@ -1,5 +1,4 @@
 /** biome-ignore-all lint/a11y/useSemanticElements: <ignore> */
-
 import { cva, type VariantProps } from "class-variance-authority";
 import { useMemo } from "react";
 import { Label } from "@/components/ui/label";
@@ -105,7 +104,7 @@ function FieldLabel({
 		<Label
 			data-slot="field-label"
 			className={cn(
-				"has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border *:data-[slot=field]:p-3",
+				"has-data-checked:bg-primary/5 has-data-checked:border-primary/30 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10 group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-[>[data-slot=field]]:rounded-xl has-[>[data-slot=field]]:border *:data-[slot=field]:p-4",
 				"has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col",
 				className,
 			)}
@@ -201,9 +200,7 @@ function FieldError({
 			<ul className="ml-4 flex list-disc flex-col gap-1">
 				{uniqueErrors.map(
 					(error) =>
-						error?.message && (
-							<li key={error.message.slice(0, 10)}>{error.message}</li>
-						),
+						error?.message && <li key={error.message}>{error.message}</li>,
 				)}
 			</ul>
 		);
