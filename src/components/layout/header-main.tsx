@@ -15,7 +15,7 @@ export default function HeaderMain() {
 				<nav>
 					<div className="flex flex-row-reverse justify-between sm:grid grid-cols-3 items-center h-18 bg-primary/20 px-4 backdrop-blur-md border border-transparent rounded-full">
 						<NavMenu />
-						<NavLogo />
+						<NavLogoLink />
 						<ConnectCTA />
 					</div>
 
@@ -26,16 +26,26 @@ export default function HeaderMain() {
 	);
 }
 
-export function NavLogo() {
+export function NavLogoLink() {
 	const { closeMenu } = useMenu();
 	return (
-		<div className="flex items-center gap-2 justify-self-center">
-			<Link to="/" className="flex items-center space-x-2" onClick={closeMenu}>
-				<img src={makjeLogoDark} alt="Makje Logo" className="size-10" />
-				<span className="text-2xl uppercase font-medium tracking-tighter">
-					Makje
-				</span>
-			</Link>
+		<Link
+			to="/"
+			className="flex items-center gap-2 justify-self-center"
+			onClick={closeMenu}
+		>
+			<NavLogo />
+		</Link>
+	);
+}
+
+export function NavLogo() {
+	return (
+		<div className="flex items-center gap-2">
+			<img src={makjeLogoDark} alt="Makje Logo" className="size-10" />
+			<span className="text-2xl uppercase font-medium tracking-tighter">
+				Makje
+			</span>
 		</div>
 	);
 }

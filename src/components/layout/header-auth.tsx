@@ -1,17 +1,15 @@
-import { MenuProvider } from "../providers/nav-menu-provider";
-import HeaderContainer from "./header-container";
+import { Link } from "@tanstack/react-router";
+import { Header } from "./header";
 import { NavLogo } from "./header-main";
 
 export default function HeaderAuth() {
 	return (
-		<MenuProvider>
-			<HeaderContainer>
-				<nav>
-					<div className="flex justify-center items-center h-18 bg-primary/20 px-4 backdrop-blur-md border border-transparent rounded-full">
-						<NavLogo />
-					</div>
-				</nav>
-			</HeaderContainer>
-		</MenuProvider>
+		<Header className="mt-4">
+			<nav className="flex justify-center items-center h-18 bg-primary/20 px-4 backdrop-blur-md border border-transparent rounded-full">
+				<Link to="/" className="flex items-center gap-2 justify-self-center">
+					<NavLogo />
+				</Link>
+			</nav>
+		</Header>
 	);
 }
