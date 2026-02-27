@@ -1,9 +1,11 @@
 import {
 	Briefcase,
+	DashboardSquare03Icon,
 	Folder,
 	Home,
 	Layers,
 	Mail01Icon,
+	Tag,
 } from "@hugeicons/core-free-icons";
 import { linkOptions } from "@tanstack/react-router";
 
@@ -70,3 +72,49 @@ export const navigationLinks = linkOptions([
 ]);
 
 export type NavigationLink = (typeof navigationLinks)[number];
+
+export const adminNavLinks = linkOptions([
+	{
+		title: "Dashboard",
+		to: "/admin/dashboard",
+		icon: DashboardSquare03Icon,
+		activeOptions: {
+			exact: false,
+		},
+	},
+	{
+		title: "Projects",
+		to: "/admin/projects",
+		icon: Folder,
+		activeOptions: {
+			exact: false,
+		},
+	},
+	{
+		title: "Skills",
+		to: "/admin/skills",
+		icon: Layers,
+		activeOptions: {
+			exact: false,
+		},
+	},
+	{
+		title: "Experience",
+		to: "/admin/experience",
+		icon: Briefcase,
+		activeOptions: {
+			exact: false,
+		},
+	},
+
+	{
+		title: "Tags",
+		to: "/admin/tags",
+		icon: Tag,
+		activeOptions: {
+			exact: false,
+		},
+	},
+]);
+
+export type AdminNavigationLink = (typeof adminNavLinks)[number];

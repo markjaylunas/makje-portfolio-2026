@@ -9,19 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AdminRouteRouteImport } from './routes/admin/route'
+import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as MainRouteRouteImport } from './routes/_main/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
-import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as MainContactRouteImport } from './routes/_main/contact'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as ProtectedAdminRouteRouteImport } from './routes/_protected/admin/route'
+import { Route as ProtectedAdminIndexRouteImport } from './routes/_protected/admin/index'
 import { Route as MainProjectsIndexRouteImport } from './routes/_main/projects/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as ProtectedAdminDashboardRouteImport } from './routes/_protected/admin/dashboard'
+import { Route as ProtectedAdminTagsIndexRouteImport } from './routes/_protected/admin/tags/index'
+import { Route as ProtectedAdminSkillsIndexRouteImport } from './routes/_protected/admin/skills/index'
+import { Route as ProtectedAdminProjectsIndexRouteImport } from './routes/_protected/admin/projects/index'
+import { Route as ProtectedAdminExperienceIndexRouteImport } from './routes/_protected/admin/experience/index'
 
-const AdminRouteRoute = AdminRouteRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const ProtectedRoute = ProtectedRouteImport.update({
+  id: '/_protected',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MainRouteRoute = MainRouteRouteImport.update({
@@ -31,11 +36,6 @@ const MainRouteRoute = MainRouteRouteImport.update({
 const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
-} as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AdminRouteRoute,
 } as any)
 const MainIndexRoute = MainIndexRouteImport.update({
   id: '/',
@@ -52,6 +52,16 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const ProtectedAdminRouteRoute = ProtectedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => ProtectedRoute,
+} as any)
+const ProtectedAdminIndexRoute = ProtectedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProtectedAdminRouteRoute,
+} as any)
 const MainProjectsIndexRoute = MainProjectsIndexRouteImport.update({
   id: '/projects/',
   path: '/projects/',
@@ -62,35 +72,79 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProtectedAdminDashboardRoute = ProtectedAdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => ProtectedAdminRouteRoute,
+} as any)
+const ProtectedAdminTagsIndexRoute = ProtectedAdminTagsIndexRouteImport.update({
+  id: '/tags/',
+  path: '/tags/',
+  getParentRoute: () => ProtectedAdminRouteRoute,
+} as any)
+const ProtectedAdminSkillsIndexRoute =
+  ProtectedAdminSkillsIndexRouteImport.update({
+    id: '/skills/',
+    path: '/skills/',
+    getParentRoute: () => ProtectedAdminRouteRoute,
+  } as any)
+const ProtectedAdminProjectsIndexRoute =
+  ProtectedAdminProjectsIndexRouteImport.update({
+    id: '/projects/',
+    path: '/projects/',
+    getParentRoute: () => ProtectedAdminRouteRoute,
+  } as any)
+const ProtectedAdminExperienceIndexRoute =
+  ProtectedAdminExperienceIndexRouteImport.update({
+    id: '/experience/',
+    path: '/experience/',
+    getParentRoute: () => ProtectedAdminRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
-  '/admin': typeof AdminRouteRouteWithChildren
+  '/admin': typeof ProtectedAdminRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/contact': typeof MainContactRoute
-  '/admin/': typeof AdminIndexRoute
+  '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects/': typeof MainProjectsIndexRoute
+  '/admin/': typeof ProtectedAdminIndexRoute
+  '/admin/experience/': typeof ProtectedAdminExperienceIndexRoute
+  '/admin/projects/': typeof ProtectedAdminProjectsIndexRoute
+  '/admin/skills/': typeof ProtectedAdminSkillsIndexRoute
+  '/admin/tags/': typeof ProtectedAdminTagsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
   '/login': typeof AuthLoginRoute
   '/contact': typeof MainContactRoute
-  '/admin': typeof AdminIndexRoute
+  '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects': typeof MainProjectsIndexRoute
+  '/admin': typeof ProtectedAdminIndexRoute
+  '/admin/experience': typeof ProtectedAdminExperienceIndexRoute
+  '/admin/projects': typeof ProtectedAdminProjectsIndexRoute
+  '/admin/skills': typeof ProtectedAdminSkillsIndexRoute
+  '/admin/tags': typeof ProtectedAdminTagsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_main': typeof MainRouteRouteWithChildren
-  '/admin': typeof AdminRouteRouteWithChildren
+  '/_protected': typeof ProtectedRouteWithChildren
+  '/_protected/admin': typeof ProtectedAdminRouteRouteWithChildren
   '/_auth/login': typeof AuthLoginRoute
   '/_main/contact': typeof MainContactRoute
   '/_main/': typeof MainIndexRoute
-  '/admin/': typeof AdminIndexRoute
+  '/_protected/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_main/projects/': typeof MainProjectsIndexRoute
+  '/_protected/admin/': typeof ProtectedAdminIndexRoute
+  '/_protected/admin/experience/': typeof ProtectedAdminExperienceIndexRoute
+  '/_protected/admin/projects/': typeof ProtectedAdminProjectsIndexRoute
+  '/_protected/admin/skills/': typeof ProtectedAdminSkillsIndexRoute
+  '/_protected/admin/tags/': typeof ProtectedAdminTagsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -99,38 +153,60 @@ export interface FileRouteTypes {
     | '/admin'
     | '/login'
     | '/contact'
-    | '/admin/'
+    | '/admin/dashboard'
     | '/api/auth/$'
     | '/projects/'
+    | '/admin/'
+    | '/admin/experience/'
+    | '/admin/projects/'
+    | '/admin/skills/'
+    | '/admin/tags/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/contact' | '/admin' | '/api/auth/$' | '/projects'
+  to:
+    | '/'
+    | '/login'
+    | '/contact'
+    | '/admin/dashboard'
+    | '/api/auth/$'
+    | '/projects'
+    | '/admin'
+    | '/admin/experience'
+    | '/admin/projects'
+    | '/admin/skills'
+    | '/admin/tags'
   id:
     | '__root__'
     | '/_auth'
     | '/_main'
-    | '/admin'
+    | '/_protected'
+    | '/_protected/admin'
     | '/_auth/login'
     | '/_main/contact'
     | '/_main/'
-    | '/admin/'
+    | '/_protected/admin/dashboard'
     | '/api/auth/$'
     | '/_main/projects/'
+    | '/_protected/admin/'
+    | '/_protected/admin/experience/'
+    | '/_protected/admin/projects/'
+    | '/_protected/admin/skills/'
+    | '/_protected/admin/tags/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   MainRouteRoute: typeof MainRouteRouteWithChildren
-  AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  ProtectedRoute: typeof ProtectedRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteRouteImport
+    '/_protected': {
+      id: '/_protected'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ProtectedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_main': {
@@ -146,13 +222,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/admin/': {
-      id: '/admin/'
-      path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRouteRoute
     }
     '/_main/': {
       id: '/_main/'
@@ -175,6 +244,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_protected/admin': {
+      id: '/_protected/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof ProtectedAdminRouteRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/admin/': {
+      id: '/_protected/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof ProtectedAdminIndexRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
+    }
     '/_main/projects/': {
       id: '/_main/projects/'
       path: '/projects'
@@ -188,6 +271,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/auth/$'
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_protected/admin/dashboard': {
+      id: '/_protected/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof ProtectedAdminDashboardRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
+    }
+    '/_protected/admin/tags/': {
+      id: '/_protected/admin/tags/'
+      path: '/tags'
+      fullPath: '/admin/tags/'
+      preLoaderRoute: typeof ProtectedAdminTagsIndexRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
+    }
+    '/_protected/admin/skills/': {
+      id: '/_protected/admin/skills/'
+      path: '/skills'
+      fullPath: '/admin/skills/'
+      preLoaderRoute: typeof ProtectedAdminSkillsIndexRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
+    }
+    '/_protected/admin/projects/': {
+      id: '/_protected/admin/projects/'
+      path: '/projects'
+      fullPath: '/admin/projects/'
+      preLoaderRoute: typeof ProtectedAdminProjectsIndexRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
+    }
+    '/_protected/admin/experience/': {
+      id: '/_protected/admin/experience/'
+      path: '/experience'
+      fullPath: '/admin/experience/'
+      preLoaderRoute: typeof ProtectedAdminExperienceIndexRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
     }
   }
 }
@@ -220,22 +338,43 @@ const MainRouteRouteWithChildren = MainRouteRoute._addFileChildren(
   MainRouteRouteChildren,
 )
 
-interface AdminRouteRouteChildren {
-  AdminIndexRoute: typeof AdminIndexRoute
+interface ProtectedAdminRouteRouteChildren {
+  ProtectedAdminDashboardRoute: typeof ProtectedAdminDashboardRoute
+  ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
+  ProtectedAdminExperienceIndexRoute: typeof ProtectedAdminExperienceIndexRoute
+  ProtectedAdminProjectsIndexRoute: typeof ProtectedAdminProjectsIndexRoute
+  ProtectedAdminSkillsIndexRoute: typeof ProtectedAdminSkillsIndexRoute
+  ProtectedAdminTagsIndexRoute: typeof ProtectedAdminTagsIndexRoute
 }
 
-const AdminRouteRouteChildren: AdminRouteRouteChildren = {
-  AdminIndexRoute: AdminIndexRoute,
+const ProtectedAdminRouteRouteChildren: ProtectedAdminRouteRouteChildren = {
+  ProtectedAdminDashboardRoute: ProtectedAdminDashboardRoute,
+  ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
+  ProtectedAdminExperienceIndexRoute: ProtectedAdminExperienceIndexRoute,
+  ProtectedAdminProjectsIndexRoute: ProtectedAdminProjectsIndexRoute,
+  ProtectedAdminSkillsIndexRoute: ProtectedAdminSkillsIndexRoute,
+  ProtectedAdminTagsIndexRoute: ProtectedAdminTagsIndexRoute,
 }
 
-const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
-  AdminRouteRouteChildren,
+const ProtectedAdminRouteRouteWithChildren =
+  ProtectedAdminRouteRoute._addFileChildren(ProtectedAdminRouteRouteChildren)
+
+interface ProtectedRouteChildren {
+  ProtectedAdminRouteRoute: typeof ProtectedAdminRouteRouteWithChildren
+}
+
+const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedAdminRouteRoute: ProtectedAdminRouteRouteWithChildren,
+}
+
+const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
+  ProtectedRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   MainRouteRoute: MainRouteRouteWithChildren,
-  AdminRouteRoute: AdminRouteRouteWithChildren,
+  ProtectedRoute: ProtectedRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
