@@ -40,8 +40,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 function SidebarLink({ item }: { item: AdminNavigationLink }) {
 	const { isMobile, toggleSidebar } = useSidebar();
 	return (
-		<SidebarMenuItem className="cursor-pointer">
-			<SidebarMenuButton className="p-0">
+		<SidebarMenuItem>
+			<SidebarMenuButton>
 				<Link
 					to={item.to}
 					activeProps={{ "data-active": true }}
@@ -51,7 +51,7 @@ function SidebarLink({ item }: { item: AdminNavigationLink }) {
 							toggleSidebar();
 						}
 					}}
-					className="w-full flex items-center gap-2 text-lg font-light px-4"
+					className="w-full flex items-center gap-2 text-lg font-light px-4 data-active:text-primary data-active:bg-primary/20  rounded-md"
 				>
 					<HugeiconsIcon icon={item.icon} />
 					{item.title}
