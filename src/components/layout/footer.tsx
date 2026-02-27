@@ -16,13 +16,21 @@ export default function Footer() {
 			<div className="container mx-auto px-6">
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
 					{/* Brand Section */}
-					<div className="flex items-center gap-2 justify-self-center">
-						<Link to="/" className="flex items-center space-x-2">
-							<img src={makjeLogoDark} alt="Logo" className="size-8" />
-							<span className="text-3xl font-medium tracking-tighter uppercase">
-								Makje
-							</span>
-						</Link>
+					<div className="flex flex-col gap-2">
+						<div className="flex items-center gap-2 justify-self-center">
+							<Link to="/" className="flex items-center space-x-2">
+								<img src={makjeLogoDark} alt="Logo" className="size-8" />
+								<span className="text-3xl font-medium tracking-tighter uppercase">
+									Makje
+								</span>
+							</Link>
+						</div>
+
+						<p className="text-sm text-muted-foreground mt-4 max-w-xs leading-relaxed">
+							Showcasing my journey as a Web Developer, highlighting my skills,
+							experience, and recent projects. Built with performance and
+							scalability in mind using modern web technologies.
+						</p>
 					</div>
 
 					{/* Navigation Section */}
