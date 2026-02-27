@@ -174,6 +174,7 @@ export const projectToTechnologies = pgTable("project_to_technologies", {
 	technologyId: uuid()
 		.notNull()
 		.references(() => technology.id, { onDelete: "cascade" }),
+	order: integer().notNull().default(0),
 });
 
 export const projectToTags = pgTable("project_to_tags", {
@@ -184,6 +185,7 @@ export const projectToTags = pgTable("project_to_tags", {
 	tagId: uuid()
 		.notNull()
 		.references(() => tag.id, { onDelete: "cascade" }),
+	order: integer().notNull().default(0),
 });
 
 export const experience = pgTable("experience", {
@@ -205,6 +207,7 @@ export const experienceToTechnologies = pgTable("experience_to_technologies", {
 	technologyId: uuid()
 		.notNull()
 		.references(() => technology.id, { onDelete: "cascade" }),
+	order: integer().notNull().default(0),
 });
 
 // --- Relations ---
