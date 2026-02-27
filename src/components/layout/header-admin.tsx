@@ -1,17 +1,54 @@
-import { useLocation } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router"; // Import Link
+import { Fragment } from "react";
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbPage,
+	BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function HeaderAdmin() {
-	const location = useLocation();
-	const path = location.pathname.split("/").pop();
+	const { pathname } = useLocation();
+
+	const paths = pathname
+		.split("/")
+		.slice(2)
+		.filter((path) => path !== "");
+
 	return (
 		<header className="bg-background sticky top-0 flex h-16 shrink-0 items-center gap-2 border-b px-4">
-			<SidebarTrigger className="-ml-1 cursor-pointer"></SidebarTrigger>
+			<SidebarTrigger className="-ml-1 cursor-pointer" />
 			<Separator orientation="vertical" className="mr-2 h-16" />
-			<h1 className="scroll-m-20 text-2xl font-semibold tracking-tight capitalize">
-				{path}
-			</h1>
+
+			<Breadcrumb>
+				<BreadcrumbList>
+					{paths.map((path, index) => {
+						const isLast = index === paths.length - 1;
+						const href = `/admin/${paths.slice(0, index + 1).join("/")}`;
+						// Capitalize the label
+						const label = path.charAt(0).toUpperCase() + path.slice(1);
+
+						return (
+							<Fragment key={href}>
+								<BreadcrumbItem>
+									{isLast ? (
+										<BreadcrumbPage>{label}</BreadcrumbPage>
+									) : (
+										<BreadcrumbLink>
+											<Link to={href}>{label}</Link>
+										</BreadcrumbLink>
+									)}
+								</BreadcrumbItem>
+								{!isLast && <BreadcrumbSeparator />}
+							</Fragment>
+						);
+					})}
+				</BreadcrumbList>
+			</Breadcrumb>
 		</header>
 	);
 }
