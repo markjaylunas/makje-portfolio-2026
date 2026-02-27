@@ -1,8 +1,7 @@
-import { Sent02Icon } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
 import makjeLogoDark from "@/assets/svg/makje-dark.svg";
 import { cn } from "@/lib/utils";
+import ButtonLinkCTA from "../common/button-link-cta";
 import { MenuToggleIcon } from "../common/menu-toggle-icon";
 import { MenuProvider, useMenu } from "../providers/nav-menu-provider";
 import { Button, buttonVariants } from "../ui/button";
@@ -17,7 +16,7 @@ export default function HeaderMain() {
 					<div className="flex flex-row-reverse justify-between sm:grid grid-cols-3 items-center h-18 bg-primary/20 px-4 backdrop-blur-md border border-transparent rounded-full">
 						<NavMenu />
 						<NavLogo />
-						<ConnectButtonLink />
+						<ConnectCTA />
 					</div>
 
 					<NavExpanded />
@@ -58,10 +57,10 @@ function NavMenu() {
 	);
 }
 
-function ConnectButtonLink() {
+function ConnectCTA() {
 	const { closeMenu } = useMenu();
 	return (
-		<Link
+		<ButtonLinkCTA
 			to="/contact"
 			className={cn(
 				buttonVariants({ size: "lg" }),
@@ -69,8 +68,7 @@ function ConnectButtonLink() {
 			)}
 			onClick={closeMenu}
 		>
-			<HugeiconsIcon icon={Sent02Icon} className="size-5" />
-			<span className="text-xs">Connect</span>
-		</Link>
+			Connect
+		</ButtonLinkCTA>
 	);
 }
