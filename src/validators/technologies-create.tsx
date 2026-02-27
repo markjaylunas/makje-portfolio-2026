@@ -15,7 +15,7 @@ export const technologiesCreateSchema = z.object({
 			(file) => ACCEPTED_MIME_TYPES.includes(file.type),
 			"Only .svg format is supported.",
 		),
-	brandColor: z.string().min(1, "Brand color is required"),
+	brandColors: z.array(z.string()).min(1, "Brand color is required"),
 });
 
 export type TechnologiesCreateSchema = z.infer<typeof technologiesCreateSchema>;
@@ -24,5 +24,5 @@ export const defaultValues: TechnologiesCreateSchema = {
 	name: "",
 	url: "",
 	icon: null,
-	brandColor: "",
+	brandColors: [],
 };
