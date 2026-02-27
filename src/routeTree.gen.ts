@@ -20,8 +20,8 @@ import { Route as ProtectedAdminIndexRouteImport } from './routes/_protected/adm
 import { Route as MainProjectsIndexRouteImport } from './routes/_main/projects/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ProtectedAdminDashboardRouteImport } from './routes/_protected/admin/dashboard'
+import { Route as ProtectedAdminTechnologiesIndexRouteImport } from './routes/_protected/admin/technologies/index'
 import { Route as ProtectedAdminTagsIndexRouteImport } from './routes/_protected/admin/tags/index'
-import { Route as ProtectedAdminSkillsIndexRouteImport } from './routes/_protected/admin/skills/index'
 import { Route as ProtectedAdminProjectsIndexRouteImport } from './routes/_protected/admin/projects/index'
 import { Route as ProtectedAdminExperienceIndexRouteImport } from './routes/_protected/admin/experience/index'
 
@@ -77,17 +77,17 @@ const ProtectedAdminDashboardRoute = ProtectedAdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => ProtectedAdminRouteRoute,
 } as any)
+const ProtectedAdminTechnologiesIndexRoute =
+  ProtectedAdminTechnologiesIndexRouteImport.update({
+    id: '/technologies/',
+    path: '/technologies/',
+    getParentRoute: () => ProtectedAdminRouteRoute,
+  } as any)
 const ProtectedAdminTagsIndexRoute = ProtectedAdminTagsIndexRouteImport.update({
   id: '/tags/',
   path: '/tags/',
   getParentRoute: () => ProtectedAdminRouteRoute,
 } as any)
-const ProtectedAdminSkillsIndexRoute =
-  ProtectedAdminSkillsIndexRouteImport.update({
-    id: '/skills/',
-    path: '/skills/',
-    getParentRoute: () => ProtectedAdminRouteRoute,
-  } as any)
 const ProtectedAdminProjectsIndexRoute =
   ProtectedAdminProjectsIndexRouteImport.update({
     id: '/projects/',
@@ -112,8 +112,8 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof ProtectedAdminIndexRoute
   '/admin/experience/': typeof ProtectedAdminExperienceIndexRoute
   '/admin/projects/': typeof ProtectedAdminProjectsIndexRoute
-  '/admin/skills/': typeof ProtectedAdminSkillsIndexRoute
   '/admin/tags/': typeof ProtectedAdminTagsIndexRoute
+  '/admin/technologies/': typeof ProtectedAdminTechnologiesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
@@ -125,8 +125,8 @@ export interface FileRoutesByTo {
   '/admin': typeof ProtectedAdminIndexRoute
   '/admin/experience': typeof ProtectedAdminExperienceIndexRoute
   '/admin/projects': typeof ProtectedAdminProjectsIndexRoute
-  '/admin/skills': typeof ProtectedAdminSkillsIndexRoute
   '/admin/tags': typeof ProtectedAdminTagsIndexRoute
+  '/admin/technologies': typeof ProtectedAdminTechnologiesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -143,8 +143,8 @@ export interface FileRoutesById {
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
   '/_protected/admin/experience/': typeof ProtectedAdminExperienceIndexRoute
   '/_protected/admin/projects/': typeof ProtectedAdminProjectsIndexRoute
-  '/_protected/admin/skills/': typeof ProtectedAdminSkillsIndexRoute
   '/_protected/admin/tags/': typeof ProtectedAdminTagsIndexRoute
+  '/_protected/admin/technologies/': typeof ProtectedAdminTechnologiesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -159,8 +159,8 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/admin/experience/'
     | '/admin/projects/'
-    | '/admin/skills/'
     | '/admin/tags/'
+    | '/admin/technologies/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -172,8 +172,8 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/experience'
     | '/admin/projects'
-    | '/admin/skills'
     | '/admin/tags'
+    | '/admin/technologies'
   id:
     | '__root__'
     | '/_auth'
@@ -189,8 +189,8 @@ export interface FileRouteTypes {
     | '/_protected/admin/'
     | '/_protected/admin/experience/'
     | '/_protected/admin/projects/'
-    | '/_protected/admin/skills/'
     | '/_protected/admin/tags/'
+    | '/_protected/admin/technologies/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -279,18 +279,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminDashboardRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
     }
+    '/_protected/admin/technologies/': {
+      id: '/_protected/admin/technologies/'
+      path: '/technologies'
+      fullPath: '/admin/technologies/'
+      preLoaderRoute: typeof ProtectedAdminTechnologiesIndexRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
+    }
     '/_protected/admin/tags/': {
       id: '/_protected/admin/tags/'
       path: '/tags'
       fullPath: '/admin/tags/'
       preLoaderRoute: typeof ProtectedAdminTagsIndexRouteImport
-      parentRoute: typeof ProtectedAdminRouteRoute
-    }
-    '/_protected/admin/skills/': {
-      id: '/_protected/admin/skills/'
-      path: '/skills'
-      fullPath: '/admin/skills/'
-      preLoaderRoute: typeof ProtectedAdminSkillsIndexRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
     }
     '/_protected/admin/projects/': {
@@ -343,8 +343,8 @@ interface ProtectedAdminRouteRouteChildren {
   ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
   ProtectedAdminExperienceIndexRoute: typeof ProtectedAdminExperienceIndexRoute
   ProtectedAdminProjectsIndexRoute: typeof ProtectedAdminProjectsIndexRoute
-  ProtectedAdminSkillsIndexRoute: typeof ProtectedAdminSkillsIndexRoute
   ProtectedAdminTagsIndexRoute: typeof ProtectedAdminTagsIndexRoute
+  ProtectedAdminTechnologiesIndexRoute: typeof ProtectedAdminTechnologiesIndexRoute
 }
 
 const ProtectedAdminRouteRouteChildren: ProtectedAdminRouteRouteChildren = {
@@ -352,8 +352,8 @@ const ProtectedAdminRouteRouteChildren: ProtectedAdminRouteRouteChildren = {
   ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
   ProtectedAdminExperienceIndexRoute: ProtectedAdminExperienceIndexRoute,
   ProtectedAdminProjectsIndexRoute: ProtectedAdminProjectsIndexRoute,
-  ProtectedAdminSkillsIndexRoute: ProtectedAdminSkillsIndexRoute,
   ProtectedAdminTagsIndexRoute: ProtectedAdminTagsIndexRoute,
+  ProtectedAdminTechnologiesIndexRoute: ProtectedAdminTechnologiesIndexRoute,
 }
 
 const ProtectedAdminRouteRouteWithChildren =
