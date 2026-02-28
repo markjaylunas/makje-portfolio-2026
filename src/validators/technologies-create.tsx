@@ -5,7 +5,7 @@ const ACCEPTED_MIME_TYPES = ["image/svg+xml"];
 
 export const technologiesCreateSchema = z.object({
 	name: z.string().min(1, "Name is required"),
-	url: z.url().optional(),
+	url: z.url(),
 	icon: z
 		.any()
 		.refine((files) => files?.length === 1, "An icon file is required.")
