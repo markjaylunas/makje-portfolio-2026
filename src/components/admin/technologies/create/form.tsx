@@ -9,8 +9,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { createTechnology } from "@/data/server/technology";
-import type { NewTechnology } from "@/db/types";
 import {
 	defaultValues,
 	type TechnologiesCreateFormSchema,
@@ -21,13 +19,15 @@ import { extractColorsFromSVG } from "@/lib/helper";
 export default function CreateTechnologyForm() {
 	const { mutate: createMutation, isPending } = useMutation({
 		mutationFn: async (value: TechnologiesCreateFormSchema) => {
-			const data: NewTechnology = {
+			const data = {
 				name: value.name,
 				url: value.url,
 				icon: value.icon,
 				brandColor: value.brandColors.join(", "),
 			};
-			return await createTechnology({ data });
+			console.log(data);
+			await new Promise((resolve) => setTimeout(resolve, 5000));
+			// return await createTechnology({ data });
 		},
 		onSuccess: () => {
 			form.reset();
@@ -50,10 +50,10 @@ export default function CreateTechnologyForm() {
 					{(values) => (
 						<TechCard
 							tech={{
-								icon: values.icon,
+								icon: values.iconSVG || undefined,
 								colors: values.brandColors.join(", "),
 								name: values.name,
-								url: values.url,
+								url: values.url || undefined,
 							}}
 						/>
 					)}
@@ -70,8 +70,7 @@ export default function CreateTechnologyForm() {
 				{/* Name Field */}
 				<form.Field name="name">
 					{(field) => {
-						const isInvalid =
-							field.state.meta.isTouched && !!field.state.meta.errors.length;
+						const isInvalid = !field.state.meta.isValid;
 						return (
 							<Field data-invalid={isInvalid}>
 								<FieldLabel htmlFor={field.name}>Name</FieldLabel>
@@ -85,7 +84,7 @@ export default function CreateTechnologyForm() {
 									aria-invalid={isInvalid}
 								/>
 								{isInvalid && (
-									<FieldError>{field.state.meta.errors.join(", ")}</FieldError>
+									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
 								)}
 							</Field>
 						);
@@ -95,8 +94,7 @@ export default function CreateTechnologyForm() {
 				{/* URL Field */}
 				<form.Field name="url">
 					{(field) => {
-						const isInvalid =
-							field.state.meta.isTouched && !!field.state.meta.errors.length;
+						const isInvalid = !field.state.meta.isValid;
 						return (
 							<Field data-invalid={isInvalid}>
 								<FieldLabel htmlFor={field.name}>Website URL</FieldLabel>
@@ -110,7 +108,7 @@ export default function CreateTechnologyForm() {
 									aria-invalid={isInvalid}
 								/>
 								{isInvalid && (
-									<FieldError>{field.state.meta.errors.join(", ")}</FieldError>
+									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
 								)}
 							</Field>
 						);
@@ -120,11 +118,17 @@ export default function CreateTechnologyForm() {
 				{/* Icon Field */}
 				<form.Field name="icon">
 					{(field) => {
+						const isInvalid = !field.state.meta.isValid;
 						const handleFileChange = (
 							e: React.ChangeEvent<HTMLInputElement>,
 						) => {
 							const file = e.target.files?.[0];
-							if (!file) return;
+							if (!file) {
+								field.form.resetField("brandColors");
+								field.form.resetField("brandColorsDefault");
+								field.form.resetField("iconSVG");
+								return;
+							}
 
 							const reader = new FileReader();
 							reader.onload = (event) => {
@@ -132,7 +136,6 @@ export default function CreateTechnologyForm() {
 
 								// 1. Extract colors as before
 								const detectedColors = extractColorsFromSVG(svgContent);
-								console.log({ detectedColors });
 								field.form.setFieldValue("brandColors", detectedColors);
 								field.form.setFieldValue("brandColorsDefault", detectedColors);
 
@@ -143,24 +146,29 @@ export default function CreateTechnologyForm() {
 								);
 								const dataUrl = `data:image/svg+xml;base64,${base64Svg}`;
 
-								field.handleChange(dataUrl);
+								field.handleChange(file);
+								field.form.setFieldValue("iconSVG", dataUrl);
+								field.validate("blur");
 							};
 							reader.readAsText(file);
 						};
 
 						return (
-							<Field>
-								<FieldLabel>Icon (SVG)</FieldLabel>
+							<Field data-invalid={isInvalid}>
+								<FieldLabel htmlFor={field.name}>Icon (SVG)</FieldLabel>
 								<Input
+									id={field.name}
+									name={field.name}
 									type="file"
 									accept=".svg"
 									onChange={handleFileChange}
 									onBlur={field.handleBlur}
 									className="cursor-pointer"
+									aria-invalid={isInvalid}
 								/>
 
-								{field.state.meta.errors.length > 0 && (
-									<FieldError>{field.state.meta.errors.join(", ")}</FieldError>
+								{isInvalid && (
+									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
 								)}
 							</Field>
 						);
@@ -168,14 +176,17 @@ export default function CreateTechnologyForm() {
 				</form.Field>
 
 				<form.Subscribe
-					selector={(state) => [state.values.icon, state.values.brandColors]}
+					selector={(state) => ({
+						iconSVG: state.values.iconSVG,
+						brandColors: state.values.brandColors,
+					})}
 				>
-					{([icon, brandColors]) => (
+					{({ iconSVG, brandColors }) => (
 						<div className="flex items-center gap-4">
 							<div className="size-24 flex items-center justify-center border rounded bg-muted p-2">
-								{icon ? (
+								{iconSVG ? (
 									<img
-										src={icon}
+										src={iconSVG}
 										alt="Icon preview"
 										className="w-full h-full object-contain"
 									/>
@@ -215,7 +226,7 @@ export default function CreateTechnologyForm() {
 									</Badge>
 								))}
 								{/* reset button for color */}
-								{icon && (
+								{iconSVG && (
 									<Button
 										type="button"
 										variant="secondary"

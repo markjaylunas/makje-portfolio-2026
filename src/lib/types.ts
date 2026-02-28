@@ -9,7 +9,7 @@ export type Experience = {
 
 export type Technology = {
 	name: string;
-	url: string;
+	url?: string;
 	icon?: string;
 	colors?: string;
 };

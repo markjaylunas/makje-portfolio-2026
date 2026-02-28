@@ -7,14 +7,18 @@ export const technologiesCreateFormSchema = z.object({
 	name: z.string().min(1, "Name is required"),
 	url: z.url(),
 	icon: z
-		.any()
-		.refine((files) => files?.length === 1, "An icon file is required.")
-		.transform((files) => files[0])
+		.file()
 		.refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 1MB.`)
 		.refine(
 			(file) => ACCEPTED_MIME_TYPES.includes(file.type),
 			"Only .svg format is supported.",
+		)
+		.refine(
+			//minimum size for required icon
+			(file) => file.size >= 1024, // 1KB
+			"SVG icon is required.",
 		),
+	iconSVG: z.string().optional(),
 	brandColors: z.array(z.string()).min(1, "Brand color is required"),
 	brandColorsDefault: z.array(z.string()).min(1, "Brand color is required"),
 });
@@ -26,7 +30,8 @@ export type TechnologiesCreateFormSchema = z.infer<
 export const defaultValues: TechnologiesCreateFormSchema = {
 	name: "",
 	url: "",
-	icon: null,
+	icon: new File([], "icon.svg", { type: "image/svg+xml" }),
+	iconSVG: "",
 	brandColors: [],
 	brandColorsDefault: [],
 };
