@@ -1,4 +1,7 @@
 /** biome-ignore-all lint/security/noDangerouslySetInnerHtml: <ignore> */
+
+import { Close, Refresh } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
 import TechCard from "@/components/home/technologies/card";
 import { Badge } from "@/components/ui/badge";
@@ -113,6 +116,7 @@ export default function CreateTechnologyForm() {
 								const detectedColors = extractColorsFromSVG(svgContent);
 								console.log({ detectedColors });
 								field.form.setFieldValue("brandColors", detectedColors);
+								field.form.setFieldValue("brandColorsDefault", detectedColors);
 
 								// 2. Convert string to a safe Data URL for the preview
 								// This encodes the string so it's treated as an image source, not code
@@ -165,10 +169,50 @@ export default function CreateTechnologyForm() {
 							</div>
 							<div className="flex flex-col flex-wrap gap-2">
 								{brandColors.map((color: string) => (
-									<Badge key={color} style={{ backgroundColor: color }}>
+									<Badge
+										key={color}
+										style={{
+											backgroundColor: color,
+											color: color === "#ffffff" ? "#000000" : "#ffffff",
+										}}
+										className="text-shadow-2xs"
+									>
 										{color}
+										<button
+											type="button"
+											onClick={() =>
+												form.setFieldValue(
+													"brandColors",
+													brandColors.filter((c: string) => c !== color),
+												)
+											}
+										>
+											<HugeiconsIcon
+												icon={Close}
+												data-icon="inline-end"
+												className="size-5 cursor-pointer hover:bg-muted rounded-xs"
+											/>
+											<span className="sr-only">Remove</span>
+										</button>
 									</Badge>
 								))}
+								{/* reset button for color */}
+								{icon && (
+									<Button
+										type="button"
+										variant="secondary"
+										size="icon"
+										className="cursor-pointer"
+										onClick={() => {
+											const defaultBrandColors =
+												form.state.values.brandColorsDefault;
+											form.setFieldValue("brandColors", defaultBrandColors);
+										}}
+									>
+										<HugeiconsIcon icon={Refresh} />
+										<span className="sr-only">Reset Colors</span>
+									</Button>
+								)}
 							</div>
 						</div>
 					)}
