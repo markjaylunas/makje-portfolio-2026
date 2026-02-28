@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_protected/admin/technologies/create")({
 
 function RouteComponent() {
 	return (
-		<main className="p-4">
+		<main className="p-4 max-w-md mx-auto">
 			<CreateTechnologyForm />
 		</main>
 	);
