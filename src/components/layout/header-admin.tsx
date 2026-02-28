@@ -38,9 +38,7 @@ export default function HeaderAdmin() {
 									{isLast ? (
 										<BreadcrumbPage>{label}</BreadcrumbPage>
 									) : (
-										<BreadcrumbLink>
-											<Link to={href}>{label}</Link>
-										</BreadcrumbLink>
+										<BreadcrumbLink render={<Link to={href}>{label}</Link>} />
 									)}
 								</BreadcrumbItem>
 								{!isLast && <BreadcrumbSeparator />}
