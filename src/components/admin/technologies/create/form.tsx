@@ -3,25 +3,43 @@
 import { Close, Refresh } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
+import { useMutation } from "@tanstack/react-query";
 import TechCard from "@/components/home/technologies/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { extractColorsFromSVG } from "@/lib/helper";
+import { createTechnology } from "@/data/server/technology";
+import type { NewTechnology } from "@/db/types";
 import {
 	defaultValues,
-	technologiesCreateSchema,
-} from "@/validators/technologies-create";
+	type TechnologiesCreateFormSchema,
+	technologiesCreateFormSchema,
+} from "@/form-validators/technologies/create";
+import { extractColorsFromSVG } from "@/lib/helper";
 
 export default function CreateTechnologyForm() {
+	const { mutate: createMutation, isPending } = useMutation({
+		mutationFn: async (value: TechnologiesCreateFormSchema) => {
+			const data: NewTechnology = {
+				name: value.name,
+				url: value.url,
+				icon: value.icon,
+				brandColor: value.brandColors.join(", "),
+			};
+			return await createTechnology({ data });
+		},
+		onSuccess: () => {
+			form.reset();
+			alert("Technology created successfully!");
+		},
+	});
+
 	const form = useForm({
 		defaultValues,
-		onSubmit: async ({ value }) => {
-			console.log(value);
-		},
+		onSubmit: ({ value }) => createMutation(value),
 		validators: {
-			onSubmit: technologiesCreateSchema,
+			onSubmit: technologiesCreateFormSchema,
 		},
 	});
 
@@ -222,8 +240,12 @@ export default function CreateTechnologyForm() {
 					selector={(state) => [state.canSubmit, state.isSubmitting]}
 				>
 					{([canSubmit, isSubmitting]) => (
-						<Button type="submit" className="w-full" disabled={!canSubmit}>
-							{isSubmitting ? "Saving..." : "Create Technology"}
+						<Button
+							type="submit"
+							className="w-full"
+							disabled={!canSubmit || isSubmitting || isPending}
+						>
+							{isSubmitting || isPending ? "Saving..." : "Create Technology"}
 						</Button>
 					)}
 				</form.Subscribe>

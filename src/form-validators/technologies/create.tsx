@@ -3,7 +3,7 @@ import z from "zod";
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 const ACCEPTED_MIME_TYPES = ["image/svg+xml"];
 
-export const technologiesCreateSchema = z.object({
+export const technologiesCreateFormSchema = z.object({
 	name: z.string().min(1, "Name is required"),
 	url: z.url(),
 	icon: z
@@ -19,9 +19,11 @@ export const technologiesCreateSchema = z.object({
 	brandColorsDefault: z.array(z.string()).min(1, "Brand color is required"),
 });
 
-export type TechnologiesCreateSchema = z.infer<typeof technologiesCreateSchema>;
+export type TechnologiesCreateFormSchema = z.infer<
+	typeof technologiesCreateFormSchema
+>;
 
-export const defaultValues: TechnologiesCreateSchema = {
+export const defaultValues: TechnologiesCreateFormSchema = {
 	name: "",
 	url: "",
 	icon: null,
