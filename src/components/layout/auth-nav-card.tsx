@@ -34,9 +34,9 @@ export default function AuthNavCard() {
 							<AvatarImage src={user.image || ""} />
 							<AvatarFallback>{getInitials(user.name)}</AvatarFallback>
 						</Avatar>
-						<div className="flex flex-col">
-							<span className="text-xs font-medium">{user.name}</span>
-							<span className="text-xs text-muted-foreground">
+						<div className="flex flex-col overflow-hidden">
+							<span className="text-xs font-medium truncate">{user.name}</span>
+							<span className="text-xs text-muted-foreground truncate">
 								{user.email}
 							</span>
 						</div>

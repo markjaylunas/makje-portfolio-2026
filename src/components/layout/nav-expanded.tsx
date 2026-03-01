@@ -31,7 +31,7 @@ export default function NavExpanded() {
 export function NavLinks() {
 	const { toggleMenu } = useMenu();
 	return (
-		<SlideDownMotion className="bg-primary/20 p-4  border border-transparent mt-4 rounded-xl grid grid-cols-1 sm:grid-cols-2 gap-4">
+		<SlideDownMotion className="bg-primary/20 p-2 sm:p-4  border border-transparent mt-4 rounded-xl grid grid-cols-2 gap-2 sm:gap-4">
 			<NavLinkGroupCard title="About">
 				<ul className="flex flex-col">
 					{aboutLinks.map((link) => (
@@ -80,7 +80,7 @@ function NavLinkGroupCard({
 	return (
 		<Card
 			size="sm"
-			className={cn("rounded-lg bg-black/60", className)}
+			className={cn("rounded-lg bg-black/60 ", className)}
 			{...props}
 		>
 			<CardHeader>
@@ -99,7 +99,7 @@ export function InternalLink(
 	return (
 		<Link
 			className={cn(
-				"flex items-center  px-4 py-3 text-xs transition-colors hover:text-white hover:bg-accent rounded-lg gap-2 ease-in-out duration-300",
+				"flex items-center px-2 sm:px-4 py-2 sm:py-3 text-xs transition-colors hover:text-white hover:bg-accent rounded-lg gap-2 ease-in-out duration-300",
 			)}
 			to={props.to}
 			hash={props.hash}
@@ -132,7 +132,7 @@ function ExternalLink({
 			target="_blank"
 			rel="noopener noreferrer"
 			onClick={onClick}
-			className="flex items-center  px-4 py-3 text-xs  transition-colors hover:bg-accent rounded-lg gap-2 ease-in-out duration-300"
+			className="flex items-center px-2 sm:px-4 py-2 sm:py-3 text-xs  transition-colors hover:bg-accent rounded-lg gap-2 ease-in-out duration-300"
 			href={href}
 		>
 			<HugeiconsIcon icon={icon} size={20} />
