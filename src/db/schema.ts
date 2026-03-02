@@ -130,7 +130,9 @@ export const project = pgTable("project", {
 	name: text().notNull(),
 	description: text(),
 	content: text(),
-	coverImageUrl: text(),
+	coverImageId: uuid("cover_image_id").references(() => media.id, {
+		onDelete: "set null",
+	}),
 	repositoryUrl: text(),
 	liveUrl: text(),
 	likesCount: integer().default(0).notNull(),
@@ -141,7 +143,7 @@ export const technology = pgTable("technology", {
 	id: uuid().defaultRandom().primaryKey(),
 	name: text().notNull(),
 	url: text(),
-	icon: text(),
+	iconId: uuid("icon_id").references(() => media.id, { onDelete: "set null" }),
 	brandColor: text(),
 	...timestamps,
 });
@@ -151,6 +153,30 @@ export const tag = pgTable("tag", {
 	name: text().notNull().unique(),
 	slug: text().unique(),
 	createdAt,
+});
+
+export const experience = pgTable("experience", {
+	id: uuid().defaultRandom().primaryKey(),
+	title: text().notNull(),
+	company: text().notNull(),
+	logoId: uuid().references(() => media.id, { onDelete: "set null" }),
+	period: text().notNull(),
+	description: text(),
+	// Responsibilities stored as a JSON string array for easy mapping in the frontend
+	responsibilities: text().array().notNull().default(sql`'{}'::text[]`),
+	...timestamps,
+});
+
+export const media = pgTable("media", {
+	id: uuid().defaultRandom().primaryKey(),
+	storagePath: text("storage_path").notNull().unique(),
+	url: text("url").notNull(),
+	fileName: text("file_name").notNull(),
+	contentType: text("content_type"),
+	size: integer("size"),
+	altText: text("alt_text"),
+	uploaderId: text("uploader_id").references(() => user.id),
+	...timestamps,
 });
 
 // --- Interaction & Join Tables ---
@@ -188,17 +214,6 @@ export const projectToTags = pgTable("project_to_tags", {
 	order: integer().notNull().default(0),
 });
 
-export const experience = pgTable("experience", {
-	id: uuid().defaultRandom().primaryKey(),
-	title: text().notNull(),
-	company: text().notNull(),
-	period: text().notNull(),
-	description: text(),
-	// Responsibilities stored as a JSON string array for easy mapping in the frontend
-	responsibilities: text().array().notNull().default(sql`'{}'::text[]`),
-	...timestamps,
-});
-
 export const experienceToTechnologies = pgTable("experience_to_technologies", {
 	id: uuid().defaultRandom().primaryKey(),
 	experienceId: uuid()
@@ -212,23 +227,35 @@ export const experienceToTechnologies = pgTable("experience_to_technologies", {
 
 // --- Relations ---
 
-export const projectRelations = relations(project, ({ many }) => ({
+export const projectRelations = relations(project, ({ many, one }) => ({
 	likes: many(projectLike),
 	technologies: many(projectToTechnologies),
 	tags: many(projectToTags),
+	coverImage: one(media, {
+		fields: [project.coverImageId],
+		references: [media.id],
+	}),
 }));
 
-export const technologyRelations = relations(technology, ({ many }) => ({
+export const technologyRelations = relations(technology, ({ many, one }) => ({
 	projects: many(projectToTechnologies),
 	experiences: many(experienceToTechnologies),
+	icon: one(media, {
+		fields: [technology.iconId],
+		references: [media.id],
+	}),
 }));
 
 export const tagRelations = relations(tag, ({ many }) => ({
 	projects: many(projectToTags),
 }));
 
-export const experienceRelations = relations(experience, ({ many }) => ({
+export const experienceRelations = relations(experience, ({ many, one }) => ({
 	technologies: many(experienceToTechnologies),
+	logo: one(media, {
+		fields: [experience.logoId],
+		references: [media.id],
+	}),
 }));
 
 export const projectLikeRelations = relations(projectLike, ({ one }) => ({
@@ -277,3 +304,13 @@ export const experienceToTechnologiesRelations = relations(
 		}),
 	}),
 );
+
+export const mediaRelations = relations(media, ({ one, many }) => ({
+	uploader: one(user, {
+		fields: [media.uploaderId],
+		references: [user.id],
+	}),
+	projects: many(project),
+	technologies: many(technology),
+	experiences: many(experience),
+}));

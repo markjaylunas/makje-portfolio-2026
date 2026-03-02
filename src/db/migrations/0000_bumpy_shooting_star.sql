@@ -18,6 +18,7 @@ CREATE TABLE "experience" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" text NOT NULL,
 	"company" text NOT NULL,
+	"logo_id" uuid,
 	"period" text NOT NULL,
 	"description" text,
 	"responsibilities" text[] DEFAULT '{}'::text[] NOT NULL,
@@ -32,12 +33,26 @@ CREATE TABLE "experience_to_technologies" (
 	"order" integer DEFAULT 0 NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE "media" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"storage_path" text NOT NULL,
+	"url" text NOT NULL,
+	"file_name" text NOT NULL,
+	"content_type" text,
+	"size" integer,
+	"alt_text" text,
+	"uploader_id" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "media_storage_path_unique" UNIQUE("storage_path")
+);
+--> statement-breakpoint
 CREATE TABLE "project" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
 	"description" text,
 	"content" text,
-	"cover_image_url" text,
+	"cover_image_id" uuid,
 	"repository_url" text,
 	"live_url" text,
 	"likes_count" integer DEFAULT 0 NOT NULL,
@@ -92,7 +107,7 @@ CREATE TABLE "technology" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
 	"url" text,
-	"icon" text,
+	"icon_id" uuid,
 	"brand_color" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
@@ -124,8 +139,11 @@ CREATE TABLE "verification" (
 );
 --> statement-breakpoint
 ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "experience" ADD CONSTRAINT "experience_logo_id_media_id_fk" FOREIGN KEY ("logo_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "experience_to_technologies" ADD CONSTRAINT "experience_to_technologies_experience_id_experience_id_fk" FOREIGN KEY ("experience_id") REFERENCES "public"."experience"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "experience_to_technologies" ADD CONSTRAINT "experience_to_technologies_technology_id_technology_id_fk" FOREIGN KEY ("technology_id") REFERENCES "public"."technology"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "media" ADD CONSTRAINT "media_uploader_id_user_id_fk" FOREIGN KEY ("uploader_id") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "project" ADD CONSTRAINT "project_cover_image_id_media_id_fk" FOREIGN KEY ("cover_image_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "project_like" ADD CONSTRAINT "project_like_project_id_project_id_fk" FOREIGN KEY ("project_id") REFERENCES "public"."project"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "project_like" ADD CONSTRAINT "project_like_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "project_to_tags" ADD CONSTRAINT "project_to_tags_project_id_project_id_fk" FOREIGN KEY ("project_id") REFERENCES "public"."project"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
@@ -133,6 +151,7 @@ ALTER TABLE "project_to_tags" ADD CONSTRAINT "project_to_tags_tag_id_tag_id_fk" 
 ALTER TABLE "project_to_technologies" ADD CONSTRAINT "project_to_technologies_project_id_project_id_fk" FOREIGN KEY ("project_id") REFERENCES "public"."project"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "project_to_technologies" ADD CONSTRAINT "project_to_technologies_technology_id_technology_id_fk" FOREIGN KEY ("technology_id") REFERENCES "public"."technology"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "technology" ADD CONSTRAINT "technology_icon_id_media_id_fk" FOREIGN KEY ("icon_id") REFERENCES "public"."media"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
 CREATE INDEX "account_userId_idx" ON "account" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "session_userId_idx" ON "session" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "verification_identifier_idx" ON "verification" USING btree ("identifier");
