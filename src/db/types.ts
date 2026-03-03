@@ -9,6 +9,7 @@ export type Project = typeof schema.project.$inferSelect;
 export type Technology = typeof schema.technology.$inferSelect;
 export type Tag = typeof schema.tag.$inferSelect;
 export type Experience = typeof schema.experience.$inferSelect;
+export type Media = typeof schema.media.$inferSelect;
 
 export type ProjectLike = typeof schema.projectLike.$inferSelect;
 
@@ -30,6 +31,7 @@ export type NewProject = typeof schema.project.$inferInsert;
 export type NewTechnology = typeof schema.technology.$inferInsert;
 export type NewTag = typeof schema.tag.$inferInsert;
 export type NewProjectLike = typeof schema.projectLike.$inferInsert;
+export type NewMedia = typeof schema.media.$inferInsert;
 
 export type NewProjectToTechnologies =
 	typeof schema.projectToTechnologies.$inferInsert;

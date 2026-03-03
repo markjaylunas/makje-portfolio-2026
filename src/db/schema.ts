@@ -130,7 +130,7 @@ export const project = pgTable("project", {
 	name: text().notNull(),
 	description: text(),
 	content: text(),
-	coverImageId: uuid("cover_image_id").references(() => media.id, {
+	coverImageId: uuid().references(() => media.id, {
 		onDelete: "set null",
 	}),
 	repositoryUrl: text(),
@@ -143,7 +143,7 @@ export const technology = pgTable("technology", {
 	id: uuid().defaultRandom().primaryKey(),
 	name: text().notNull(),
 	url: text(),
-	iconId: uuid("icon_id").references(() => media.id, { onDelete: "set null" }),
+	iconId: uuid().references(() => media.id, { onDelete: "set null" }),
 	brandColor: text(),
 	...timestamps,
 });
@@ -169,13 +169,13 @@ export const experience = pgTable("experience", {
 
 export const media = pgTable("media", {
 	id: uuid().defaultRandom().primaryKey(),
-	storagePath: text("storage_path").notNull().unique(),
-	url: text("url").notNull(),
-	fileName: text("file_name").notNull(),
-	contentType: text("content_type"),
-	size: integer("size"),
-	altText: text("alt_text"),
-	uploaderId: text("uploader_id").references(() => user.id),
+	storagePath: text().notNull().unique(),
+	url: text().notNull(),
+	fileName: text().notNull(),
+	contentType: text(),
+	size: integer(),
+	altText: text(),
+	uploaderId: text().references(() => user.id),
 	...timestamps,
 });
 
