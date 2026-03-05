@@ -17,3 +17,15 @@ export const insertTechnology = async (
 
 	return { ...technologyResult, icon: mediaResult };
 };
+
+export type SelectTechnologyListWithMedia = Awaited<
+	ReturnType<typeof selectTechnologyListWithMedia>
+>[0];
+
+export const selectTechnologyListWithMedia = async () => {
+	return await db.query.technology.findMany({
+		with: {
+			icon: true,
+		},
+	});
+};

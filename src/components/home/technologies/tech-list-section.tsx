@@ -1,10 +1,11 @@
 import { ChevronDown, ChevronUp } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { technologies } from "@/assets/home/technologies";
 import GradientText from "@/components/common/gradient-text";
 import H2 from "@/components/common/H2";
 import { Button } from "@/components/ui/button";
+import { getTechnologyListOptions } from "@/data/options/technology";
 import TechCard from "./card";
 
 type ShowStatus = "initial" | "more" | "all";
@@ -12,6 +13,8 @@ type ShowStatus = "initial" | "more" | "all";
 export default function TechListSection() {
 	const [showStatus, setShowStatus] = useState<ShowStatus>("initial");
 	const sectionHeadingId = "tech-stack";
+
+	const { data: technologies } = useSuspenseQuery(getTechnologyListOptions);
 
 	// Logic: Determine how many items to show based on status
 	const getVisibleCount = () => {

@@ -38,14 +38,23 @@ CREATE TABLE `experience_to_technologies` (
 	FOREIGN KEY (`technology_id`) REFERENCES `technology`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
+CREATE TABLE `featured_technology` (
+	`id` text PRIMARY KEY NOT NULL,
+	`technology_id` text NOT NULL,
+	`order` integer DEFAULT 0 NOT NULL,
+	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
+	`updated_at` integer DEFAULT (unixepoch()) NOT NULL,
+	FOREIGN KEY (`technology_id`) REFERENCES `technology`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
 CREATE TABLE `media` (
 	`id` text PRIMARY KEY NOT NULL,
 	`key_directory` text NOT NULL,
 	`key_path` text NOT NULL,
 	`url` text NOT NULL,
 	`file_name` text NOT NULL,
-	`content_type` text,
-	`size` integer,
+	`content_type` text NOT NULL,
+	`size` integer NOT NULL,
 	`alt_text` text,
 	`uploader_id` text,
 	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
@@ -121,9 +130,9 @@ CREATE UNIQUE INDEX `tag_slug_unique` ON `tag` (`slug`);--> statement-breakpoint
 CREATE TABLE `technology` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
-	`url` text,
-	`icon_id` text,
-	`brand_color` text,
+	`url` text NOT NULL,
+	`icon_id` text NOT NULL,
+	`brand_color` text NOT NULL,
 	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
 	`updated_at` integer DEFAULT (unixepoch()) NOT NULL,
 	FOREIGN KEY (`icon_id`) REFERENCES `media`(`id`) ON UPDATE no action ON DELETE set null

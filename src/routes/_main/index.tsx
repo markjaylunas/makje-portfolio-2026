@@ -1,12 +1,19 @@
 /** biome-ignore-all lint/correctness/useUniqueElementIds: <ignore for home section navigation ids> */
 
 import { createFileRoute } from "@tanstack/react-router";
+import { Suspense } from "react";
 import ExperienceTimelineSection from "@/components/home/experience/timeline-section";
 import HeroSection from "@/components/home/hero/hero-section";
 import TechListSection from "@/components/home/technologies/tech-list-section";
 import ContentMotion from "@/components/motion/content-motion";
+import { getTechnologyListOptions } from "@/data/options/technology";
 
-export const Route = createFileRoute("/_main/")({ component: App });
+export const Route = createFileRoute("/_main/")({
+	component: App,
+	loader: ({ context }) => {
+		return context.queryClient.ensureQueryData(getTechnologyListOptions);
+	},
+});
 
 function App() {
 	return (
@@ -19,7 +26,9 @@ function App() {
 			</ContentMotion>
 			<div id="tech-stack" className="h-24" />
 			<ContentMotion>
-				<TechListSection />
+				<Suspense fallback={<div>Loading...</div>}>
+					<TechListSection />
+				</Suspense>
 			</ContentMotion>
 		</>
 	);

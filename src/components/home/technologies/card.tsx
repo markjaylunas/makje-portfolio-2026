@@ -1,7 +1,11 @@
 import PixelCard from "@/components/common/pixel-card";
-import type { Technology } from "@/lib/types";
+import type { SelectTechnologyListWithMedia } from "@/data/query/technology.server";
 
-export default function TechCard({ tech }: { tech: Technology }) {
+export default function TechCard({
+	tech,
+}: {
+	tech: SelectTechnologyListWithMedia;
+}) {
 	return (
 		<a
 			href={tech.url}
@@ -10,10 +14,10 @@ export default function TechCard({ tech }: { tech: Technology }) {
 			className="group block bg-background outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
 		>
 			<div className="group bg-background hover:cursor-pointer">
-				<PixelCard colors={tech.colors} noFocus={true}>
+				<PixelCard colors={tech.brandColor} noFocus={true}>
 					<div className="absolute flex flex-col items-center justify-center ">
 						<img
-							src={tech.icon}
+							src={tech.icon.url}
 							alt={tech.name}
 							className="size-10 transition-all duration-500 grayscale-100 group-hover:grayscale-0 mt-4 group-hover:mt-0"
 						/>

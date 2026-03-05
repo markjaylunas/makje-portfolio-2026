@@ -150,9 +150,11 @@ export const technology = sqliteTable("technology", {
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
 	name: text().notNull(),
-	url: text(),
-	iconId: text().references(() => media.id, { onDelete: "set null" }),
-	brandColor: text(),
+	url: text().notNull(),
+	iconId: text()
+		.references(() => media.id, { onDelete: "set null" })
+		.notNull(),
+	brandColor: text().notNull(),
 	...timestamps,
 });
 
@@ -186,8 +188,8 @@ export const media = sqliteTable("media", {
 	keyPath: text().notNull(),
 	url: text().notNull(),
 	fileName: text().notNull(),
-	contentType: text(),
-	size: integer(),
+	contentType: text().notNull(),
+	size: integer().notNull(),
 	altText: text(),
 	uploaderId: text().references(() => user.id),
 	...timestamps,
@@ -250,6 +252,17 @@ export const experienceToTechnologies = sqliteTable(
 	},
 );
 
+export const featuredTechnology = sqliteTable("featured_technology", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	technologyId: text()
+		.notNull()
+		.references(() => technology.id, { onDelete: "cascade" }),
+	order: integer().notNull().default(0),
+	...timestamps,
+});
+
 // --- Relations ---
 
 export const projectRelations = relations(project, ({ many, one }) => ({
@@ -268,6 +281,10 @@ export const technologyRelations = relations(technology, ({ many, one }) => ({
 	icon: one(media, {
 		fields: [technology.iconId],
 		references: [media.id],
+	}),
+	featured: one(featuredTechnology, {
+		fields: [technology.id],
+		references: [featuredTechnology.technologyId],
 	}),
 }));
 
@@ -339,3 +356,13 @@ export const mediaRelations = relations(media, ({ one, many }) => ({
 	technologies: many(technology),
 	experiences: many(experience),
 }));
+
+export const featuredTechnologyRelations = relations(
+	featuredTechnology,
+	({ one }) => ({
+		technology: one(technology, {
+			fields: [featuredTechnology.technologyId],
+			references: [technology.id],
+		}),
+	}),
+);
