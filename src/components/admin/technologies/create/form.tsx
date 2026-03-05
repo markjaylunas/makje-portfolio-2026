@@ -4,13 +4,13 @@ import { Close, Refresh } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
 import TechCard from "@/components/home/technologies/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { createMedia } from "@/data/server/technology";
+import { createTechnologyFn } from "@/data/server/technology.server";
+import type { NewMedia, NewTechnology } from "@/db/types";
 import {
 	defaultValues,
 	type TechnologiesCreateFormSchema,
@@ -19,23 +19,30 @@ import {
 import { extractColorsFromSVG } from "@/lib/helper";
 
 export default function CreateTechnologyForm() {
-	const createMediaFn = useServerFn(createMedia);
-
 	const { mutate: createMutation, isPending } = useMutation({
 		mutationFn: async (value: TechnologiesCreateFormSchema) => {
-			const media = await createMediaFn({
-				data: {
-					keyDirectory: "asd/koo",
-					keyPath: "asd/koo/sbg.svg",
-					url: "https://React.dev",
-					fileName: "sbg.svg",
-					contentType: "image/svg+xml",
-					size: 13,
-					altText: "React Icon",
-				},
+			const newTechnology: NewTechnology = {
+				name: value.name,
+				url: value.url,
+				brandColor: value.brandColors.join(", "),
+				iconId: "",
+			};
+
+			const newMedia: NewMedia = {
+				fileName: value.icon.name,
+				contentType: value.icon.type,
+				size: value.icon.size,
+				keyDirectory: "technology",
+				url: "https://example.com",
+				keyPath: "example",
+			};
+
+			const result = await createTechnologyFn({
+				data: { newTechnology, newMedia },
 			});
-			console.log({ media });
-			return media;
+
+			console.log({ result });
+			return result;
 		},
 		onSuccess: () => {
 			form.reset();

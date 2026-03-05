@@ -1,4 +1,8 @@
 import z from "zod";
+import {
+	mediaInsertSchema,
+	technologyInsertSchema,
+} from "@/db/schema-validation";
 
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 const ACCEPTED_MIME_TYPES = ["image/svg+xml"];
@@ -35,3 +39,8 @@ export const defaultValues: TechnologiesCreateFormSchema = {
 	brandColors: [],
 	brandColorsDefault: [],
 };
+
+export const createTechnologyFnSchema = z.object({
+	newTechnology: technologyInsertSchema,
+	newMedia: mediaInsertSchema,
+});
