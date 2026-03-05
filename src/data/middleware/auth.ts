@@ -17,16 +17,7 @@ export const authFnMiddleware = createMiddleware({ type: "function" }).server(
 );
 
 export const authMiddleware = createMiddleware({ type: "request" }).server(
-	async ({ next, request }) => {
-		const url = new URL(request.url);
-
-		if (
-			!url.pathname.startsWith("/admin") &&
-			!url.pathname.startsWith("/api")
-		) {
-			return next();
-		}
-
+	async ({ next }) => {
 		const headers = getRequestHeaders();
 		const session = await auth.api.getSession({ headers });
 
@@ -37,3 +28,33 @@ export const authMiddleware = createMiddleware({ type: "request" }).server(
 		return next({ context: { session } });
 	},
 );
+
+export const ensureAdminMiddleware = createMiddleware({
+	type: "request",
+}).server(async ({ next }) => {
+	const headers = getRequestHeaders();
+	const session = await auth.api.getSession({ headers });
+
+	const isAdmin = session?.user.role === "admin";
+
+	if (!isAdmin) {
+		throw redirect({ to: "/" }); // TODO: redirect to unauthorized page when implemented
+	}
+
+	return next({ context: { session } });
+});
+
+export const ensureAdminFnMiddleware = createMiddleware({
+	type: "function",
+}).server(async ({ next }) => {
+	const headers = getRequestHeaders();
+	const session = await auth.api.getSession({ headers });
+
+	const isAdmin = session?.user.role === "admin";
+
+	if (!isAdmin) {
+		throw redirect({ to: "/" }); // TODO: redirect to unauthorized page when implemented
+	}
+
+	return next({ context: { session } });
+});

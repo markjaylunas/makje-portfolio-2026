@@ -22,7 +22,12 @@ function RouteComponent() {
 
 			<ul>
 				{data.map((tech) => (
-					<li key={tech.id}>{tech.name}</li>
+					<li key={tech.id}>
+						<span>name: {tech.name}</span>
+						<span>url: {tech.url}</span>
+						<span>brandColor: {tech.brandColor}</span>
+						<span>iconId: {tech.iconId}</span>
+					</li>
 				))}
 			</ul>
 		</main>

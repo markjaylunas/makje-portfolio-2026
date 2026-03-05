@@ -1,16 +1,16 @@
-/** biome-ignore-all lint/security/noDangerouslySetInnerHtml: <ignore> */
-
 import { Close, Refresh } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import TechCard from "@/components/home/technologies/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { uploadTechnologyIcon } from "@/data/client/storage";
 import { createTechnologyFn } from "@/data/server/technology.server";
-import type { NewMedia, NewTechnology } from "@/db/types";
+import type { NewTechnology } from "@/db/types";
 import {
 	defaultValues,
 	type TechnologiesCreateFormSchema,
@@ -19,8 +19,13 @@ import {
 import { extractColorsFromSVG } from "@/lib/helper";
 
 export default function CreateTechnologyForm() {
+	const queryClient = useQueryClient();
+	const navigate = useNavigate();
+
 	const { mutate: createMutation, isPending } = useMutation({
 		mutationFn: async (value: TechnologiesCreateFormSchema) => {
+			const newMedia = await uploadTechnologyIcon(value.icon);
+
 			const newTechnology: NewTechnology = {
 				name: value.name,
 				url: value.url,
@@ -28,25 +33,16 @@ export default function CreateTechnologyForm() {
 				iconId: "",
 			};
 
-			const newMedia: NewMedia = {
-				fileName: value.icon.name,
-				contentType: value.icon.type,
-				size: value.icon.size,
-				keyDirectory: "technology",
-				url: "https://example.com",
-				keyPath: "example",
-			};
-
 			const result = await createTechnologyFn({
 				data: { newTechnology, newMedia },
 			});
 
-			console.log({ result });
 			return result;
 		},
 		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["technologies"] });
 			form.reset();
-			alert("Technology created successfully!");
+			navigate({ to: "/admin/technologies" });
 		},
 	});
 

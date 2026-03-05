@@ -20,6 +20,7 @@ import { Route as ProtectedAdminIndexRouteImport } from './routes/_protected/adm
 import { Route as MainProjectsIndexRouteImport } from './routes/_main/projects/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ProtectedAdminDashboardRouteImport } from './routes/_protected/admin/dashboard'
+import { Route as ApiStorageUploadRouteRouteImport } from './routes/api/storage/upload/route'
 import { Route as ProtectedAdminTechnologiesIndexRouteImport } from './routes/_protected/admin/technologies/index'
 import { Route as ProtectedAdminTagsIndexRouteImport } from './routes/_protected/admin/tags/index'
 import { Route as ProtectedAdminProjectsIndexRouteImport } from './routes/_protected/admin/projects/index'
@@ -78,6 +79,11 @@ const ProtectedAdminDashboardRoute = ProtectedAdminDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => ProtectedAdminRouteRoute,
 } as any)
+const ApiStorageUploadRouteRoute = ApiStorageUploadRouteRouteImport.update({
+  id: '/api/storage/upload',
+  path: '/api/storage/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProtectedAdminTechnologiesIndexRoute =
   ProtectedAdminTechnologiesIndexRouteImport.update({
     id: '/technologies/',
@@ -113,6 +119,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof ProtectedAdminRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/contact': typeof MainContactRoute
+  '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects/': typeof MainProjectsIndexRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
   '/login': typeof AuthLoginRoute
   '/contact': typeof MainContactRoute
+  '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects': typeof MainProjectsIndexRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRoute
   '/_main/contact': typeof MainContactRoute
   '/_main/': typeof MainIndexRoute
+  '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/_protected/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_main/projects/': typeof MainProjectsIndexRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/login'
     | '/contact'
+    | '/api/storage/upload'
     | '/admin/dashboard'
     | '/api/auth/$'
     | '/projects/'
@@ -177,6 +187,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/contact'
+    | '/api/storage/upload'
     | '/admin/dashboard'
     | '/api/auth/$'
     | '/projects'
@@ -195,6 +206,7 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_main/contact'
     | '/_main/'
+    | '/api/storage/upload'
     | '/_protected/admin/dashboard'
     | '/api/auth/$'
     | '/_main/projects/'
@@ -210,6 +222,7 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   MainRouteRoute: typeof MainRouteRouteWithChildren
   ProtectedRoute: typeof ProtectedRouteWithChildren
+  ApiStorageUploadRouteRoute: typeof ApiStorageUploadRouteRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -291,6 +304,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/dashboard'
       preLoaderRoute: typeof ProtectedAdminDashboardRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
+    }
+    '/api/storage/upload': {
+      id: '/api/storage/upload'
+      path: '/api/storage/upload'
+      fullPath: '/api/storage/upload'
+      preLoaderRoute: typeof ApiStorageUploadRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_protected/admin/technologies/': {
       id: '/_protected/admin/technologies/'
@@ -397,6 +417,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   MainRouteRoute: MainRouteRouteWithChildren,
   ProtectedRoute: ProtectedRouteWithChildren,
+  ApiStorageUploadRouteRoute: ApiStorageUploadRouteRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

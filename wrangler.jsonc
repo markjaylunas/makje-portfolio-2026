@@ -12,5 +12,12 @@
             "migrations_dir": "src/db/migrations",
             "remote": true
         }
-    ]
+    ],
+    "r2_buckets": [
+        {
+            "binding": "BUCKET",
+            "bucket_name": "makje-portfolio-2026",
+            "remote": true
+        }
+    ]   
 }
