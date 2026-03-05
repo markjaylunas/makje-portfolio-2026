@@ -1,28 +1,33 @@
 import PixelCard from "@/components/common/pixel-card";
-import type { SelectTechnologyListWithMedia } from "@/data/query/technology.server";
 
 export default function TechCard({
-	tech,
+	icon,
+	colors,
+	name,
+	url,
 }: {
-	tech: SelectTechnologyListWithMedia;
+	icon: string;
+	colors: string;
+	name: string;
+	url: string;
 }) {
 	return (
 		<a
-			href={tech.url}
+			href={url}
 			target="_blank"
 			rel="noopener noreferrer"
 			className="group block bg-background outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
 		>
 			<div className="group bg-background hover:cursor-pointer">
-				<PixelCard colors={tech.brandColor} noFocus={true}>
+				<PixelCard colors={colors} noFocus={true}>
 					<div className="absolute flex flex-col items-center justify-center ">
 						<img
-							src={tech.icon.url}
-							alt={tech.name}
+							src={icon}
+							alt={name}
 							className="size-10 transition-all duration-500 grayscale-100 group-hover:grayscale-0 mt-4 group-hover:mt-0"
 						/>
 						<p className="transition-opacity duration-400 opacity-0  group-hover:opacity-100">
-							{tech.name}
+							{name}
 						</p>
 					</div>
 				</PixelCard>
