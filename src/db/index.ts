@@ -1,6 +1,9 @@
-import { drizzle } from "drizzle-orm/neon-http";
-
-import { env } from "../env.ts";
+import { env } from "cloudflare:workers";
+import { drizzle } from "drizzle-orm/d1";
 import * as schema from "./schema.ts";
 
-export const db = drizzle(env.DATABASE_URL, { schema, casing: "snake_case" });
+export const db = drizzle(env.DB, {
+	schema,
+	casing: "snake_case",
+	logger: true,
+});

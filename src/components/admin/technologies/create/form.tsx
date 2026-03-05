@@ -4,11 +4,13 @@ import { Close, Refresh } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import TechCard from "@/components/home/technologies/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { createMedia } from "@/data/server/technology";
 import {
 	defaultValues,
 	type TechnologiesCreateFormSchema,
@@ -17,17 +19,23 @@ import {
 import { extractColorsFromSVG } from "@/lib/helper";
 
 export default function CreateTechnologyForm() {
+	const createMediaFn = useServerFn(createMedia);
+
 	const { mutate: createMutation, isPending } = useMutation({
 		mutationFn: async (value: TechnologiesCreateFormSchema) => {
-			const data = {
-				name: value.name,
-				url: value.url,
-				icon: value.icon,
-				brandColor: value.brandColors.join(", "),
-			};
-			console.log(data);
-			await new Promise((resolve) => setTimeout(resolve, 5000));
-			// return await createTechnology({ data });
+			const media = await createMediaFn({
+				data: {
+					keyDirectory: "asd/koo",
+					keyPath: "asd/koo/sbg.svg",
+					url: "https://React.dev",
+					fileName: "sbg.svg",
+					contentType: "image/svg+xml",
+					size: 13,
+					altText: "React Icon",
+				},
+			});
+			console.log({ media });
+			return media;
 		},
 		onSuccess: () => {
 			form.reset();

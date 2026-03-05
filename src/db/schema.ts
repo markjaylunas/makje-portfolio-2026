@@ -1,92 +1,94 @@
 import { relations, sql } from "drizzle-orm";
-import {
-	boolean,
-	index,
-	integer,
-	pgTable,
-	text,
-	timestamp,
-	uuid,
-} from "drizzle-orm/pg-core";
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 // --- Better Auth Tables ---
 
-export const user = pgTable("user", {
+export const user = sqliteTable("user", {
 	id: text("id").primaryKey(),
 	name: text("name").notNull(),
 	email: text("email").notNull().unique(),
-	emailVerified: boolean("email_verified").default(false).notNull(),
+	emailVerified: integer("emailVerified", { mode: "boolean" })
+		.default(false)
+		.notNull(),
 	image: text("image"),
-	// Anonymous plugin field
-	isAnonymous: boolean(),
-	// Admin plugin fields
-	role: text("role").default("user").notNull(),
-	banned: boolean("banned").default(false),
-	banReason: text("ban_reason"),
-	banExpires: timestamp("ban_expires"),
-
-	createdAt: timestamp("created_at").defaultNow().notNull(),
-	updatedAt: timestamp("updated_at")
-		.defaultNow()
+	createdAt: integer("createdAt", { mode: "timestamp_ms" })
+		.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+		.notNull(),
+	updatedAt: integer("updatedAt", { mode: "timestamp_ms" })
+		.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
 		.$onUpdate(() => /* @__PURE__ */ new Date())
 		.notNull(),
+	isAnonymous: integer("isAnonymous", { mode: "boolean" }).default(false),
+	role: text("role"),
+	banned: integer("banned", { mode: "boolean" }).default(false),
+	banReason: text("banReason"),
+	banExpires: integer("banExpires", { mode: "timestamp_ms" }),
 });
 
-export const session = pgTable(
+export const session = sqliteTable(
 	"session",
 	{
 		id: text("id").primaryKey(),
-		expiresAt: timestamp("expires_at").notNull(),
+		expiresAt: integer("expiresAt", { mode: "timestamp_ms" }).notNull(),
 		token: text("token").notNull().unique(),
-		createdAt: timestamp("created_at").defaultNow().notNull(),
-		updatedAt: timestamp("updated_at")
+		createdAt: integer("createdAt", { mode: "timestamp_ms" })
+			.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+			.notNull(),
+		updatedAt: integer("updatedAt", { mode: "timestamp_ms" })
 			.$onUpdate(() => /* @__PURE__ */ new Date())
 			.notNull(),
-		ipAddress: text("ip_address"),
-		userAgent: text("user_agent"),
-		userId: text("user_id")
+		ipAddress: text("ipAddress"),
+		userAgent: text("userAgent"),
+		userId: text("userId")
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),
-		// Admin plugin field
-		impersonatedBy: text("impersonated_by"),
+		impersonatedBy: text("impersonatedBy"),
 	},
 	(table) => [index("session_userId_idx").on(table.userId)],
 );
 
-export const account = pgTable(
+export const account = sqliteTable(
 	"account",
 	{
 		id: text("id").primaryKey(),
-		accountId: text("account_id").notNull(),
-		providerId: text("provider_id").notNull(),
-		userId: text("user_id")
+		accountId: text("accountId").notNull(),
+		providerId: text("providerId").notNull(),
+		userId: text("userId")
 			.notNull()
 			.references(() => user.id, { onDelete: "cascade" }),
-		accessToken: text("access_token"),
-		refreshToken: text("refresh_token"),
-		idToken: text("id_token"),
-		accessTokenExpiresAt: timestamp("access_token_expires_at"),
-		refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
+		accessToken: text("accessToken"),
+		refreshToken: text("refreshToken"),
+		idToken: text("idToken"),
+		accessTokenExpiresAt: integer("accessTokenExpiresAt", {
+			mode: "timestamp_ms",
+		}),
+		refreshTokenExpiresAt: integer("refreshTokenExpiresAt", {
+			mode: "timestamp_ms",
+		}),
 		scope: text("scope"),
 		password: text("password"),
-		createdAt: timestamp("created_at").defaultNow().notNull(),
-		updatedAt: timestamp("updated_at")
+		createdAt: integer("createdAt", { mode: "timestamp_ms" })
+			.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+			.notNull(),
+		updatedAt: integer("updatedAt", { mode: "timestamp_ms" })
 			.$onUpdate(() => /* @__PURE__ */ new Date())
 			.notNull(),
 	},
 	(table) => [index("account_userId_idx").on(table.userId)],
 );
 
-export const verification = pgTable(
+export const verification = sqliteTable(
 	"verification",
 	{
 		id: text("id").primaryKey(),
 		identifier: text("identifier").notNull(),
 		value: text("value").notNull(),
-		expiresAt: timestamp("expires_at").notNull(),
-		createdAt: timestamp("created_at").defaultNow().notNull(),
-		updatedAt: timestamp("updated_at")
-			.defaultNow()
+		expiresAt: integer("expiresAt", { mode: "timestamp_ms" }).notNull(),
+		createdAt: integer("createdAt", { mode: "timestamp_ms" })
+			.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+			.notNull(),
+		updatedAt: integer("updatedAt", { mode: "timestamp_ms" })
+			.default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
 			.$onUpdate(() => /* @__PURE__ */ new Date())
 			.notNull(),
 	},
@@ -115,9 +117,11 @@ export const accountRelations = relations(account, ({ one }) => ({
 
 // --- Helper Columns ---
 
-const createdAt = timestamp().defaultNow().notNull();
-const updatedAt = timestamp()
-	.defaultNow()
+const createdAt = integer({ mode: "timestamp" })
+	.default(sql`(unixepoch())`)
+	.notNull();
+const updatedAt = integer({ mode: "timestamp" })
+	.default(sql`(unixepoch())`)
 	.$onUpdate(() => new Date())
 	.notNull();
 
@@ -125,12 +129,14 @@ const timestamps = { createdAt, updatedAt };
 
 // --- Core Tables ---
 
-export const project = pgTable("project", {
-	id: uuid().defaultRandom().primaryKey(),
+export const project = sqliteTable("project", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	name: text().notNull(),
 	description: text(),
 	content: text(),
-	coverImageId: uuid().references(() => media.id, {
+	coverImageId: text().references(() => media.id, {
 		onDelete: "set null",
 	}),
 	repositoryUrl: text(),
@@ -139,36 +145,43 @@ export const project = pgTable("project", {
 	...timestamps,
 });
 
-export const technology = pgTable("technology", {
-	id: uuid().defaultRandom().primaryKey(),
+export const technology = sqliteTable("technology", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	name: text().notNull(),
 	url: text(),
-	iconId: uuid().references(() => media.id, { onDelete: "set null" }),
+	iconId: text().references(() => media.id, { onDelete: "set null" }),
 	brandColor: text(),
 	...timestamps,
 });
 
-export const tag = pgTable("tag", {
-	id: uuid().defaultRandom().primaryKey(),
+export const tag = sqliteTable("tag", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	name: text().notNull().unique(),
 	slug: text().unique(),
 	createdAt,
 });
 
-export const experience = pgTable("experience", {
-	id: uuid().defaultRandom().primaryKey(),
+export const experience = sqliteTable("experience", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	title: text().notNull(),
 	company: text().notNull(),
-	logoId: uuid().references(() => media.id, { onDelete: "set null" }),
+	logoId: text().references(() => media.id, { onDelete: "set null" }),
 	period: text().notNull(),
 	description: text(),
-	// Responsibilities stored as a JSON string array for easy mapping in the frontend
-	responsibilities: text().array().notNull().default(sql`'{}'::text[]`),
+	responsibilities: text().notNull().default("[]"),
 	...timestamps,
 });
 
-export const media = pgTable("media", {
-	id: uuid().defaultRandom().primaryKey(),
+export const media = sqliteTable("media", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
 	keyDirectory: text().notNull(),
 	keyPath: text().notNull(),
 	url: text().notNull(),
@@ -182,9 +195,11 @@ export const media = pgTable("media", {
 
 // --- Interaction & Join Tables ---
 
-export const projectLike = pgTable("project_like", {
-	id: uuid().defaultRandom().primaryKey(),
-	projectId: uuid()
+export const projectLike = sqliteTable("project_like", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	projectId: text()
 		.notNull()
 		.references(() => project.id, { onDelete: "cascade" }),
 	userId: text()
@@ -193,38 +208,47 @@ export const projectLike = pgTable("project_like", {
 	createdAt,
 });
 
-export const projectToTechnologies = pgTable("project_to_technologies", {
-	id: uuid().defaultRandom().primaryKey(),
-	projectId: uuid()
+export const projectToTechnologies = sqliteTable("project_to_technologies", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	projectId: text()
 		.notNull()
 		.references(() => project.id, { onDelete: "cascade" }),
-	technologyId: uuid()
+	technologyId: text()
 		.notNull()
 		.references(() => technology.id, { onDelete: "cascade" }),
 	order: integer().notNull().default(0),
 });
 
-export const projectToTags = pgTable("project_to_tags", {
-	id: uuid().defaultRandom().primaryKey(),
-	projectId: uuid()
+export const projectToTags = sqliteTable("project_to_tags", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	projectId: text()
 		.notNull()
 		.references(() => project.id, { onDelete: "cascade" }),
-	tagId: uuid()
+	tagId: text()
 		.notNull()
 		.references(() => tag.id, { onDelete: "cascade" }),
 	order: integer().notNull().default(0),
 });
 
-export const experienceToTechnologies = pgTable("experience_to_technologies", {
-	id: uuid().defaultRandom().primaryKey(),
-	experienceId: uuid()
-		.notNull()
-		.references(() => experience.id, { onDelete: "cascade" }),
-	technologyId: uuid()
-		.notNull()
-		.references(() => technology.id, { onDelete: "cascade" }),
-	order: integer().notNull().default(0),
-});
+export const experienceToTechnologies = sqliteTable(
+	"experience_to_technologies",
+	{
+		id: text()
+			.primaryKey()
+			.$defaultFn(() => crypto.randomUUID()),
+		experienceId: text()
+			.notNull()
+			.references(() => experience.id, { onDelete: "cascade" }),
+		technologyId: text()
+			.notNull()
+			.references(() => technology.id, { onDelete: "cascade" }),
+		order: integer().notNull().default(0),
+	},
+);
 
 // --- Relations ---
 

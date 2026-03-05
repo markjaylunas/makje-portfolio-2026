@@ -3,5 +3,14 @@
   "name": "makje-portfolio",
   "compatibility_date": "2025-09-02",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry"
+  "main": "@tanstack/react-start/server-entry",
+   "d1_databases": [
+        {
+            "binding": "DB",
+            "database_name": "makje-portfolio-2026",
+            "database_id": "e8454536-270c-4e15-a51e-d4a290aef416",
+            "migrations_dir": "src/db/migrations",
+            "remote": true
+        }
+    ]
 }

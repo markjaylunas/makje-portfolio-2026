@@ -10,6 +10,10 @@ export const env = createEnv({
 		GOOGLE_CLIENT_SECRET: z.string(),
 		GITHUB_CLIENT_ID: z.string(),
 		GITHUB_CLIENT_SECRET: z.string(),
+		CLOUDFLARE_ACCOUNT_ID: z.string(),
+		CLOUDFLARE_DATABASE_ID: z.string(),
+		CLOUDFLARE_DATABASE_TOKEN: z.string(),
+		R2_PUBLIC_URL: z.string(),
 	},
 
 	/**
