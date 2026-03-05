@@ -267,7 +267,7 @@ export default function CreateTechnologyForm() {
 							className="w-full"
 							disabled={!canSubmit || isSubmitting || isPending}
 						>
-							{isSubmitting || isPending ? "Saving..." : "Create Technology"}
+							{isSubmitting || isPending ? "Saving..." : "Submit"}
 						</Button>
 					)}
 				</form.Subscribe>
