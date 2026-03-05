@@ -1,4 +1,5 @@
 import type { NewMedia } from "@/db/types";
+import { env } from "@/env";
 import { BUCKET_DIRECTORIES } from "@/lib/bucket-directories";
 
 const uploadFileToR2 = async (keyDirectory: string, file: File) => {
@@ -21,11 +22,13 @@ const uploadFileToR2 = async (keyDirectory: string, file: File) => {
 		throw new Error("Failed to upload file");
 	}
 
+	const publicUrl = `${env.R2_PUBLIC_URL}/${key}`;
+
 	const media: NewMedia = {
 		fileName: file.name,
 		keyPath: key,
 		keyDirectory: keyDirectory,
-		url: response.url,
+		url: publicUrl,
 		contentType: file.type,
 		size: file.size,
 		altText: file.name.split(".").slice(0, -1).join("."),
