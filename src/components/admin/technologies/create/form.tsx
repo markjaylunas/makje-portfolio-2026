@@ -1,4 +1,4 @@
-import { Close, Refresh } from "@hugeicons/core-free-icons";
+import { Close, Loading03Icon, Refresh } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -267,7 +267,10 @@ export default function CreateTechnologyForm() {
 							className="w-full"
 							disabled={!canSubmit || isSubmitting || isPending}
 						>
-							{isSubmitting || isPending ? "Saving..." : "Submit"}
+							{(isSubmitting || isPending) && (
+								<HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
+							)}
+							Submit
 						</Button>
 					)}
 				</form.Subscribe>
