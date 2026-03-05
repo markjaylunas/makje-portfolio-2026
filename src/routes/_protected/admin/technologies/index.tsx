@@ -1,15 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 import CreateButton from "@/components/common/create-button";
-import { db } from "@/db";
-
-const allTechFn = createServerFn({ method: "GET" }).handler(async () => {
-	return await db.query.technology.findMany();
-});
+import { getTechnologyListOptions } from "@/data/options/technology";
 
 export const Route = createFileRoute("/_protected/admin/technologies/")({
 	component: RouteComponent,
-	loader: () => allTechFn(),
+	loader: ({ context }) => {
+		return context.queryClient.ensureQueryData(getTechnologyListOptions);
+	},
 });
 
 function RouteComponent() {

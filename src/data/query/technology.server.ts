@@ -1,3 +1,4 @@
+import { eq, getTableColumns } from "drizzle-orm";
 import { db } from "@/db";
 import { media, technology } from "@/db/schema";
 import type { NewMedia, NewTechnology } from "@/db/types";
@@ -23,9 +24,13 @@ export type SelectTechnologyListWithMedia = Awaited<
 >[0];
 
 export const selectTechnologyListWithMedia = async () => {
-	return await db.query.technology.findMany({
-		with: {
-			icon: true,
-		},
-	});
+	const technologyList = await db
+		.select({
+			...getTableColumns(technology),
+			icon: getTableColumns(media),
+		})
+		.from(technology)
+		.leftJoin(media, eq(media.id, technology.iconId));
+
+	return technologyList;
 };
