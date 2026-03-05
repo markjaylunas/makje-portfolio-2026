@@ -169,7 +169,8 @@ export const experience = pgTable("experience", {
 
 export const media = pgTable("media", {
 	id: uuid().defaultRandom().primaryKey(),
-	storagePath: text().notNull().unique(),
+	keyDirectory: text().notNull(),
+	keyPath: text().notNull(),
 	url: text().notNull(),
 	fileName: text().notNull(),
 	contentType: text(),
