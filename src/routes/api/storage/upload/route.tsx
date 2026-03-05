@@ -1,6 +1,7 @@
 import { env as cfEnv } from "cloudflare:workers";
 import { createFileRoute } from "@tanstack/react-router";
 import { ensureAdminMiddleware } from "@/data/middleware/auth";
+import { env } from "@/env";
 
 export const Route = createFileRoute("/api/storage/upload")({
 	server: {
@@ -38,9 +39,12 @@ export const Route = createFileRoute("/api/storage/upload")({
 						});
 					}
 
+					const publicUrl = `${env.R2_PUBLIC_URL}/${key}`;
+
 					return new Response(
 						JSON.stringify({
 							success: true,
+							publicUrl,
 						}),
 						{
 							status: 200,

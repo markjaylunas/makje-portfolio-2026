@@ -1,6 +1,11 @@
+import z from "zod";
 import type { NewMedia } from "@/db/types";
-import { env } from "@/env";
 import { BUCKET_DIRECTORIES } from "@/lib/bucket-directories";
+
+const UploadResponseSchema = z.object({
+	success: z.boolean(),
+	publicUrl: z.url(),
+});
 
 const uploadFileToR2 = async (keyDirectory: string, file: File) => {
 	if (file.size > 1024 * 1024 * 5) {
@@ -22,7 +27,9 @@ const uploadFileToR2 = async (keyDirectory: string, file: File) => {
 		throw new Error("Failed to upload file");
 	}
 
-	const publicUrl = `${env.R2_PUBLIC_URL}/${key}`;
+	const result = await response.json();
+
+	const publicUrl = UploadResponseSchema.parse(result).publicUrl;
 
 	const media: NewMedia = {
 		fileName: file.name,
