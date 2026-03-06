@@ -16,7 +16,7 @@ export default function TechnologyTableSearchDebounced() {
 	const navigate = Route.useNavigate();
 
 	const handleSearch = (value: string) => {
-		navigate({ search: { query: value }, replace: true });
+		navigate({ search: { query: value }, replace: false });
 	};
 
 	return (
