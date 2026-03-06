@@ -6,7 +6,7 @@ export default function TechCard({
 	name,
 	url,
 }: {
-	icon: string;
+	icon: string | undefined;
 	colors: string;
 	name: string;
 	url: string;

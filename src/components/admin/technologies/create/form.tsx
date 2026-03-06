@@ -60,7 +60,7 @@ export default function CreateTechnologyForm() {
 				<form.Subscribe selector={(state) => state.values}>
 					{(values) => (
 						<TechCard
-							icon={values.iconSVG || ""}
+							icon={values.iconSVG || undefined}
 							colors={values.brandColors.join(", ")}
 							name={values.name}
 							url={values.url}
