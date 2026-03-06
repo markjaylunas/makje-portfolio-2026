@@ -1,7 +1,6 @@
 /** biome-ignore-all lint/correctness/useUniqueElementIds: <ignore for home section navigation ids> */
 
 import { createFileRoute } from "@tanstack/react-router";
-import { Suspense } from "react";
 import ExperienceTimelineSection from "@/components/home/experience/timeline-section";
 import HeroSection from "@/components/home/hero/hero-section";
 import TechListSection from "@/components/home/technologies/tech-list-section";
@@ -26,9 +25,7 @@ function App() {
 			</ContentMotion>
 			<div id="tech-stack" className="h-24" />
 			<ContentMotion>
-				<Suspense fallback={<div>Loading...</div>}>
-					<TechListSection />
-				</Suspense>
+				<TechListSection />
 			</ContentMotion>
 		</>
 	);
