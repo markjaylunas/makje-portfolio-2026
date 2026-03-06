@@ -5,7 +5,7 @@ import { auth } from "@/lib/auth";
 
 export const authFnMiddleware = createMiddleware({ type: "function" }).server(
 	async ({ next }) => {
-		const headers = await getRequestHeaders()();
+		const headers = await getRequestHeaders();
 		const session = await auth.api.getSession({ headers });
 
 		if (!session) {
@@ -18,7 +18,7 @@ export const authFnMiddleware = createMiddleware({ type: "function" }).server(
 
 export const authMiddleware = createMiddleware({ type: "request" }).server(
 	async ({ next }) => {
-		const headers = await getRequestHeaders()();
+		const headers = await getRequestHeaders();
 		const session = await auth.api.getSession({ headers });
 
 		if (!session) {
@@ -32,7 +32,7 @@ export const authMiddleware = createMiddleware({ type: "request" }).server(
 export const ensureAdminMiddleware = createMiddleware({
 	type: "request",
 }).server(async ({ next }) => {
-	const headers = await getRequestHeaders()();
+	const headers = await getRequestHeaders();
 	const session = await auth.api.getSession({ headers });
 
 	const isAdmin = session?.user.role === "admin";
@@ -47,7 +47,7 @@ export const ensureAdminMiddleware = createMiddleware({
 export const ensureAdminFnMiddleware = createMiddleware({
 	type: "function",
 }).server(async ({ next }) => {
-	const headers = await getRequestHeaders()();
+	const headers = await getRequestHeaders();
 	const session = await auth.api.getSession({ headers });
 
 	const isAdmin = session?.user.role === "admin";
