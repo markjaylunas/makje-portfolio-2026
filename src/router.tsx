@@ -6,7 +6,9 @@ export function getRouter() {
 	const router = createTanStackRouter({
 		routeTree,
 		context: {
-			queryClient: new QueryClient(),
+			queryClient: new QueryClient({
+				defaultOptions: { queries: { staleTime: Infinity } },
+			}),
 		},
 
 		scrollRestoration: true,
