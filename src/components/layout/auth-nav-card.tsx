@@ -1,6 +1,7 @@
 import {
 	LoginIcon,
 	LogoutIcon,
+	UserShield01Icon,
 	UserSwitchIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
@@ -15,6 +16,7 @@ export default function AuthNavCard() {
 	const { data: session } = authClient.useSession();
 	const user = session?.user;
 	const isAnonymous = session?.user.isAnonymous;
+	const isAdmin = session?.user.role === "admin";
 
 	const pathname = useLocation({
 		select: (location) => location.pathname,
@@ -28,7 +30,17 @@ export default function AuthNavCard() {
 	return (
 		<div>
 			{user ? (
-				<div>
+				<div className="space-y-2">
+					{isAdmin && (
+						<InternalLink
+							name="Admin"
+							to="/admin"
+							hash=""
+							description="Admin Dashboard"
+							icon={UserShield01Icon}
+							onClick={() => {}}
+						/>
+					)}
 					<div className="flex items-center gap-2">
 						<Avatar>
 							<AvatarImage src={user.image || ""} />
