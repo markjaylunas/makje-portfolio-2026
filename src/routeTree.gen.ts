@@ -26,6 +26,7 @@ import { Route as ProtectedAdminTagsIndexRouteImport } from './routes/_protected
 import { Route as ProtectedAdminProjectsIndexRouteImport } from './routes/_protected/admin/projects/index'
 import { Route as ProtectedAdminExperienceIndexRouteImport } from './routes/_protected/admin/experience/index'
 import { Route as ProtectedAdminTechnologiesCreateRouteImport } from './routes/_protected/admin/technologies/create'
+import { Route as ProtectedAdminTechnologiesTechnologyIdEditRouteImport } from './routes/_protected/admin/technologies/$technologyId/edit'
 
 const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',
@@ -113,6 +114,12 @@ const ProtectedAdminTechnologiesCreateRoute =
     path: '/technologies/create',
     getParentRoute: () => ProtectedAdminRouteRoute,
   } as any)
+const ProtectedAdminTechnologiesTechnologyIdEditRoute =
+  ProtectedAdminTechnologiesTechnologyIdEditRouteImport.update({
+    id: '/technologies/$technologyId/edit',
+    path: '/technologies/$technologyId/edit',
+    getParentRoute: () => ProtectedAdminRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/admin/projects/': typeof ProtectedAdminProjectsIndexRoute
   '/admin/tags/': typeof ProtectedAdminTagsIndexRoute
   '/admin/technologies/': typeof ProtectedAdminTechnologiesIndexRoute
+  '/admin/technologies/$technologyId/edit': typeof ProtectedAdminTechnologiesTechnologyIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
@@ -144,6 +152,7 @@ export interface FileRoutesByTo {
   '/admin/projects': typeof ProtectedAdminProjectsIndexRoute
   '/admin/tags': typeof ProtectedAdminTagsIndexRoute
   '/admin/technologies': typeof ProtectedAdminTechnologiesIndexRoute
+  '/admin/technologies/$technologyId/edit': typeof ProtectedAdminTechnologiesTechnologyIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -164,6 +173,7 @@ export interface FileRoutesById {
   '/_protected/admin/projects/': typeof ProtectedAdminProjectsIndexRoute
   '/_protected/admin/tags/': typeof ProtectedAdminTagsIndexRoute
   '/_protected/admin/technologies/': typeof ProtectedAdminTechnologiesIndexRoute
+  '/_protected/admin/technologies/$technologyId/edit': typeof ProtectedAdminTechnologiesTechnologyIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -182,6 +192,7 @@ export interface FileRouteTypes {
     | '/admin/projects/'
     | '/admin/tags/'
     | '/admin/technologies/'
+    | '/admin/technologies/$technologyId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -197,6 +208,7 @@ export interface FileRouteTypes {
     | '/admin/projects'
     | '/admin/tags'
     | '/admin/technologies'
+    | '/admin/technologies/$technologyId/edit'
   id:
     | '__root__'
     | '/_auth'
@@ -216,6 +228,7 @@ export interface FileRouteTypes {
     | '/_protected/admin/projects/'
     | '/_protected/admin/tags/'
     | '/_protected/admin/technologies/'
+    | '/_protected/admin/technologies/$technologyId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -347,6 +360,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminTechnologiesCreateRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
     }
+    '/_protected/admin/technologies/$technologyId/edit': {
+      id: '/_protected/admin/technologies/$technologyId/edit'
+      path: '/technologies/$technologyId/edit'
+      fullPath: '/admin/technologies/$technologyId/edit'
+      preLoaderRoute: typeof ProtectedAdminTechnologiesTechnologyIdEditRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
+    }
   }
 }
 
@@ -386,6 +406,7 @@ interface ProtectedAdminRouteRouteChildren {
   ProtectedAdminProjectsIndexRoute: typeof ProtectedAdminProjectsIndexRoute
   ProtectedAdminTagsIndexRoute: typeof ProtectedAdminTagsIndexRoute
   ProtectedAdminTechnologiesIndexRoute: typeof ProtectedAdminTechnologiesIndexRoute
+  ProtectedAdminTechnologiesTechnologyIdEditRoute: typeof ProtectedAdminTechnologiesTechnologyIdEditRoute
 }
 
 const ProtectedAdminRouteRouteChildren: ProtectedAdminRouteRouteChildren = {
@@ -396,6 +417,8 @@ const ProtectedAdminRouteRouteChildren: ProtectedAdminRouteRouteChildren = {
   ProtectedAdminProjectsIndexRoute: ProtectedAdminProjectsIndexRoute,
   ProtectedAdminTagsIndexRoute: ProtectedAdminTagsIndexRoute,
   ProtectedAdminTechnologiesIndexRoute: ProtectedAdminTechnologiesIndexRoute,
+  ProtectedAdminTechnologiesTechnologyIdEditRoute:
+    ProtectedAdminTechnologiesTechnologyIdEditRoute,
 }
 
 const ProtectedAdminRouteRouteWithChildren =
