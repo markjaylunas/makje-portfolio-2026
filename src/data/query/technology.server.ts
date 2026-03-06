@@ -1,4 +1,4 @@
-import { eq, getTableColumns } from "drizzle-orm";
+import { eq, like } from "drizzle-orm";
 import { db } from "@/db";
 import { media, technology } from "@/db/schema";
 import type { NewMedia, NewTechnology } from "@/db/types";
@@ -23,14 +23,29 @@ export type SelectTechnologyListWithMedia = Awaited<
 	ReturnType<typeof selectTechnologyListWithMedia>
 >[0];
 
-export const selectTechnologyListWithMedia = async () => {
-	const technologyList = await db
+export const selectTechnologyListWithMedia = async ({
+	query = "",
+}: {
+	query?: string;
+}) => {
+	const qb = db
 		.select({
-			...getTableColumns(technology),
-			icon: getTableColumns(media),
+			technology,
+			media,
 		})
 		.from(technology)
-		.leftJoin(media, eq(media.id, technology.iconId));
+		.leftJoin(media, eq(media.id, technology.iconId))
+		.$dynamic();
 
+	if (query) {
+		qb.where(like(technology.name, `%${query}%`));
+	}
+
+	const rawList = await qb;
+
+	const technologyList = rawList.map((row) => ({
+		...row.technology,
+		icon: row.media?.url ?? null,
+	}));
 	return technologyList;
 };

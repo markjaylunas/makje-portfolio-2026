@@ -13,7 +13,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { SelectTechnologyListWithMedia } from "@/data/query/technology.server";
-import type { Media } from "@/db/types";
 import { getContrastColor } from "@/lib/utils";
 
 export const columns: ColumnDef<SelectTechnologyListWithMedia>[] = [
@@ -21,9 +20,10 @@ export const columns: ColumnDef<SelectTechnologyListWithMedia>[] = [
 		accessorKey: "icon",
 		header: "Icon",
 		cell: ({ row }) => {
-			const icon = row.original.icon;
+			const name = row.original.name;
+			const icon = row.original.icon ? row.original.icon : undefined;
 			if (!icon) return null;
-			return <TechnologyIconImage icon={icon} />;
+			return <TechnologyIconImage icon={icon} name={name} />;
 		},
 	},
 	{
@@ -52,10 +52,14 @@ export const columns: ColumnDef<SelectTechnologyListWithMedia>[] = [
 	},
 ];
 
-export const TechnologyIconImage = ({ icon }: { icon: Media }) => {
-	return (
-		<img src={icon.url} alt={icon.altText || ""} className="size-12 p-1" />
-	);
+export const TechnologyIconImage = ({
+	icon,
+	name,
+}: {
+	icon: string;
+	name: string;
+}) => {
+	return <img src={icon} alt={name} className="size-12 p-1" />;
 };
 
 export const TechnologyBrandColorList = ({

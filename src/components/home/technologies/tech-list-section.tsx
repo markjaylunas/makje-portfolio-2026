@@ -14,7 +14,7 @@ export default function TechListSection() {
 	const [showStatus, setShowStatus] = useState<ShowStatus>("initial");
 	const sectionHeadingId = "tech-stack";
 
-	const { data: technologies } = useSuspenseQuery(getTechnologyListOptions);
+	const { data: technologies } = useSuspenseQuery(getTechnologyListOptions({}));
 
 	// Logic: Determine how many items to show based on status
 	const getVisibleCount = () => {
@@ -57,7 +57,7 @@ export default function TechListSection() {
 				{visibleTech.map((tech) => (
 					<li key={tech.name}>
 						<TechCard
-							icon={tech.icon?.url}
+							icon={tech.icon ?? undefined}
 							colors={tech.brandColor}
 							name={tech.name}
 							url={tech.url}

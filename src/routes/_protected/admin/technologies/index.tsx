@@ -2,11 +2,18 @@ import { createFileRoute } from "@tanstack/react-router";
 import TechnologyTable from "@/components/admin/technologies/table";
 import CreateButton from "@/components/common/create-button";
 import { getTechnologyListOptions } from "@/data/options/technology";
+import { searchSchema } from "@/form-validators/technologies";
 
 export const Route = createFileRoute("/_protected/admin/technologies/")({
 	component: RouteComponent,
-	loader: ({ context }) => {
-		return context.queryClient.ensureQueryData(getTechnologyListOptions);
+	loaderDeps: ({ search }) => ({
+		query: search.query,
+	}),
+	validateSearch: searchSchema,
+	loader: ({ context, deps: { query } }) => {
+		return context.queryClient.ensureQueryData(
+			getTechnologyListOptions({ query }),
+		);
 	},
 });
 

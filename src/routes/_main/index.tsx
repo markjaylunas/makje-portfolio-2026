@@ -10,7 +10,7 @@ import { getTechnologyListOptions } from "@/data/options/technology";
 export const Route = createFileRoute("/_main/")({
 	component: App,
 	loader: ({ context }) => {
-		return context.queryClient.ensureQueryData(getTechnologyListOptions);
+		return context.queryClient.ensureQueryData(getTechnologyListOptions({}));
 	},
 });
 

@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getTechnologyListFnSchema } from "@/form-validators/technologies";
 import { createTechnologyFnSchema } from "@/form-validators/technologies/create";
 import { authFnMiddleware } from "../middleware/auth";
 import {
@@ -13,8 +14,8 @@ export const createTechnologyFn = createServerFn({ method: "POST" })
 		return await insertTechnology(data.newTechnology, data.newMedia);
 	});
 
-export const getTechnologyListFn = createServerFn({ method: "GET" }).handler(
-	async () => {
-		return await selectTechnologyListWithMedia();
-	},
-);
+export const getTechnologyListFn = createServerFn({ method: "GET" })
+	.inputValidator(getTechnologyListFnSchema)
+	.handler(async ({ data }) => {
+		return await selectTechnologyListWithMedia(data);
+	});
