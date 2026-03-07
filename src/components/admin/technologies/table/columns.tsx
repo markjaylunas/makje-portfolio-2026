@@ -113,13 +113,23 @@ export const TechnologyActions = ({
 					<DropdownMenuItem
 						render={
 							<Link
+								to="/admin/technologies/$technologyId"
+								params={{ technologyId: technology.id }}
+							>
+								View Technology Card
+							</Link>
+						}
+					/>
+					<DropdownMenuItem
+						render={
+							<Link
 								to="/admin/technologies/$technologyId/edit"
 								params={{ technologyId: technology.id }}
 							>
 								Edit Technology
 							</Link>
 						}
-					></DropdownMenuItem>
+					/>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>

@@ -19,6 +19,28 @@ export const insertTechnology = async (
 	return { ...technologyResult, icon: mediaResult };
 };
 
+export type SelectTechnologyWithMedia = Awaited<
+	ReturnType<typeof selectTechnologyWithMedia>
+>;
+
+export const selectTechnologyWithMedia = async ({
+	technologyId,
+}: {
+	technologyId: string;
+}) => {
+	const [{ media: mediaResult, technology: technologyResult }] = await db
+		.select({
+			technology,
+			media,
+		})
+		.from(technology)
+		.where(eq(technology.id, technologyId))
+		.leftJoin(media, eq(media.id, technology.iconId))
+		.limit(1);
+
+	return { ...technologyResult, icon: mediaResult };
+};
+
 export type SelectTechnologyListWithMedia = Awaited<
 	ReturnType<typeof selectTechnologyListWithMedia>
 >[0];
