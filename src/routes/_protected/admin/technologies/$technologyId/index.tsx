@@ -23,7 +23,13 @@ function RouteComponent() {
 			<H2 className="text-center">{name}</H2>
 
 			<div className="border rounded-lg p-4 size-56">
-				<TechCard colors={brandColor} icon={icon?.url} name={name} url={url} />
+				<TechCard
+					colors={brandColor}
+					icon={icon?.url}
+					name={name}
+					url={url}
+					alt={icon?.altText ?? undefined}
+				/>
 			</div>
 		</main>
 	);

@@ -67,7 +67,7 @@ export const selectTechnologyListWithMedia = async ({
 
 	const technologyList = rawList.map((row) => ({
 		...row.technology,
-		icon: row.media?.url ?? null,
+		icon: row.media,
 	}));
 	return technologyList;
 };

@@ -57,10 +57,11 @@ export default function TechListSection() {
 				{visibleTech.map((tech) => (
 					<li key={tech.name}>
 						<TechCard
-							icon={tech.icon ?? undefined}
+							icon={tech.icon?.url ?? undefined}
 							colors={tech.brandColor}
 							name={tech.name}
 							url={tech.url}
+							alt={tech.icon?.altText ?? undefined}
 						/>
 					</li>
 				))}

@@ -5,11 +5,13 @@ export default function TechCard({
 	colors,
 	name,
 	url,
+	alt,
 }: {
-	icon: string | undefined;
+	icon?: string;
 	colors: string;
 	name: string;
 	url: string;
+	alt?: string;
 }) {
 	return (
 		<a
@@ -23,7 +25,7 @@ export default function TechCard({
 					<div className="absolute flex flex-col items-center justify-center ">
 						<img
 							src={icon}
-							alt={name}
+							alt={alt}
 							className="size-10 transition-all duration-500 grayscale-100 group-hover:grayscale-0 mt-4 group-hover:mt-0"
 						/>
 						<p className="transition-opacity duration-400 opacity-0  group-hover:opacity-100">
