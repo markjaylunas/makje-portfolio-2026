@@ -15,13 +15,13 @@ import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
 import { Route as MainContactRouteImport } from './routes/_main/contact'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as ApiHealthRouteRouteImport } from './routes/api/health/route'
 import { Route as ProtectedAdminRouteRouteImport } from './routes/_protected/admin/route'
 import { Route as ProtectedAdminIndexRouteImport } from './routes/_protected/admin/index'
 import { Route as MainProjectsIndexRouteImport } from './routes/_main/projects/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ProtectedAdminDashboardRouteImport } from './routes/_protected/admin/dashboard'
 import { Route as ApiStorageUploadRouteRouteImport } from './routes/api/storage/upload/route'
-import { Route as ApiStorageHealthRouteRouteImport } from './routes/api/storage/health/route'
 import { Route as ApiStorageCleanupRouteRouteImport } from './routes/api/storage/cleanup/route'
 import { Route as ProtectedAdminTechnologiesIndexRouteImport } from './routes/_protected/admin/technologies/index'
 import { Route as ProtectedAdminTagsIndexRouteImport } from './routes/_protected/admin/tags/index'
@@ -58,6 +58,11 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const ApiHealthRouteRoute = ApiHealthRouteRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProtectedAdminRouteRoute = ProtectedAdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -86,11 +91,6 @@ const ProtectedAdminDashboardRoute = ProtectedAdminDashboardRouteImport.update({
 const ApiStorageUploadRouteRoute = ApiStorageUploadRouteRouteImport.update({
   id: '/api/storage/upload',
   path: '/api/storage/upload',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiStorageHealthRouteRoute = ApiStorageHealthRouteRouteImport.update({
-  id: '/api/storage/health',
-  path: '/api/storage/health',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiStorageCleanupRouteRoute = ApiStorageCleanupRouteRouteImport.update({
@@ -143,10 +143,10 @@ const ProtectedAdminTechnologiesTechnologyIdEditRoute =
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
   '/admin': typeof ProtectedAdminRouteRouteWithChildren
+  '/api/health': typeof ApiHealthRouteRoute
   '/login': typeof AuthLoginRoute
   '/contact': typeof MainContactRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
-  '/api/storage/health': typeof ApiStorageHealthRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -162,10 +162,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
+  '/api/health': typeof ApiHealthRouteRoute
   '/login': typeof AuthLoginRoute
   '/contact': typeof MainContactRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
-  '/api/storage/health': typeof ApiStorageHealthRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -185,11 +185,11 @@ export interface FileRoutesById {
   '/_main': typeof MainRouteRouteWithChildren
   '/_protected': typeof ProtectedRouteWithChildren
   '/_protected/admin': typeof ProtectedAdminRouteRouteWithChildren
+  '/api/health': typeof ApiHealthRouteRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_main/contact': typeof MainContactRoute
   '/_main/': typeof MainIndexRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
-  '/api/storage/health': typeof ApiStorageHealthRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/_protected/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -208,10 +208,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/api/health'
     | '/login'
     | '/contact'
     | '/api/storage/cleanup'
-    | '/api/storage/health'
     | '/api/storage/upload'
     | '/admin/dashboard'
     | '/api/auth/$'
@@ -227,10 +227,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/api/health'
     | '/login'
     | '/contact'
     | '/api/storage/cleanup'
-    | '/api/storage/health'
     | '/api/storage/upload'
     | '/admin/dashboard'
     | '/api/auth/$'
@@ -249,11 +249,11 @@ export interface FileRouteTypes {
     | '/_main'
     | '/_protected'
     | '/_protected/admin'
+    | '/api/health'
     | '/_auth/login'
     | '/_main/contact'
     | '/_main/'
     | '/api/storage/cleanup'
-    | '/api/storage/health'
     | '/api/storage/upload'
     | '/_protected/admin/dashboard'
     | '/api/auth/$'
@@ -272,8 +272,8 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   MainRouteRoute: typeof MainRouteRouteWithChildren
   ProtectedRoute: typeof ProtectedRouteWithChildren
+  ApiHealthRouteRoute: typeof ApiHealthRouteRoute
   ApiStorageCleanupRouteRoute: typeof ApiStorageCleanupRouteRoute
-  ApiStorageHealthRouteRoute: typeof ApiStorageHealthRouteRoute
   ApiStorageUploadRouteRoute: typeof ApiStorageUploadRouteRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
@@ -322,6 +322,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_protected/admin': {
       id: '/_protected/admin'
       path: '/admin'
@@ -362,13 +369,6 @@ declare module '@tanstack/react-router' {
       path: '/api/storage/upload'
       fullPath: '/api/storage/upload'
       preLoaderRoute: typeof ApiStorageUploadRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/storage/health': {
-      id: '/api/storage/health'
-      path: '/api/storage/health'
-      fullPath: '/api/storage/health'
-      preLoaderRoute: typeof ApiStorageHealthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/storage/cleanup': {
@@ -503,8 +503,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   MainRouteRoute: MainRouteRouteWithChildren,
   ProtectedRoute: ProtectedRouteWithChildren,
+  ApiHealthRouteRoute: ApiHealthRouteRoute,
   ApiStorageCleanupRouteRoute: ApiStorageCleanupRouteRoute,
-  ApiStorageHealthRouteRoute: ApiStorageHealthRouteRoute,
   ApiStorageUploadRouteRoute: ApiStorageUploadRouteRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }

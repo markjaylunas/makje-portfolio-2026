@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { sql } from "drizzle-orm";
 import { db } from "@/db";
 
-export const Route = createFileRoute("/api/storage/health")({
+export const Route = createFileRoute("/api/health")({
 	server: {
 		handlers: {
 			GET: async () => {
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/api/storage/health")({
 							status: 200,
 							headers: { "Content-Type": "application/json" },
 						},
-					);
+					)
 				} catch (error: unknown) {
 					const errorMessage =
 						error instanceof Error ? error.message : "Unknown error";
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/api/storage/health")({
 							status: 500,
 							headers: { "Content-Type": "application/json" },
 						},
-					);
+					)
 				}
 			},
 		},
