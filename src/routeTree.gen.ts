@@ -21,6 +21,7 @@ import { Route as MainProjectsIndexRouteImport } from './routes/_main/projects/i
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ProtectedAdminDashboardRouteImport } from './routes/_protected/admin/dashboard'
 import { Route as ApiStorageUploadRouteRouteImport } from './routes/api/storage/upload/route'
+import { Route as ApiStorageCleanupRouteRouteImport } from './routes/api/storage/cleanup/route'
 import { Route as ProtectedAdminTechnologiesIndexRouteImport } from './routes/_protected/admin/technologies/index'
 import { Route as ProtectedAdminTagsIndexRouteImport } from './routes/_protected/admin/tags/index'
 import { Route as ProtectedAdminProjectsIndexRouteImport } from './routes/_protected/admin/projects/index'
@@ -86,6 +87,11 @@ const ApiStorageUploadRouteRoute = ApiStorageUploadRouteRouteImport.update({
   path: '/api/storage/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStorageCleanupRouteRoute = ApiStorageCleanupRouteRouteImport.update({
+  id: '/api/storage/cleanup',
+  path: '/api/storage/cleanup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProtectedAdminTechnologiesIndexRoute =
   ProtectedAdminTechnologiesIndexRouteImport.update({
     id: '/technologies/',
@@ -133,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof ProtectedAdminRouteRouteWithChildren
   '/login': typeof AuthLoginRoute
   '/contact': typeof MainContactRoute
+  '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
   '/login': typeof AuthLoginRoute
   '/contact': typeof MainContactRoute
+  '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -172,6 +180,7 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRoute
   '/_main/contact': typeof MainContactRoute
   '/_main/': typeof MainIndexRoute
+  '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/_protected/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -192,6 +201,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/login'
     | '/contact'
+    | '/api/storage/cleanup'
     | '/api/storage/upload'
     | '/admin/dashboard'
     | '/api/auth/$'
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/contact'
+    | '/api/storage/cleanup'
     | '/api/storage/upload'
     | '/admin/dashboard'
     | '/api/auth/$'
@@ -230,6 +241,7 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_main/contact'
     | '/_main/'
+    | '/api/storage/cleanup'
     | '/api/storage/upload'
     | '/_protected/admin/dashboard'
     | '/api/auth/$'
@@ -248,6 +260,7 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   MainRouteRoute: typeof MainRouteRouteWithChildren
   ProtectedRoute: typeof ProtectedRouteWithChildren
+  ApiStorageCleanupRouteRoute: typeof ApiStorageCleanupRouteRoute
   ApiStorageUploadRouteRoute: typeof ApiStorageUploadRouteRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
@@ -336,6 +349,13 @@ declare module '@tanstack/react-router' {
       path: '/api/storage/upload'
       fullPath: '/api/storage/upload'
       preLoaderRoute: typeof ApiStorageUploadRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/storage/cleanup': {
+      id: '/api/storage/cleanup'
+      path: '/api/storage/cleanup'
+      fullPath: '/api/storage/cleanup'
+      preLoaderRoute: typeof ApiStorageCleanupRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_protected/admin/technologies/': {
@@ -463,6 +483,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   MainRouteRoute: MainRouteRouteWithChildren,
   ProtectedRoute: ProtectedRouteWithChildren,
+  ApiStorageCleanupRouteRoute: ApiStorageCleanupRouteRoute,
   ApiStorageUploadRouteRoute: ApiStorageUploadRouteRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }

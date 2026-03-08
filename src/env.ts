@@ -13,6 +13,7 @@ export const env = createEnv({
 		CLOUDFLARE_DATABASE_ID: z.string(),
 		CLOUDFLARE_DATABASE_TOKEN: z.string(),
 		R2_PUBLIC_URL: z.string(),
+		CRON_SECRET: z.string(),
 	},
 
 	/**
