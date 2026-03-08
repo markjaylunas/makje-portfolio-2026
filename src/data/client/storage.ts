@@ -1,5 +1,5 @@
 import z from "zod";
-import type { NewMedia } from "@/db/types";
+import type { InsertMedia } from "@/db/types";
 import { BUCKET_DIRECTORIES } from "@/lib/bucket-directories";
 
 const UploadResponseSchema = z.object({
@@ -31,7 +31,7 @@ const uploadFileToR2 = async (keyDirectory: string, file: File) => {
 
 	const publicUrl = UploadResponseSchema.parse(result).publicUrl;
 
-	const media: NewMedia = {
+	const media: InsertMedia = {
 		fileName: file.name,
 		keyPath: key,
 		keyDirectory: keyDirectory,

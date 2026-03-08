@@ -1,19 +1,58 @@
 import { eq, like } from "drizzle-orm";
 import { db } from "@/db";
 import { media, technology } from "@/db/schema";
-import type { NewMedia, NewTechnology } from "@/db/types";
+import type {
+	InsertMedia,
+	InsertTechnology,
+	Media,
+	UpdateTechnology,
+} from "@/db/types";
 
 export const insertTechnology = async (
-	newTechnology: NewTechnology,
-	newMedia: NewMedia,
+	newTechnology: InsertTechnology,
+	newMedia: InsertMedia,
 ) => {
 	const [mediaResult] = await db.insert(media).values(newMedia).returning();
+
 	const [technologyResult] = await db
 		.insert(technology)
 		.values({
 			...newTechnology,
 			iconId: mediaResult.id,
 		})
+		.returning();
+
+	return { ...technologyResult, icon: mediaResult };
+};
+
+export const updateTechnology = async ({
+	data: { updateTechnology, newMedia },
+}: {
+	data: { updateTechnology: UpdateTechnology; newMedia?: InsertMedia };
+}) => {
+	let mediaResult: Media | undefined;
+	if (newMedia) {
+		[mediaResult] = await db.insert(media).values(newMedia).returning();
+	} else {
+		const [{ media: mediaSelectResult }] = await db
+			.select({ media })
+			.from(technology)
+			.where(eq(technology.id, updateTechnology.id))
+			.leftJoin(media, eq(media.id, technology.iconId))
+			.limit(1);
+		if (!mediaSelectResult) {
+			throw new Error("Media not found");
+		}
+
+		mediaResult = mediaSelectResult;
+	}
+	const [technologyResult] = await db
+		.update(technology)
+		.set({
+			...updateTechnology,
+			iconId: mediaResult?.id ? mediaResult.id : updateTechnology.iconId,
+		})
+		.where(eq(technology.id, updateTechnology.id))
 		.returning();
 
 	return { ...technologyResult, icon: mediaResult };

@@ -1,40 +1,73 @@
 import { Close, Loading03Icon, Refresh } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import {
+	useMutation,
+	useQueryClient,
+	useSuspenseQuery,
+} from "@tanstack/react-query";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import TechCard from "@/components/home/technologies/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { uploadTechnologyIcon } from "@/data/client/storage";
-import { createTechnologyFn } from "@/data/server/technology.server";
-import type { InsertTechnology } from "@/db/types";
+import { getTechnologyOptions } from "@/data/options/technology";
+import { editTechnologyFn } from "@/data/server/technology.server";
+import type { InsertMedia, UpdateTechnology } from "@/db/types";
 import {
-	defaultValues,
-	type TechnologiesCreateFormSchema,
-	technologiesCreateFormSchema,
-} from "@/form-validators/technologies/create";
+	type TechnologiesEditFormSchema,
+	technologiesEditFormSchema,
+} from "@/form-validators/technologies/edit";
 import { extractColorsFromSVG } from "@/lib/helper";
 
-export default function CreateTechnologyForm() {
+export default function EditTechnologyForm() {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
-	const { mutate: createMutation, isPending } = useMutation({
-		mutationFn: async (value: TechnologiesCreateFormSchema) => {
-			const newMedia = await uploadTechnologyIcon(value.icon);
+	const { technologyId } = useParams({
+		from: "/_protected/admin/technologies/$technologyId/edit",
+	});
 
-			const newTechnology: InsertTechnology = {
+	const { data: defaultTechnology } = useSuspenseQuery(
+		getTechnologyOptions({ technologyId }),
+	);
+
+	const defaultValues: TechnologiesEditFormSchema = {
+		id: defaultTechnology.id,
+		name: defaultTechnology.name,
+		url: defaultTechnology.url,
+		brandColors: defaultTechnology.brandColor.split(", "),
+		brandColorsDefault: defaultTechnology.brandColor.split(", "),
+		iconSVG: defaultTechnology.icon?.url,
+	};
+
+	const form = useForm({
+		defaultValues,
+		onSubmit: ({ value }) => createMutation(value),
+		validators: {
+			onSubmit: technologiesEditFormSchema,
+		},
+	});
+
+	const { mutate: createMutation, isPending } = useMutation({
+		mutationFn: async (value: TechnologiesEditFormSchema) => {
+			let insertMedia: InsertMedia | undefined;
+			if (value.icon) {
+				insertMedia = await uploadTechnologyIcon(value.icon);
+			}
+
+			const editTechnology: UpdateTechnology = {
+				id: defaultTechnology.id,
 				name: value.name,
 				url: value.url,
 				brandColor: value.brandColors.join(", "),
-				iconId: "",
+				iconId: insertMedia?.id ? insertMedia.id : defaultTechnology.iconId,
 			};
 
-			const result = await createTechnologyFn({
-				data: { newTechnology, newMedia },
+			const result = await editTechnologyFn({
+				data: { editTechnology, newMedia: insertMedia },
 			});
 
 			return result;
@@ -43,14 +76,6 @@ export default function CreateTechnologyForm() {
 			queryClient.invalidateQueries({ queryKey: ["technologies"] });
 			form.reset();
 			navigate({ to: "/admin/technologies" });
-		},
-	});
-
-	const form = useForm({
-		defaultValues,
-		onSubmit: ({ value }) => createMutation(value),
-		validators: {
-			onSubmit: technologiesCreateFormSchema,
 		},
 	});
 
@@ -257,18 +282,22 @@ export default function CreateTechnologyForm() {
 				</form.Subscribe>
 
 				<form.Subscribe
-					selector={(state) => [state.canSubmit, state.isSubmitting]}
+					selector={(state) => [
+						state.canSubmit,
+						state.isSubmitting,
+						state.isDirty,
+					]}
 				>
-					{([canSubmit, isSubmitting]) => (
+					{([canSubmit, isSubmitting, isDirty]) => (
 						<Button
 							type="submit"
 							className="w-full"
-							disabled={!canSubmit || isSubmitting || isPending}
+							disabled={!canSubmit || isSubmitting || isPending || !isDirty}
 						>
 							{(isSubmitting || isPending) && (
 								<HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
 							)}
-							Submit
+							Submit Changes
 						</Button>
 					)}
 				</form.Subscribe>
