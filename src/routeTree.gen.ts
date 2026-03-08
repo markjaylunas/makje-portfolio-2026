@@ -21,6 +21,7 @@ import { Route as MainProjectsIndexRouteImport } from './routes/_main/projects/i
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ProtectedAdminDashboardRouteImport } from './routes/_protected/admin/dashboard'
 import { Route as ApiStorageUploadRouteRouteImport } from './routes/api/storage/upload/route'
+import { Route as ApiStorageHealthRouteRouteImport } from './routes/api/storage/health/route'
 import { Route as ApiStorageCleanupRouteRouteImport } from './routes/api/storage/cleanup/route'
 import { Route as ProtectedAdminTechnologiesIndexRouteImport } from './routes/_protected/admin/technologies/index'
 import { Route as ProtectedAdminTagsIndexRouteImport } from './routes/_protected/admin/tags/index'
@@ -87,6 +88,11 @@ const ApiStorageUploadRouteRoute = ApiStorageUploadRouteRouteImport.update({
   path: '/api/storage/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStorageHealthRouteRoute = ApiStorageHealthRouteRouteImport.update({
+  id: '/api/storage/health',
+  path: '/api/storage/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStorageCleanupRouteRoute = ApiStorageCleanupRouteRouteImport.update({
   id: '/api/storage/cleanup',
   path: '/api/storage/cleanup',
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRoute
   '/contact': typeof MainContactRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
+  '/api/storage/health': typeof ApiStorageHealthRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/contact': typeof MainContactRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
+  '/api/storage/health': typeof ApiStorageHealthRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -181,6 +189,7 @@ export interface FileRoutesById {
   '/_main/contact': typeof MainContactRoute
   '/_main/': typeof MainIndexRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
+  '/api/storage/health': typeof ApiStorageHealthRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/_protected/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -202,6 +211,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/contact'
     | '/api/storage/cleanup'
+    | '/api/storage/health'
     | '/api/storage/upload'
     | '/admin/dashboard'
     | '/api/auth/$'
@@ -220,6 +230,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/contact'
     | '/api/storage/cleanup'
+    | '/api/storage/health'
     | '/api/storage/upload'
     | '/admin/dashboard'
     | '/api/auth/$'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/_main/contact'
     | '/_main/'
     | '/api/storage/cleanup'
+    | '/api/storage/health'
     | '/api/storage/upload'
     | '/_protected/admin/dashboard'
     | '/api/auth/$'
@@ -261,6 +273,7 @@ export interface RootRouteChildren {
   MainRouteRoute: typeof MainRouteRouteWithChildren
   ProtectedRoute: typeof ProtectedRouteWithChildren
   ApiStorageCleanupRouteRoute: typeof ApiStorageCleanupRouteRoute
+  ApiStorageHealthRouteRoute: typeof ApiStorageHealthRouteRoute
   ApiStorageUploadRouteRoute: typeof ApiStorageUploadRouteRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
@@ -349,6 +362,13 @@ declare module '@tanstack/react-router' {
       path: '/api/storage/upload'
       fullPath: '/api/storage/upload'
       preLoaderRoute: typeof ApiStorageUploadRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/storage/health': {
+      id: '/api/storage/health'
+      path: '/api/storage/health'
+      fullPath: '/api/storage/health'
+      preLoaderRoute: typeof ApiStorageHealthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/storage/cleanup': {
@@ -484,6 +504,7 @@ const rootRouteChildren: RootRouteChildren = {
   MainRouteRoute: MainRouteRouteWithChildren,
   ProtectedRoute: ProtectedRouteWithChildren,
   ApiStorageCleanupRouteRoute: ApiStorageCleanupRouteRoute,
+  ApiStorageHealthRouteRoute: ApiStorageHealthRouteRoute,
   ApiStorageUploadRouteRoute: ApiStorageUploadRouteRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
