@@ -29,7 +29,7 @@ function RouteComponent() {
 
 			<TechnologyTable />
 
-			<FeaturedTechnologyCardList />
+			<FeaturedTechnologyCardList className="mt-12" />
 		</main>
 	);
 }
