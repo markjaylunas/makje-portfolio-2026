@@ -24,9 +24,10 @@ export const columns: ColumnDef<SelectTechnologyListWithMedia>[] = [
 		accessorKey: "icon",
 		header: "Icon",
 		cell: ({ row }) => {
+			const technologyId = row.original.id;
 			const icon = row.original.icon;
 			if (!icon) return null;
-			return <TechnologyIconImage icon={icon} />;
+			return <TechnologyIconImage icon={icon} technologyId={technologyId} />;
 		},
 	},
 	{
@@ -55,13 +56,25 @@ export const columns: ColumnDef<SelectTechnologyListWithMedia>[] = [
 	},
 ];
 
-export const TechnologyIconImage = ({ icon }: { icon: Media }) => {
+export const TechnologyIconImage = ({
+	icon,
+	technologyId,
+}: {
+	icon: Media;
+	technologyId: string;
+}) => {
 	return (
-		<img
-			src={icon.url}
-			alt={icon.altText ?? undefined}
-			className="size-12 p-1"
-		/>
+		<Link
+			to="/admin/technologies/$technologyId"
+			params={{ technologyId }}
+			className="cursor-pointer"
+		>
+			<img
+				src={icon.url}
+				alt={icon.altText ?? undefined}
+				className="size-12 p-1"
+			/>
+		</Link>
 	);
 };
 
