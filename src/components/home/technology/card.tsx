@@ -1,17 +1,20 @@
 import PixelCard from "@/components/common/pixel-card";
 
-export default function TechCard({
-	icon,
-	colors,
-	name,
-	url,
-	alt,
-}: {
+type TechCardProps = {
 	icon?: string;
 	colors: string;
 	name: string;
-	url: string;
 	alt?: string;
+};
+
+export default function TechCard({
+	url,
+	colors,
+	name,
+	alt,
+	icon,
+}: TechCardProps & {
+	url?: string;
 }) {
 	return (
 		<a
@@ -20,20 +23,26 @@ export default function TechCard({
 			rel="noopener noreferrer"
 			className="group block bg-background outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
 		>
-			<div className="group bg-background hover:cursor-pointer">
-				<PixelCard colors={colors} noFocus={true}>
-					<div className="absolute flex flex-col items-center justify-center ">
-						<img
-							src={icon}
-							alt={alt}
-							className="size-10 transition-all duration-500 grayscale-100 group-hover:grayscale-0 mt-4 group-hover:mt-0"
-						/>
-						<p className="transition-opacity duration-400 opacity-0  group-hover:opacity-100">
-							{name}
-						</p>
-					</div>
-				</PixelCard>
-			</div>
+			<TechCardPixel colors={colors} name={name} alt={alt} icon={icon} />
 		</a>
+	);
+}
+
+export function TechCardPixel({ colors, name, alt, icon }: TechCardProps) {
+	return (
+		<div className="group bg-background hover:cursor-pointer">
+			<PixelCard colors={colors} noFocus={true}>
+				<div className="absolute flex flex-col items-center justify-center ">
+					<img
+						src={icon}
+						alt={alt}
+						className="size-10 transition-all duration-500 grayscale-100 group-hover:grayscale-0 mt-4 group-hover:mt-0"
+					/>
+					<p className="transition-opacity duration-400 opacity-0  group-hover:opacity-100">
+						{name}
+					</p>
+				</div>
+			</PixelCard>
+		</div>
 	);
 }
