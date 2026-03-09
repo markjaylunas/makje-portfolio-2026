@@ -65,7 +65,7 @@ export const TechnologyIconImage = ({
 }) => {
 	return (
 		<Link
-			to="/admin/technologies/$technologyId"
+			to="/admin/technology/$technologyId"
 			params={{ technologyId }}
 			className="cursor-pointer"
 		>
@@ -142,7 +142,7 @@ export const TechnologyActions = ({
 					<DropdownMenuItem
 						render={
 							<Link
-								to="/admin/technologies/$technologyId"
+								to="/admin/technology/$technologyId"
 								params={{ technologyId: technology.id }}
 							>
 								View Card
@@ -153,7 +153,7 @@ export const TechnologyActions = ({
 					<DropdownMenuItem
 						render={
 							<Link
-								to="/admin/technologies/$technologyId/edit"
+								to="/admin/technology/$technologyId/edit"
 								params={{ technologyId: technology.id }}
 							>
 								Edit

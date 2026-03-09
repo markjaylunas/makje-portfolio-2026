@@ -91,8 +91,8 @@ export const adminNavLinks = linkOptions([
 		},
 	},
 	{
-		title: "Technologies",
-		to: "/admin/technologies",
+		title: "Technology",
+		to: "/admin/technology",
 		icon: Layers,
 		activeOptions: {
 			exact: false,

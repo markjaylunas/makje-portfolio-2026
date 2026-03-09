@@ -2,10 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import {
 	getTechnologyFnSchema,
 	getTechnologyListFnSchema,
-} from "@/form-validators/technologies";
-import { createTechnologyFnSchema } from "@/form-validators/technologies/create";
-import { deleteTechnologyFnSchema } from "@/form-validators/technologies/delete";
-import { editTechnologyFnSchema } from "@/form-validators/technologies/edit";
+} from "@/form-validators/technology";
+import { createTechnologyFnSchema } from "@/form-validators/technology/create";
+import { deleteTechnologyFnSchema } from "@/form-validators/technology/delete";
+import { editTechnologyFnSchema } from "@/form-validators/technology/edit";
 import { ensureAdminFnMiddleware } from "../middleware/auth";
 import {
 	deleteTechnology,

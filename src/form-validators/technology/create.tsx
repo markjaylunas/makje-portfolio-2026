@@ -1,14 +1,13 @@
 import z from "zod";
 import {
 	mediaInsertSchema,
-	technologyUpdateSchema,
+	technologyInsertSchema,
 } from "@/db/schema-validation";
 
 const MAX_FILE_SIZE = 1024 * 1024; // 1MB
 const ACCEPTED_MIME_TYPES = ["image/svg+xml"];
 
-export const technologiesEditFormSchema = z.object({
-	id: z.string(),
+export const technologyCreateFormSchema = z.object({
 	name: z.string().min(1, "Name is required"),
 	url: z.url(),
 	icon: z
@@ -22,19 +21,26 @@ export const technologiesEditFormSchema = z.object({
 			//minimum size for required icon
 			(file) => file.size >= 1024, // 1KB
 			"SVG icon is required.",
-		)
-		.optional()
-		.nullable(),
+		),
 	iconSVG: z.string().optional(),
 	brandColors: z.array(z.string()).min(1, "Brand color is required"),
 	brandColorsDefault: z.array(z.string()).min(1, "Brand color is required"),
 });
 
-export type TechnologiesEditFormSchema = z.infer<
-	typeof technologiesEditFormSchema
+export type TechnologyCreateFormSchema = z.infer<
+	typeof technologyCreateFormSchema
 >;
 
-export const editTechnologyFnSchema = z.object({
-	editTechnology: technologyUpdateSchema,
-	newMedia: mediaInsertSchema.optional(),
+export const defaultValues: TechnologyCreateFormSchema = {
+	name: "",
+	url: "",
+	icon: new File([], "icon.svg", { type: "image/svg+xml" }),
+	iconSVG: "",
+	brandColors: [],
+	brandColorsDefault: [],
+};
+
+export const createTechnologyFnSchema = z.object({
+	newTechnology: technologyInsertSchema,
+	newMedia: mediaInsertSchema,
 });

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import CreateTechnologyForm from "@/components/admin/technologies/create/form";
+import CreateTechnologyForm from "@/components/admin/technology/create/form";
 
-export const Route = createFileRoute("/_protected/admin/technologies/create")({
+export const Route = createFileRoute("/_protected/admin/technology/create")({
 	component: RouteComponent,
 });
 

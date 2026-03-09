@@ -6,7 +6,7 @@ import { columns } from "./columns";
 import TechnologyTableSearchDebounced from "./search";
 
 export default function TechnologyTable() {
-	const { query } = useSearch({ from: "/_protected/admin/technologies/" });
+	const { query } = useSearch({ from: "/_protected/admin/technology/" });
 	const params = { query };
 
 	const { data: technologyList } = useSuspenseQuery(

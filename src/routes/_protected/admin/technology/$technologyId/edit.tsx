@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import EditTechnologyForm from "@/components/admin/technologies/edit/form";
+import EditTechnologyForm from "@/components/admin/technology/edit/form";
 import { getTechnologyOptions } from "@/data/options/technology";
-import { adminTechnologyIdRouteParamsSchema } from "@/form-validators/technologies";
+import { adminTechnologyIdRouteParamsSchema } from "@/form-validators/technology";
 
 export const Route = createFileRoute(
-	"/_protected/admin/technologies/$technologyId/edit",
+	"/_protected/admin/technology/$technologyId/edit",
 )({
 	component: RouteComponent,
 	params: adminTechnologyIdRouteParamsSchema,

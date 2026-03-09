@@ -7,7 +7,7 @@ import type {
 	Media,
 	UpdateTechnology,
 } from "@/db/types";
-import type { TechnologiesDeleteFormSchema } from "@/form-validators/technologies/delete";
+import type { TechnologyDeleteFormSchema } from "@/form-validators/technology/delete";
 
 export const insertTechnology = async (
 	newTechnology: InsertTechnology,
@@ -61,7 +61,7 @@ export const updateTechnology = async ({
 
 export const deleteTechnology = async ({
 	technologyId,
-}: TechnologiesDeleteFormSchema) => {
+}: TechnologyDeleteFormSchema) => {
 	const [deleted] = await db
 		.delete(technology)
 		.where(eq(technology.id, technologyId))

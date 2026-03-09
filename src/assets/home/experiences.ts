@@ -10,7 +10,7 @@ export type Experience = {
 	period: string;
 	description: string;
 	responsibilities: string[];
-	technologies: Technology[];
+	technologyList: Technology[];
 };
 
 export const experiences: Experience[] = [
@@ -28,7 +28,7 @@ export const experiences: Experience[] = [
 			"Secured client data using Better-Auth, implementing multi-factor authentication and rate limiting.",
 			"Managed cloud infrastructure using Vercel and Cloudflare to ensure 99.9% uptime and global edge performance.",
 		],
-		technologies: [
+		technologyList: [
 			{ name: "React 19", url: "https://react.dev/" },
 			{ name: "Next.js", url: "https://nextjs.org/" },
 			{ name: "TypeScript", url: "https://www.typescriptlang.org/" },
@@ -58,7 +58,7 @@ export const experiences: Experience[] = [
 			"Mitigated technical risk by establishing Jest and Cypress testing protocols to reduce production bugs.",
 			"Collaborated with cross-functional teams using Git for version control and participating in code reviews.",
 		],
-		technologies: [
+		technologyList: [
 			{ name: "React.js", url: "https://reactjs.org/" },
 			{ name: "Next.js", url: "https://nextjs.org/" },
 			{ name: "TypeScript", url: "https://www.typescriptlang.org/" },

@@ -10,14 +10,14 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
 		period,
 		description,
 		responsibilities,
-		technologies,
+		technologyList,
 	} = experience;
 
 	return (
 		<li className="relative mb-12 last:mb-0 pl-8">
 			{/* Decorative Dot */}
 			<div
-				className="absolute top-3 -left-[7px] h-3 w-3 rounded-full border-2 border-primary bg-background"
+				className="absolute top-3 -left-1.75 h-3 w-3 rounded-full border-2 border-primary bg-background"
 				aria-hidden="true"
 			/>
 
@@ -61,9 +61,9 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
 				</div>
 
 				<footer className="pt-2">
-					<span className="sr-only">Technologies used:</span>
+					<span className="sr-only">Technology used:</span>
 					<div className="flex flex-wrap gap-2">
-						{technologies.map((tech) => (
+						{technologyList.map((tech) => (
 							<a
 								href={tech.url}
 								key={tech.name}

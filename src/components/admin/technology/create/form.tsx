@@ -3,7 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import TechCard from "@/components/home/technologies/card";
+import TechCard from "@/components/home/technology/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
@@ -13,9 +13,9 @@ import { createTechnologyFn } from "@/data/server/technology.server";
 import type { InsertTechnology } from "@/db/types";
 import {
 	defaultValues,
-	type TechnologiesCreateFormSchema,
-	technologiesCreateFormSchema,
-} from "@/form-validators/technologies/create";
+	type TechnologyCreateFormSchema,
+	technologyCreateFormSchema,
+} from "@/form-validators/technology/create";
 import { extractColorsFromSVG } from "@/lib/helper";
 
 export default function CreateTechnologyForm() {
@@ -23,7 +23,7 @@ export default function CreateTechnologyForm() {
 	const navigate = useNavigate();
 
 	const { mutate: createMutation, isPending } = useMutation({
-		mutationFn: async (value: TechnologiesCreateFormSchema) => {
+		mutationFn: async (value: TechnologyCreateFormSchema) => {
 			const newMedia = await uploadTechnologyIcon(value.icon);
 
 			const newTechnology: InsertTechnology = {
@@ -40,9 +40,9 @@ export default function CreateTechnologyForm() {
 			return result;
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["technologies"] });
+			queryClient.invalidateQueries({ queryKey: ["technology"] });
 			form.reset();
-			navigate({ to: "/admin/technologies" });
+			navigate({ to: "/admin/technology" });
 		},
 	});
 
@@ -50,7 +50,7 @@ export default function CreateTechnologyForm() {
 		defaultValues,
 		onSubmit: ({ value }) => createMutation(value),
 		validators: {
-			onSubmit: technologiesCreateFormSchema,
+			onSubmit: technologyCreateFormSchema,
 		},
 	});
 

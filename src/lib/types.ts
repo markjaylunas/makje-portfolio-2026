@@ -4,7 +4,7 @@ export type Experience = {
 	period: string;
 	description: string;
 	responsibilities: string[];
-	technologies: Technology[];
+	technologyList: Technology[];
 };
 
 export type Technology = {

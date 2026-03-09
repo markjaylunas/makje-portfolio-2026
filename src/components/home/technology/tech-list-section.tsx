@@ -14,16 +14,16 @@ export default function TechListSection() {
 	const [showStatus, setShowStatus] = useState<ShowStatus>("initial");
 	const sectionHeadingId = "tech-stack";
 
-	const { data: technologies } = useSuspenseQuery(getTechnologyListOptions({}));
+	const { data: technology } = useSuspenseQuery(getTechnologyListOptions({}));
 
 	// Logic: Determine how many items to show based on status
 	const getVisibleCount = () => {
 		if (showStatus === "initial") return 8;
 		if (showStatus === "more") return 16;
-		return technologies.length; // "all"
+		return technology.length; // "all"
 	};
 
-	const visibleTech = technologies.slice(0, getVisibleCount());
+	const visibleTech = technology.slice(0, getVisibleCount());
 
 	const handleToggle = () => {
 		if (showStatus === "initial") {

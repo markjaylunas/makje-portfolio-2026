@@ -21,7 +21,7 @@ export const Route = createFileRoute("/api/health")({
 							status: 200,
 							headers: { "Content-Type": "application/json" },
 						},
-					)
+					);
 				} catch (error: unknown) {
 					const errorMessage =
 						error instanceof Error ? error.message : "Unknown error";
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/api/health")({
 							status: 500,
 							headers: { "Content-Type": "application/json" },
 						},
-					)
+					);
 				}
 			},
 		},

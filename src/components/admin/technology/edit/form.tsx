@@ -7,7 +7,7 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useNavigate, useParams } from "@tanstack/react-router";
-import TechCard from "@/components/home/technologies/card";
+import TechCard from "@/components/home/technology/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
@@ -17,9 +17,9 @@ import { getTechnologyOptions } from "@/data/options/technology";
 import { editTechnologyFn } from "@/data/server/technology.server";
 import type { InsertMedia, UpdateTechnology } from "@/db/types";
 import {
-	type TechnologiesEditFormSchema,
-	technologiesEditFormSchema,
-} from "@/form-validators/technologies/edit";
+	type TechnologyEditFormSchema,
+	technologyEditFormSchema,
+} from "@/form-validators/technology/edit";
 import { extractColorsFromSVG } from "@/lib/helper";
 
 export default function EditTechnologyForm() {
@@ -27,14 +27,14 @@ export default function EditTechnologyForm() {
 	const navigate = useNavigate();
 
 	const { technologyId } = useParams({
-		from: "/_protected/admin/technologies/$technologyId/edit",
+		from: "/_protected/admin/technology/$technologyId/edit",
 	});
 
 	const { data: defaultTechnology } = useSuspenseQuery(
 		getTechnologyOptions({ technologyId }),
 	);
 
-	const defaultValues: TechnologiesEditFormSchema = {
+	const defaultValues: TechnologyEditFormSchema = {
 		id: defaultTechnology.id,
 		name: defaultTechnology.name,
 		url: defaultTechnology.url,
@@ -47,12 +47,12 @@ export default function EditTechnologyForm() {
 		defaultValues,
 		onSubmit: ({ value }) => createMutation(value),
 		validators: {
-			onSubmit: technologiesEditFormSchema,
+			onSubmit: technologyEditFormSchema,
 		},
 	});
 
 	const { mutate: createMutation, isPending } = useMutation({
-		mutationFn: async (value: TechnologiesEditFormSchema) => {
+		mutationFn: async (value: TechnologyEditFormSchema) => {
 			let insertMedia: InsertMedia | undefined;
 			if (value.icon) {
 				insertMedia = await uploadTechnologyIcon(value.icon);
@@ -73,9 +73,9 @@ export default function EditTechnologyForm() {
 			return result;
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["technologies"] });
+			queryClient.invalidateQueries({ queryKey: ["technology"] });
 			form.reset();
-			navigate({ to: "/admin/technologies" });
+			navigate({ to: "/admin/technology" });
 		},
 	});
 

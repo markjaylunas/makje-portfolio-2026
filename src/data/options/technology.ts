@@ -2,7 +2,7 @@ import { queryOptions } from "@tanstack/react-query";
 import type {
 	GetTechnologyFnSchema,
 	GetTechnologyListFnSchema,
-} from "@/form-validators/technologies";
+} from "@/form-validators/technology";
 import {
 	getTechnologyFn,
 	getTechnologyListFn,

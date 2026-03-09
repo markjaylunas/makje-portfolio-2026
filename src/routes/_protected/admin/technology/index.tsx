@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import TechnologyTable from "@/components/admin/technologies/table";
+import TechnologyTable from "@/components/admin/technology/table";
 import CreateButton from "@/components/common/create-button";
 import { getTechnologyListOptions } from "@/data/options/technology";
-import { searchSchema } from "@/form-validators/technologies";
+import { searchSchema } from "@/form-validators/technology";
 
-export const Route = createFileRoute("/_protected/admin/technologies/")({
+export const Route = createFileRoute("/_protected/admin/technology/")({
 	component: RouteComponent,
 	loaderDeps: ({ search }) => ({
 		query: search.query,
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_protected/admin/technologies/")({
 function RouteComponent() {
 	return (
 		<main className="space-y-6 p-4 ">
-			<CreateButton to="/admin/technologies/create">
+			<CreateButton to="/admin/technology/create">
 				Create Technology
 			</CreateButton>
 
