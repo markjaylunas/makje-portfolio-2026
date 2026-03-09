@@ -18,6 +18,7 @@ export type ProjectToTechnologies =
 export type ProjectToTags = typeof schema.projectToTags.$inferSelect;
 export type ExperienceToTechnologies =
 	typeof schema.experienceToTechnologies.$inferSelect;
+export type FeaturedTechnology = typeof schema.featuredTechnology.$inferSelect;
 
 // Insert types
 
@@ -32,6 +33,8 @@ export type InsertProjectToTechnologies =
 export type InsertProjectToTags = typeof schema.projectToTags.$inferInsert;
 export type InsertExperienceToTechnologies =
 	typeof schema.experienceToTechnologies.$inferInsert;
+export type InsertFeaturedTechnology =
+	typeof schema.featuredTechnology.$inferInsert;
 
 // Update types
 
@@ -49,3 +52,6 @@ export type UpdateProjectToTags = Partial<ProjectToTags> &
 	Pick<ProjectToTags, "id">;
 export type UpdateExperienceToTechnologies = Partial<ExperienceToTechnologies> &
 	Pick<ExperienceToTechnologies, "id">;
+
+export type UpdateFeaturedTechnology = Partial<FeaturedTechnology> &
+	Pick<FeaturedTechnology, "id">;

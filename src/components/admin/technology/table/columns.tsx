@@ -15,6 +15,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { SelectTechnologyListWithMedia } from "@/data/query/technology.server";
+import { createFeaturedTechnologyFn } from "@/data/server/featured-technology.server";
 import { deleteTechnologyFn } from "@/data/server/technology.server";
 import type { Media } from "@/db/types";
 import { getContrastColor } from "@/lib/utils";
@@ -123,6 +124,18 @@ export const TechnologyActions = ({
 		},
 	});
 
+	const { mutate: addAsFeaturedTechnology } = useMutation({
+		mutationFn: async () => {
+			return await createFeaturedTechnologyFn({
+				data: { technologyId: technology.id },
+			});
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["technology"] });
+			toast.success(`Added ${technology.name} as featured successfully!`);
+		},
+	});
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger>
@@ -149,6 +162,9 @@ export const TechnologyActions = ({
 							</Link>
 						}
 					/>
+					<DropdownMenuItem onClick={() => addAsFeaturedTechnology()}>
+						Add as Featured
+					</DropdownMenuItem>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						render={
