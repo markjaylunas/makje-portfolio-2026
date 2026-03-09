@@ -4,9 +4,11 @@ import {
 	getTechnologyListFnSchema,
 } from "@/form-validators/technologies";
 import { createTechnologyFnSchema } from "@/form-validators/technologies/create";
+import { deleteTechnologyFnSchema } from "@/form-validators/technologies/delete";
 import { editTechnologyFnSchema } from "@/form-validators/technologies/edit";
-import { authFnMiddleware } from "../middleware/auth";
+import { ensureAdminFnMiddleware } from "../middleware/auth";
 import {
+	deleteTechnology,
 	insertTechnology,
 	selectTechnologyListWithMedia,
 	selectTechnologyWithMedia,
@@ -14,14 +16,14 @@ import {
 } from "../query/technology.server";
 
 export const createTechnologyFn = createServerFn({ method: "POST" })
-	.middleware([authFnMiddleware])
+	.middleware([ensureAdminFnMiddleware])
 	.inputValidator(createTechnologyFnSchema)
 	.handler(async ({ data }) => {
 		return await insertTechnology(data.newTechnology, data.newMedia);
 	});
 
 export const editTechnologyFn = createServerFn({ method: "POST" })
-	.middleware([authFnMiddleware])
+	.middleware([ensureAdminFnMiddleware])
 	.inputValidator(editTechnologyFnSchema)
 	.handler(async ({ data }) => {
 		return await updateTechnology({
@@ -29,6 +31,12 @@ export const editTechnologyFn = createServerFn({ method: "POST" })
 		});
 	});
 
+export const deleteTechnologyFn = createServerFn({ method: "POST" })
+	.middleware([ensureAdminFnMiddleware])
+	.inputValidator(deleteTechnologyFnSchema)
+	.handler(async ({ data: { technologyId } }) => {
+		return await deleteTechnology({ technologyId });
+	});
 export const getTechnologyFn = createServerFn({ method: "GET" })
 	.inputValidator(getTechnologyFnSchema)
 	.handler(async ({ data }) => {

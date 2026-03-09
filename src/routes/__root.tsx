@@ -7,6 +7,7 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
@@ -56,6 +57,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 			<body className="relative">
 				<QueryClientProvider client={queryClient}>
 					{children}
+					<Toaster />
 					<TanStackDevtools
 						config={{
 							position: "bottom-right",

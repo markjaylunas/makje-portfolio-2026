@@ -1,6 +1,8 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +15,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { SelectTechnologyListWithMedia } from "@/data/query/technology.server";
+import { deleteTechnologyFn } from "@/data/server/technology.server";
 import type { Media } from "@/db/types";
 import { getContrastColor } from "@/lib/utils";
 
@@ -93,6 +96,20 @@ export const TechnologyActions = ({
 }: {
 	technology: SelectTechnologyListWithMedia;
 }) => {
+	const queryClient = useQueryClient();
+
+	const { mutate: deleteTechnology } = useMutation({
+		mutationFn: async () => {
+			return await deleteTechnologyFn({
+				data: { technologyId: technology.id },
+			});
+		},
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({ queryKey: ["technology"] });
+			toast.success(`Deleted ${data.name} successfully!`);
+		},
+	});
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger>
@@ -107,29 +124,35 @@ export const TechnologyActions = ({
 					<DropdownMenuItem
 						onClick={() => navigator.clipboard.writeText(technology.id)}
 					>
-						Copy technology ID
+						Copy ID
 					</DropdownMenuItem>
-					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						render={
 							<Link
 								to="/admin/technologies/$technologyId"
 								params={{ technologyId: technology.id }}
 							>
-								View Technology Card
+								View Card
 							</Link>
 						}
 					/>
+					<DropdownMenuSeparator />
 					<DropdownMenuItem
 						render={
 							<Link
 								to="/admin/technologies/$technologyId/edit"
 								params={{ technologyId: technology.id }}
 							>
-								Edit Technology
+								Edit
 							</Link>
 						}
 					/>
+					<DropdownMenuItem
+						variant="destructive"
+						onClick={() => deleteTechnology()}
+					>
+						Delete
+					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>
