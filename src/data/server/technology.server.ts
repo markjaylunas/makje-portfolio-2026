@@ -10,8 +10,8 @@ import { ensureAdminFnMiddleware } from "../middleware/auth";
 import {
 	deleteTechnology,
 	insertTechnology,
-	selectTechnologyListWithMedia,
-	selectTechnologyWithMedia,
+	selectTechnology,
+	selectTechnologyList,
 	updateTechnology,
 } from "../query/technology.server";
 
@@ -40,11 +40,11 @@ export const deleteTechnologyFn = createServerFn({ method: "POST" })
 export const getTechnologyFn = createServerFn({ method: "GET" })
 	.inputValidator(getTechnologyFnSchema)
 	.handler(async ({ data }) => {
-		return await selectTechnologyWithMedia(data);
+		return await selectTechnology(data);
 	});
 
 export const getTechnologyListFn = createServerFn({ method: "GET" })
 	.inputValidator(getTechnologyListFnSchema)
 	.handler(async ({ data }) => {
-		return await selectTechnologyListWithMedia(data);
+		return await selectTechnologyList(data);
 	});

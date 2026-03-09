@@ -14,13 +14,13 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { SelectTechnologyListWithMedia } from "@/data/query/technology.server";
 import { createFeaturedTechnologyFn } from "@/data/server/featured-technology.server";
 import { deleteTechnologyFn } from "@/data/server/technology.server";
 import type { Media } from "@/db/types";
+import type { TechnologyWithIcon } from "@/lib/types";
 import { getContrastColor } from "@/lib/utils";
 
-export const columns: ColumnDef<SelectTechnologyListWithMedia>[] = [
+export const columns: ColumnDef<TechnologyWithIcon>[] = [
 	{
 		accessorKey: "icon",
 		header: "Icon",
@@ -108,7 +108,7 @@ export const TechnologyColor = ({ brandColor }: { brandColor: string }) => {
 export const TechnologyActions = ({
 	technology,
 }: {
-	technology: SelectTechnologyListWithMedia;
+	technology: TechnologyWithIcon;
 }) => {
 	const queryClient = useQueryClient();
 

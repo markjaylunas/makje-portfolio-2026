@@ -70,33 +70,17 @@ export const deleteTechnology = async ({
 	return deleted;
 };
 
-export type SelectTechnologyWithMedia = Awaited<
-	ReturnType<typeof selectTechnologyWithMedia>
->;
-
-export const selectTechnologyWithMedia = async ({
+export const selectTechnology = async ({
 	technologyId,
 }: {
 	technologyId: string;
-}) => {
-	const [{ media: mediaResult, technology: technologyResult }] = await db
-		.select({
-			technology,
-			media,
-		})
-		.from(technology)
-		.where(eq(technology.id, technologyId))
-		.leftJoin(media, eq(media.id, technology.iconId))
-		.limit(1);
+}) =>
+	await db.query.technology.findFirst({
+		where: (technology, { eq }) => eq(technology.id, technologyId),
+		with: { icon: true },
+	});
 
-	return { ...technologyResult, icon: mediaResult };
-};
-
-export type SelectTechnologyListWithMedia = Awaited<
-	ReturnType<typeof selectTechnologyListWithMedia>
->[0];
-
-export const selectTechnologyListWithMedia = async ({
+export const selectTechnologyList = async ({
 	query = "",
 }: {
 	query?: string;
