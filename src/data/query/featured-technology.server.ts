@@ -29,3 +29,13 @@ export const insertFeaturedTechnology = async (
 
 	return result;
 };
+
+export const selectFeatureTechnologyList = async () => {
+	const featuredTechnologyList = await db.query.featuredTechnology.findMany({
+		with: {
+			technology: true,
+		},
+		orderBy: (technology, { asc }) => asc(technology.order),
+	});
+	return featuredTechnologyList;
+};
