@@ -8,6 +8,14 @@ export const insertFeaturedTechnology = async (
 ) => {
 	let values = { ...newFeaturedTechnology };
 
+	const isAlreadyExist = await selectFeatureTechnologyById({
+		technologyId: values.technologyId,
+	});
+
+	if (isAlreadyExist) {
+		throw Error("Technology is already featured");
+	}
+
 	if (newFeaturedTechnology.order === 0) {
 		const [lastFeaturedTechnology] = await db
 			.select()
@@ -29,6 +37,16 @@ export const insertFeaturedTechnology = async (
 
 	return result;
 };
+
+export async function selectFeatureTechnologyById({
+	technologyId,
+}: {
+	technologyId: string;
+}) {
+	return await db.query.featuredTechnology.findFirst({
+		where: (technology, { eq }) => eq(technology.technologyId, technologyId),
+	});
+}
 
 export const selectFeatureTechnologyList = async () => {
 	const featuredTechnologyList = await db.query.featuredTechnology.findMany({
