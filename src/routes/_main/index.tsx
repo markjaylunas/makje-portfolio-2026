@@ -5,12 +5,14 @@ import ExperienceTimelineSection from "@/components/home/experience/timeline-sec
 import HeroSection from "@/components/home/hero/hero-section";
 import TechListSection from "@/components/home/technology/tech-list-section";
 import ContentMotion from "@/components/motion/content-motion";
-import { getTechnologyListOptions } from "@/data/options/technology";
+import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
 
 export const Route = createFileRoute("/_main/")({
 	component: App,
 	loader: ({ context }) => {
-		return context.queryClient.ensureQueryData(getTechnologyListOptions({}));
+		return context.queryClient.ensureQueryData(
+			getFeaturedTechnologyListOptions(),
+		);
 	},
 });
 

@@ -5,7 +5,7 @@ import { useState } from "react";
 import GradientText from "@/components/common/gradient-text";
 import H2 from "@/components/common/H2";
 import { Button } from "@/components/ui/button";
-import { getTechnologyListOptions } from "@/data/options/technology";
+import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
 import TechCard from "./card";
 
 type ShowStatus = "initial" | "more" | "all";
@@ -14,16 +14,18 @@ export default function TechListSection() {
 	const [showStatus, setShowStatus] = useState<ShowStatus>("initial");
 	const sectionHeadingId = "tech-stack";
 
-	const { data: technology } = useSuspenseQuery(getTechnologyListOptions({}));
+	const { data: featuredTechnologyList } = useSuspenseQuery(
+		getFeaturedTechnologyListOptions(),
+	);
 
 	// Logic: Determine how many items to show based on status
 	const getVisibleCount = () => {
 		if (showStatus === "initial") return 8;
 		if (showStatus === "more") return 16;
-		return technology.length; // "all"
+		return featuredTechnologyList.length; // "all"
 	};
 
-	const visibleTech = technology.slice(0, getVisibleCount());
+	const visibleTech = featuredTechnologyList.slice(0, getVisibleCount());
 
 	const handleToggle = () => {
 		if (showStatus === "initial") {
@@ -54,14 +56,14 @@ export default function TechListSection() {
 			</H2>
 
 			<ul className="mx-auto max-w-(--breakpoint-sm) grid grid-cols-2 md:grid-cols-4 mt-12 gap-px bg-muted border border-muted">
-				{visibleTech.map((tech) => (
-					<li key={tech.id}>
+				{visibleTech.map(({ id, technology }) => (
+					<li key={id}>
 						<TechCard
-							icon={tech.icon?.url ?? undefined}
-							colors={tech.brandColor}
-							name={tech.name}
-							url={tech.url}
-							alt={tech.icon?.altText ?? undefined}
+							icon={technology.icon?.url ?? undefined}
+							colors={technology.brandColor}
+							name={technology.name}
+							url={technology.url}
+							alt={technology.icon?.altText ?? undefined}
 						/>
 					</li>
 				))}
