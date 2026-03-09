@@ -134,6 +134,9 @@ export const TechnologyActions = ({
 			queryClient.invalidateQueries({ queryKey: ["technology"] });
 			toast.success(`Added ${technology.name} as featured successfully!`);
 		},
+		onError: (e) => {
+			toast.warning(e.message);
+		},
 	});
 
 	return (
