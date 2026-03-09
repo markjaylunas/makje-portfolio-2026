@@ -33,7 +33,9 @@ export const insertFeaturedTechnology = async (
 export const selectFeatureTechnologyList = async () => {
 	const featuredTechnologyList = await db.query.featuredTechnology.findMany({
 		with: {
-			technology: true,
+			technology: {
+				with: { icon: true },
+			},
 		},
 		orderBy: (technology, { asc }) => asc(technology.order),
 	});

@@ -55,7 +55,7 @@ export default function TechListSection() {
 
 			<ul className="mx-auto max-w-(--breakpoint-sm) grid grid-cols-2 md:grid-cols-4 mt-12 gap-px bg-muted border border-muted">
 				{visibleTech.map((tech) => (
-					<li key={tech.name}>
+					<li key={tech.id}>
 						<TechCard
 							icon={tech.icon?.url ?? undefined}
 							colors={tech.brandColor}
