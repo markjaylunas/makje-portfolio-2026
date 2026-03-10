@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import FeaturedTechnologyCardList from "@/components/admin/featured-technology/list";
+import FeaturedTechnologyCardOrderList from "@/components/admin/featured-technology/list";
 import TechnologyTable from "@/components/admin/technology/table";
 import CreateButton from "@/components/common/create-button";
 import H2 from "@/components/common/H2";
@@ -35,7 +35,7 @@ function RouteComponent() {
 					Featured Technologies
 				</H2>
 
-				<FeaturedTechnologyCardList />
+				<FeaturedTechnologyCardOrderList />
 			</section>
 		</main>
 	);

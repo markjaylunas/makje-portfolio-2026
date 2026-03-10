@@ -7,7 +7,7 @@ import { Item } from "@/components/common/dnd/sortable";
 import { TechCardPixel } from "@/components/home/technology/card";
 import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
 
-export default function FeaturedTechnologyCardList() {
+export default function FeaturedTechnologyCardOrderList() {
 	const { data } = useSuspenseQuery(getFeaturedTechnologyListOptions());
 
 	const [featuredTechnologyList, setFeaturedTechnologyList] = useState(data);
