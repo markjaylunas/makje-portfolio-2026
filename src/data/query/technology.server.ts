@@ -1,4 +1,4 @@
-import { eq, like } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { media, technology } from "@/db/schema";
 import type {
@@ -85,24 +85,9 @@ export const selectTechnologyList = async ({
 }: {
 	query?: string;
 }) => {
-	const qb = db
-		.select({
-			technology,
-			media,
-		})
-		.from(technology)
-		.leftJoin(media, eq(media.id, technology.iconId))
-		.$dynamic();
-
-	if (query) {
-		qb.where(like(technology.name, `%${query}%`));
-	}
-
-	const rawList = await qb;
-
-	const technologyList = rawList.map((row) => ({
-		...row.technology,
-		icon: row.media,
-	}));
-	return technologyList;
+	return await db.query.technology.findMany({
+		with: { icon: true, featured: true },
+		where: (technology, { like }) => like(technology.name, `%${query}%`),
+		orderBy: (technology, { desc }) => [desc(technology.createdAt)],
+	});
 };

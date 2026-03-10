@@ -1,4 +1,4 @@
-import type { Media, Technology } from "@/db/types";
+import type { FeaturedTechnology, Media, Technology } from "@/db/types";
 
 export type Experience = {
 	title: string;
@@ -14,4 +14,7 @@ export type Experience = {
 	};
 };
 
-export type TechnologyWithIcon = Technology & { icon: Media };
+export type TechnologyWithIcon = Technology & {
+	icon: Media;
+	featured: FeaturedTechnology;
+};

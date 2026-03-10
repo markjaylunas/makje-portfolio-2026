@@ -10,5 +10,4 @@ export type CreateFeaturedTechnologyFormSchema = z.infer<
 
 export const createFeaturedTechnologyFnSchema = z.object({
 	technologyId: z.string(),
-	order: z.number().default(0),
 });

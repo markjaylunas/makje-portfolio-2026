@@ -14,7 +14,10 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { createFeaturedTechnologyFn } from "@/data/server/featured-technology.server";
+import {
+	createFeaturedTechnologyFn,
+	deleteFeaturedTechnologyFn,
+} from "@/data/server/featured-technology.server";
 import { deleteTechnologyFn } from "@/data/server/technology.server";
 import type { Media } from "@/db/types";
 import type { TechnologyWithIcon } from "@/lib/types";
@@ -120,6 +123,7 @@ export const TechnologyActions = ({
 		},
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({ queryKey: ["technology"] });
+			queryClient.invalidateQueries({ queryKey: ["featured-technology"] });
 			toast.success(`Deleted ${data.name} successfully!`);
 		},
 	});
@@ -132,10 +136,24 @@ export const TechnologyActions = ({
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["technology"] });
+			queryClient.invalidateQueries({ queryKey: ["featured-technology"] });
 			toast.success(`Added ${technology.name} as featured successfully!`);
 		},
 		onError: (e) => {
 			toast.warning(e.message);
+		},
+	});
+
+	const { mutate: removeToFeaturedTechnology } = useMutation({
+		mutationFn: async () => {
+			return await deleteFeaturedTechnologyFn({
+				data: { featuredTechnologyId: technology.featured.id },
+			});
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["technology"] });
+			queryClient.invalidateQueries({ queryKey: ["featured-technology"] });
+			toast.success(`Removed ${technology.name} from featured successfully!`);
 		},
 	});
 
@@ -165,10 +183,17 @@ export const TechnologyActions = ({
 							</Link>
 						}
 					/>
-					<DropdownMenuItem onClick={() => addAsFeaturedTechnology()}>
-						Add as Featured
-					</DropdownMenuItem>
 					<DropdownMenuSeparator />
+					<DropdownMenuItem
+						onClick={() =>
+							technology.featured
+								? removeToFeaturedTechnology()
+								: addAsFeaturedTechnology()
+						}
+						variant={technology.featured ? "destructive" : "default"}
+					>
+						{technology.featured ? "Remove from Featured" : "Add to Featured"}
+					</DropdownMenuItem>
 					<DropdownMenuItem
 						render={
 							<Link
