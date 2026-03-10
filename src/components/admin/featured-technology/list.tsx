@@ -1,7 +1,7 @@
 import { move } from "@dnd-kit/helpers";
 import { DragDropProvider } from "@dnd-kit/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Column } from "@/components/common/dnd/column";
 import { Item } from "@/components/common/dnd/sortable";
 import { TechCardPixel } from "@/components/home/technology/card";
@@ -11,6 +11,10 @@ export default function FeaturedTechnologyCardList() {
 	const { data } = useSuspenseQuery(getFeaturedTechnologyListOptions());
 
 	const [featuredTechnologyList, setFeaturedTechnologyList] = useState(data);
+
+	useEffect(() => {
+		setFeaturedTechnologyList(data);
+	}, [data]);
 
 	return (
 		<DragDropProvider
