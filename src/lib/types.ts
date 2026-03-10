@@ -18,3 +18,9 @@ export type TechnologyWithIcon = Technology & {
 	icon: Media;
 	featured: FeaturedTechnology;
 };
+
+export type FeaturedTechnologyWithTechnology = FeaturedTechnology & {
+	technology: Technology & {
+		icon: Media;
+	};
+};
