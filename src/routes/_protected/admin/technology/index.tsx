@@ -31,7 +31,9 @@ function RouteComponent() {
 			<TechnologyTable />
 
 			<section className="mt-12">
-				<H2 className="text-2xl md:text-3xl">Featured Technologies</H2>
+				<H2 className="text-xl md:text-2xl text-center">
+					Featured Technologies
+				</H2>
 
 				<FeaturedTechnologyCardList />
 			</section>
