@@ -37,3 +37,16 @@ export const getContrastColor = (hexColor: string) => {
 
 	return yiq >= 128 ? "text-background" : "text-foreground";
 };
+
+export const generateTimestampId = (): string => {
+	const now = new Date();
+
+	const datePart = now.toISOString().split("T")[0].replace(/-/g, ""); // 20240520
+	const timePart = now.toTimeString().split(" ")[0].replace(/:/g, ""); // 143005
+	const ms = now.getMilliseconds().toString().padStart(3, "0");
+
+	// Adding a small random suffix prevents collisions if two IDs are generated in the same millisecond
+	const randomSuffix = Math.random().toString(36).substring(2, 5);
+
+	return `${datePart}-${timePart}-${ms}-${randomSuffix}`;
+};

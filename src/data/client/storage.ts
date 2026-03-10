@@ -1,6 +1,7 @@
 import z from "zod";
 import type { InsertMedia } from "@/db/types";
 import { BUCKET_DIRECTORIES } from "@/lib/bucket-directories";
+import { generateTimestampId } from "@/lib/utils";
 
 const UploadResponseSchema = z.object({
 	success: z.boolean(),
@@ -12,7 +13,10 @@ const uploadFileToR2 = async (keyDirectory: string, file: File) => {
 		throw new Error("File must be less than 5MB");
 	}
 
-	const key = `${keyDirectory}/${file.name}`;
+	const fileExtension = file.name.split(".").pop();
+	const fileNameString = file.name.split(".").slice(0, -1).join(".");
+	const fileName = `${fileNameString}_${generateTimestampId()}.${fileExtension}`;
+	const key = `${keyDirectory}/${fileName}`;
 
 	const formData = new FormData();
 	formData.append("key", key);
@@ -32,7 +36,7 @@ const uploadFileToR2 = async (keyDirectory: string, file: File) => {
 	const publicUrl = UploadResponseSchema.parse(result).publicUrl;
 
 	const media: InsertMedia = {
-		fileName: file.name,
+		fileName,
 		keyPath: key,
 		keyDirectory: keyDirectory,
 		url: publicUrl,
