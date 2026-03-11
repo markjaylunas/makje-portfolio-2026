@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 import {
 	experienceInsertSchema,
 	experienceToTechnologiesInsertSchema,
@@ -13,31 +13,45 @@ const COMPANY_LOGO_ACCEPTED_MIME_TYPES = [
 	"image/webp",
 ];
 
-export const experienceCreateFormSchema = z.object({
-	title: z.string().min(1, "Title is required"),
-	company: z.string().min(1, "Company is required"),
-	startDate: z.date().min(new Date(0), "Start date is required"),
-	endDate: z.date(),
-	periodDisplay: z.string().optional(),
-	description: z.string().optional(),
-	responsibilities: z.array(z.string()).optional(),
-	logo: z
-		.file()
-		.refine(
-			(file) => file.size <= COMPANY_LOGO_MAX_FILE_SIZE,
-			`Max file size is 1MB.`,
-		)
-		.refine(
-			(file) => COMPANY_LOGO_ACCEPTED_MIME_TYPES.includes(file.type),
-			"Only PNG, JPG, JPEG, and WEBP format is supported.",
-		)
-		.refine(
-			//minimum size for required icon
-			(file) => file.size >= 1024, // 1KB
-			"Company logo is required.",
-		),
-	technologies: z.array(z.string()).optional(),
-});
+export const experienceCreateFormSchema = z
+	.object({
+		title: z.string().trim().min(1, "Title is required"),
+		company: z.string().trim().min(1, "Company is required"),
+		startDate: z.date({
+			error: "Start date is required",
+		}),
+		endDate: z.date().optional(),
+		periodDisplay: z.string().trim(),
+		description: z
+			.string()
+			.trim()
+			.max(2000, "Description is too long")
+			.optional(),
+		responsibilities: z.array(z.string()),
+		logo: z
+			.instanceof(File)
+			.refine(
+				(file) => file.size <= COMPANY_LOGO_MAX_FILE_SIZE,
+				`Max file size is 5MB.`,
+			)
+			.refine(
+				(file) => COMPANY_LOGO_ACCEPTED_MIME_TYPES.includes(file.type),
+				"Only PNG, JPG, JPEG, and WEBP formats are supported.",
+			)
+			.refine((file) => file.size >= 1024, "Company logo is required."),
+		technologies: z.array(z.string()),
+	})
+	.refine(
+		(data) => {
+			if (!data.startDate) return true;
+			if (!data.endDate) return true;
+			return data.endDate > data.startDate;
+		},
+		{
+			message: "End date must be after the start date",
+			path: ["endDate"],
+		},
+	);
 
 export type ExperienceCreateFormSchema = z.infer<
 	typeof experienceCreateFormSchema

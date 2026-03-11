@@ -1,7 +1,8 @@
+import { MoreHorizontal } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -162,7 +163,7 @@ export const TechnologyActions = ({
 			<DropdownMenuTrigger>
 				<Button variant="ghost" className="h-8 w-8 p-0">
 					<span className="sr-only">Open menu</span>
-					<MoreHorizontal className="h-4 w-4" />
+					<HugeiconsIcon icon={MoreHorizontal} className="h-4 w-4" />
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">

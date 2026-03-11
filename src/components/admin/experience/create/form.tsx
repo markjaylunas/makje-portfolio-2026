@@ -4,6 +4,7 @@ import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { DatePickerInput } from "@/components/ui/date-picker";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -18,7 +19,7 @@ export default function CreateExperienceForm() {
 
 	const { mutate: createExperienceMutation, isPending } = useMutation({
 		mutationFn: async (value: ExperienceCreateFormSchema) => {
-			console.log({ value });
+			return value;
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["experience"] });
@@ -50,7 +51,6 @@ export default function CreateExperienceForm() {
 				}}
 				className="space-y-6 max-w-md"
 			>
-				{/* Name Field */}
 				<form.Field name="title">
 					{(field) => {
 						const isInvalid = !field.state.meta.isValid;
@@ -74,7 +74,6 @@ export default function CreateExperienceForm() {
 					}}
 				</form.Field>
 
-				{/* URL Field */}
 				<form.Field name="company">
 					{(field) => {
 						const isInvalid = !field.state.meta.isValid;
@@ -98,7 +97,6 @@ export default function CreateExperienceForm() {
 					}}
 				</form.Field>
 
-				{/* Icon Field */}
 				<form.Field name="logo">
 					{(field) => {
 						const isInvalid = !field.state.meta.isValid;
@@ -154,6 +152,57 @@ export default function CreateExperienceForm() {
 						</div>
 					)}
 				</form.Subscribe>
+
+				<form.Field name="startDate">
+					{(field) => {
+						const isInvalid = !field.state.meta.isValid;
+						return (
+							<Field data-invalid={isInvalid}>
+								<FieldLabel htmlFor={field.name}>Start Date</FieldLabel>
+								<DatePickerInput
+									id={field.name}
+									name={field.name}
+									value={field.state.value}
+									onBlur={field.handleBlur}
+									onChange={(v) => {
+										if (v === undefined) return;
+										field.handleChange(v);
+									}}
+									aria-invalid={isInvalid}
+								/>
+								{isInvalid && (
+									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
+								)}
+							</Field>
+						);
+					}}
+				</form.Field>
+
+				<form.Field name="endDate">
+					{(field) => {
+						const isInvalid = !field.state.meta.isValid;
+						return (
+							<Field data-invalid={isInvalid}>
+								<FieldLabel htmlFor={field.name}>End Date</FieldLabel>
+								<DatePickerInput
+									id={field.name}
+									name={field.name}
+									value={field.state.value}
+									onBlur={field.handleBlur}
+									onChange={(v) => {
+										if (v === undefined) return;
+										const date = v ? v : new Date();
+										field.handleChange(date);
+									}}
+									aria-invalid={isInvalid}
+								/>
+								{isInvalid && (
+									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
+								)}
+							</Field>
+						);
+					}}
+				</form.Field>
 
 				<form.Subscribe
 					selector={(state) => [state.canSubmit, state.isSubmitting]}
