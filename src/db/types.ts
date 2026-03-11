@@ -1,3 +1,4 @@
+import type { BuildQueryResult, ExtractTablesWithRelations } from "drizzle-orm";
 import type * as schema from "./schema";
 
 export type User = typeof schema.user.$inferSelect;
@@ -55,3 +56,27 @@ export type UpdateExperienceToTechnologies = Partial<ExperienceToTechnologies> &
 
 export type UpdateFeaturedTechnology = Partial<FeaturedTechnology> &
 	Pick<FeaturedTechnology, "id">;
+
+// with relations
+
+type TSchema = ExtractTablesWithRelations<typeof schema>;
+export type ExperienceQueryConfig = {
+	with: {
+		logo: true;
+		technologies: {
+			with: {
+				technology: {
+					with: {
+						icon: true;
+					};
+				};
+			};
+		};
+	};
+};
+
+export type ExperienceWithRelations = BuildQueryResult<
+	TSchema,
+	TSchema["experience"],
+	ExperienceQueryConfig
+>;
