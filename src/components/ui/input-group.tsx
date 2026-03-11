@@ -1,6 +1,5 @@
 /** biome-ignore-all lint/a11y/useSemanticElements: <ignore> */
 /** biome-ignore-all lint/a11y/useKeyWithClickEvents: <ignore> */
-"use client";
 
 import { cva, type VariantProps } from "class-variance-authority";
 import { Button } from "@/components/ui/button";
