@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import FeaturedTechnologyCardOrderList from "@/components/admin/featured-technology/list";
 import TechnologyTable from "@/components/admin/technology/table";
-import LinkButton from "@/components/common/create-button";
 import H2 from "@/components/common/H2";
+import LinkButton from "@/components/common/link-button";
 import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
 import { getTechnologyListOptions } from "@/data/options/technology";
 import { searchSchema } from "@/form-validators/technology";
