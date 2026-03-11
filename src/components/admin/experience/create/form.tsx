@@ -3,6 +3,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DatePickerInput } from "@/components/ui/date-picker";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
@@ -136,21 +137,7 @@ export default function CreateExperienceForm() {
 						logo: state.values.logo,
 					})}
 				>
-					{({ logo }) => (
-						<div className="size-24 flex items-center justify-center border rounded bg-muted p-2">
-							{logo ? (
-								<img
-									src={URL.createObjectURL(logo)}
-									alt="Icon preview"
-									className="w-full h-full object-contain"
-								/>
-							) : (
-								<p className="text-muted-foreground text-xs text-center">
-									No logo selected
-								</p>
-							)}
-						</div>
-					)}
+					{({ logo }) => <LogoPreview logo={logo} />}
 				</form.Subscribe>
 
 				<form.Field name="startDate">
@@ -222,5 +209,39 @@ export default function CreateExperienceForm() {
 				</form.Subscribe>
 			</form>
 		</>
+	);
+}
+
+function LogoPreview({ logo }: { logo: File | null | undefined }) {
+	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (!logo || !(logo instanceof File) || logo.size === 0) {
+			setPreviewUrl(null);
+			return;
+		}
+
+		const objectUrl = URL.createObjectURL(logo);
+		setPreviewUrl(objectUrl);
+
+		return () => {
+			URL.revokeObjectURL(objectUrl);
+		};
+	}, [logo]);
+
+	return (
+		<div className="size-24 flex items-center justify-center border rounded bg-muted p-2 overflow-hidden">
+			{previewUrl ? (
+				<img
+					src={previewUrl}
+					alt="Logo preview"
+					className="w-full h-full object-contain"
+				/>
+			) : (
+				<p className="text-muted-foreground text-[10px] text-center uppercase font-medium">
+					No logo
+				</p>
+			)}
+		</div>
 	);
 }
