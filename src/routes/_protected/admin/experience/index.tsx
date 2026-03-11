@@ -12,10 +12,9 @@ export const Route = createFileRoute("/_protected/admin/experience/")({
 function RouteComponent() {
 	const data = Route.useLoaderData();
 	return (
-		<div>
+		<main className="space-y-6 p-4 ">
 			<LinkButton to="/admin/experience/create">Create Experience</LinkButton>
-			Hello "/_protected/admin/experience/"!
 			<pre>{JSON.stringify(data, undefined, 2)}</pre>
-		</div>
+		</main>
 	);
 }
