@@ -4,7 +4,7 @@ import { Link, type LinkProps } from "@tanstack/react-router";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export default function CreateButton({
+export default function LinkButton({
 	to,
 	children,
 	...props

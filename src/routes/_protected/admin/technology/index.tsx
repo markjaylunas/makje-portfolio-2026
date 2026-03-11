@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import FeaturedTechnologyCardOrderList from "@/components/admin/featured-technology/list";
 import TechnologyTable from "@/components/admin/technology/table";
-import CreateButton from "@/components/common/create-button";
+import LinkButton from "@/components/common/create-button";
 import H2 from "@/components/common/H2";
 import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
 import { getTechnologyListOptions } from "@/data/options/technology";
@@ -24,9 +24,7 @@ export const Route = createFileRoute("/_protected/admin/technology/")({
 function RouteComponent() {
 	return (
 		<main className="space-y-6 p-4 ">
-			<CreateButton to="/admin/technology/create">
-				Create Technology
-			</CreateButton>
+			<LinkButton to="/admin/technology/create">Create Technology</LinkButton>
 
 			<TechnologyTable />
 
