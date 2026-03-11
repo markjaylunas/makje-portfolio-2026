@@ -13,8 +13,8 @@ export const Route = createFileRoute("/_protected/admin/technology/")({
 		query: search.query,
 	}),
 	validateSearch: searchSchema,
-	loader: ({ context, deps: { query } }) => {
-		return Promise.all([
+	loader: async ({ context, deps: { query } }) => {
+		return await Promise.all([
 			context.queryClient.ensureQueryData(getTechnologyListOptions({ query })),
 			context.queryClient.ensureQueryData(getFeaturedTechnologyListOptions()),
 		]);

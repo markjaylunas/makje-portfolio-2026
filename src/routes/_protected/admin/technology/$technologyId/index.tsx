@@ -9,8 +9,8 @@ export const Route = createFileRoute(
 )({
 	component: RouteComponent,
 	params: adminTechnologyIdRouteParamsSchema,
-	loader: ({ context, params: { technologyId } }) => {
-		return context.queryClient.ensureQueryData(
+	loader: async ({ context, params: { technologyId } }) => {
+		return await context.queryClient.ensureQueryData(
 			getTechnologyOptions({ technologyId }),
 		);
 	},

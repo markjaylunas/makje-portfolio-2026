@@ -9,8 +9,8 @@ import { getFeaturedTechnologyListOptions } from "@/data/options/featured-techno
 
 export const Route = createFileRoute("/_main/")({
 	component: App,
-	loader: ({ context }) => {
-		return context.queryClient.ensureQueryData(
+	loader: async ({ context }) => {
+		return await context.queryClient.ensureQueryData(
 			getFeaturedTechnologyListOptions(),
 		);
 	},
