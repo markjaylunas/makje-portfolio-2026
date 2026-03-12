@@ -6,12 +6,13 @@ import {
 	mediaInsertSchema,
 } from "@/db/schema-validation";
 
-const COMPANY_LOGO_MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
-const COMPANY_LOGO_ACCEPTED_MIME_TYPES = [
+export const COMPANY_LOGO_MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
+export const COMPANY_LOGO_ACCEPTED_MIME_TYPES = [
 	"image/png",
 	"image/jpeg",
 	"image/jpg",
 	"image/webp",
+	"image/svg+xml",
 ];
 
 export const experienceCreateFormSchema = z
@@ -39,7 +40,7 @@ export const experienceCreateFormSchema = z
 			)
 			.refine(
 				(file) => COMPANY_LOGO_ACCEPTED_MIME_TYPES.includes(file.type),
-				"Only PNG, JPG, JPEG, and WEBP formats are supported.",
+				"Only PNG, JPG, JPEG, WEBP, and SVG formats are supported.",
 			)
 			.refine((file) => file.size >= 1024, "Company logo is required."),
 		technologyList: z.array(z.string()),

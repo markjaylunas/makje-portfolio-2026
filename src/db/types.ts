@@ -28,6 +28,7 @@ export type InsertTechnology = typeof schema.technology.$inferInsert;
 export type InsertTag = typeof schema.tag.$inferInsert;
 export type InsertProjectLike = typeof schema.projectLike.$inferInsert;
 export type InsertMedia = typeof schema.media.$inferInsert;
+export type InsertExperience = typeof schema.experience.$inferInsert;
 
 export type InsertProjectToTechnologies =
 	typeof schema.projectToTechnologies.$inferInsert;

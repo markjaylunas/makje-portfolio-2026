@@ -1,5 +1,6 @@
 import z from "zod";
 import type { InsertMedia } from "@/db/types";
+import { COMPANY_LOGO_ACCEPTED_MIME_TYPES } from "@/form-validators/experience/create";
 import { BUCKET_DIRECTORIES } from "@/lib/bucket-directories";
 import { generateTimestampId } from "@/lib/utils";
 
@@ -53,5 +54,16 @@ export const uploadTechnologyIcon = async (file: File) => {
 	}
 
 	const keyDirectory = BUCKET_DIRECTORIES.TECHNOLOGY.ICON;
+	return await uploadFileToR2(keyDirectory, file);
+};
+
+export const uploadExperienceLogo = async (file: File) => {
+	if (!COMPANY_LOGO_ACCEPTED_MIME_TYPES.includes(file.type)) {
+		throw new Error(
+			`File must be of type ${COMPANY_LOGO_ACCEPTED_MIME_TYPES.join(", ")}`,
+		);
+	}
+
+	const keyDirectory = BUCKET_DIRECTORIES.EXPERIENCE.COMPANY_LOGO;
 	return await uploadFileToR2(keyDirectory, file);
 };

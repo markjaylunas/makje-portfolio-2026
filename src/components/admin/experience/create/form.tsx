@@ -26,7 +26,13 @@ import { DatePickerInput } from "@/components/ui/date-picker";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { uploadExperienceLogo } from "@/data/client/storage";
 import { getTechnologyListOptions } from "@/data/options/technology";
+import { createExperienceFn } from "@/data/server/experience.server";
+import type {
+	InsertExperience,
+	InsertExperienceToTechnologies,
+} from "@/db/types";
 import {
 	defaultValues,
 	type ExperienceCreateFormSchema,
@@ -44,8 +50,33 @@ export default function CreateExperienceForm() {
 	);
 
 	const { mutate: createExperienceMutation, isPending } = useMutation({
-		mutationFn: async (value: ExperienceCreateFormSchema) => {
-			return value;
+		mutationFn: async (values: ExperienceCreateFormSchema) => {
+			const newMedia = await uploadExperienceLogo(values.logo);
+
+			const newExperienceToTechnologies: InsertExperienceToTechnologies[] =
+				values.technologyList.map((v, index) => ({
+					technologyId: v,
+					experienceId: "",
+					order: index + 1,
+				}));
+
+			const newExperience: InsertExperience = {
+				title: values.title,
+				company: values.company,
+				description: values.description,
+				periodDisplay: values.periodDisplay,
+				startDate: values.startDate,
+				endDate: values.endDate,
+				responsibilities: JSON.stringify(values.responsibilityList),
+			};
+
+			return await createExperienceFn({
+				data: {
+					newExperience,
+					newExperienceToTechnologies,
+					newMedia,
+				},
+			});
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["experience"] });
@@ -70,8 +101,16 @@ export default function CreateExperienceForm() {
 	};
 
 	return (
-		<div className="flex flex-col md:flex-row gap-4 md:gap-16">
+		<div className="flex flex-col md:flex-row-reverse gap-4 md:gap-16 justify-between">
 			<ol className="relative ml-3 border-l-2 border-muted">
+				<form.Subscribe selector={(state) => [state.values, state.errors]}>
+					{([data, errors]) => (
+						<div className="flex flex-col">
+							<pre>{JSON.stringify(data, null, 2)}</pre>
+							<pre>{JSON.stringify(errors, null, 2)}</pre>
+						</div>
+					)}
+				</form.Subscribe>
 				<form.Subscribe selector={(state) => [state.values]}>
 					{([exp]) => {
 						const selectedTechnologyList = technologyList.filter((v) =>
@@ -156,6 +195,7 @@ export default function CreateExperienceForm() {
 								return;
 							}
 							field.handleChange(file);
+							field.handleBlur();
 						};
 
 						return (
@@ -165,7 +205,7 @@ export default function CreateExperienceForm() {
 									id={field.name}
 									name={field.name}
 									type="file"
-									accept=".png,.jpg,.jpeg,.webp"
+									accept=".png,.jpg,.jpeg,.webp,.svg"
 									onChange={fileHandler}
 									onBlur={field.handleBlur}
 									className="cursor-pointer"
@@ -272,7 +312,15 @@ export default function CreateExperienceForm() {
 						return (
 							<Field data-invalid={isInvalid}>
 								<FieldLabel htmlFor={field.name}>Technologies</FieldLabel>
-								<Combobox multiple autoHighlight items={technologyList}>
+								<Combobox
+									multiple
+									autoHighlight
+									items={technologyList}
+									onValueChange={(v: TechnologyWithRelations[]) => {
+										const ids = v.map((v) => v.id);
+										field.handleChange(ids);
+									}}
+								>
 									<ComboboxChips ref={anchor}>
 										<ComboboxValue>
 											{(values) => (
@@ -330,7 +378,6 @@ export default function CreateExperienceForm() {
 								</div>
 
 								<div className="space-y-3">
-									{/* Use field.state.value map to render inputs */}
 									{field.state.value.map((_, i) => {
 										return (
 											<form.Field
@@ -387,16 +434,14 @@ export default function CreateExperienceForm() {
 					</form.Field>
 				</div>
 
-				<form.Subscribe
-					selector={(state) => [state.canSubmit, state.isSubmitting]}
-				>
-					{([canSubmit, isSubmitting]) => (
+				<form.Subscribe selector={(state) => [state.canSubmit]}>
+					{([canSubmit]) => (
 						<Button
 							type="submit"
 							className="w-full"
-							disabled={!canSubmit || isSubmitting || isPending}
+							disabled={!canSubmit || isPending}
 						>
-							{(isSubmitting || isPending) && (
+							{isPending && (
 								<HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
 							)}
 							Submit
