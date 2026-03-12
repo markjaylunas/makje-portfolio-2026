@@ -1,4 +1,4 @@
-import { Building, Calendar } from "@hugeicons/core-free-icons";
+import { Calendar } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Badge } from "@/components/ui/badge";
 import type { TechnologyWithIcon } from "@/lib/types";
@@ -10,12 +10,13 @@ export function ExperienceItem({
 	responsibilities,
 	technologies,
 	title,
+	logo,
 }: {
 	company: string;
 	title: string;
 	period: string;
 	description: string;
-
+	logo?: string;
 	responsibilities: string[];
 	technologies: TechnologyWithIcon[];
 }) {
@@ -34,11 +35,7 @@ export function ExperienceItem({
 							className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent"
 							aria-hidden="true"
 						>
-							<HugeiconsIcon
-								icon={Building}
-								size={16}
-								className="text-muted-foreground"
-							/>
+							<img src={logo} alt={company} className="text-muted-foreground" />
 						</div>
 						<span className="font-medium text-base">{company}</span>
 					</div>
@@ -81,6 +78,11 @@ export function ExperienceItem({
 									className="rounded-full hover:opacity-80"
 									variant="secondary"
 								>
+									<img
+										src={tech.icon.url}
+										alt={tech.icon.altText || tech.name}
+										className="size-4"
+									/>
 									{tech.name}
 								</Badge>
 							</a>

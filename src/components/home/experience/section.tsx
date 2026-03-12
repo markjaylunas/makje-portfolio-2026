@@ -29,6 +29,7 @@ export default function ExperienceTimelineSection() {
 						period={exp.periodDisplay || ""}
 						responsibilities={JSON.parse(exp.responsibilities) || ""}
 						technologies={exp.technologies.flatMap((v) => v.technology)}
+						logo={exp.logo?.url || undefined}
 					/>
 				))}
 			</ol>
