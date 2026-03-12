@@ -29,6 +29,30 @@ export const selectExperienceList = async (): Promise<
 	});
 };
 
+export const selectExperience = async ({
+	experienceId,
+}: {
+	experienceId: string;
+}): Promise<ExperienceWithRelations | undefined> => {
+	return await db.query.experience.findFirst({
+		with: {
+			logo: true,
+			technologies: {
+				orderBy: (experienceToTechnologies, { asc }) =>
+					asc(experienceToTechnologies.order),
+				with: {
+					technology: {
+						with: {
+							icon: true,
+						},
+					},
+				},
+			},
+		},
+		where: (experience, { eq }) => eq(experience.id, experienceId),
+	});
+};
+
 export const insertExperience = async ({
 	newExperience,
 	newExperienceToTechnologies,
