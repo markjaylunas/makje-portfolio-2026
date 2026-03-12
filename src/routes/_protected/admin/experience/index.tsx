@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import ExperienceList from "@/components/admin/experience";
 import LinkButton from "@/components/common/link-button";
 import { getExperienceListOptions } from "@/data/options/experience";
 
@@ -12,11 +13,11 @@ export const Route = createFileRoute("/_protected/admin/experience/")({
 });
 
 function RouteComponent() {
-	const data = Route.useLoaderData();
 	return (
 		<main className="space-y-6 p-4 ">
 			<LinkButton to="/admin/experience/create">Create Experience</LinkButton>
-			<pre>{JSON.stringify(data, undefined, 2)}</pre>
+
+			<ExperienceList />
 		</main>
 	);
 }

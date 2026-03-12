@@ -1,7 +1,6 @@
-import { Plus } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Link, type LinkProps } from "@tanstack/react-router";
 import type { VariantProps } from "class-variance-authority";
+import type { ComponentProps } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -10,10 +9,11 @@ export default function LinkButton({
 	children,
 	buttonProps,
 	...props
-}: LinkProps & {
-	children: React.ReactNode;
-	buttonProps?: VariantProps<typeof buttonVariants>;
-}) {
+}: LinkProps &
+	ComponentProps<"a"> & {
+		children: React.ReactNode;
+		buttonProps?: VariantProps<typeof buttonVariants>;
+	}) {
 	return (
 		<Link
 			to={to}
@@ -26,7 +26,6 @@ export default function LinkButton({
 			)}
 			{...props}
 		>
-			<HugeiconsIcon icon={Plus} />
 			{children}
 		</Link>
 	);
