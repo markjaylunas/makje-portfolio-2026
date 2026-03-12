@@ -28,7 +28,7 @@ export const experienceCreateFormSchema = z
 			.trim()
 			.max(2000, "Description is too long")
 			.optional(),
-		responsibilities: z
+		responsibilityList: z
 			.array(z.string().trim().min(1, "Responsibility cannot be empty"))
 			.min(1, "Please add at least one responsibility"),
 		logo: z
@@ -42,7 +42,7 @@ export const experienceCreateFormSchema = z
 				"Only PNG, JPG, JPEG, and WEBP formats are supported.",
 			)
 			.refine((file) => file.size >= 1024, "Company logo is required."),
-		technologies: z.array(z.string()),
+		technologyList: z.array(z.string()),
 	})
 	.refine(
 		(data) => {
@@ -67,8 +67,8 @@ export const defaultValues: ExperienceCreateFormSchema = {
 	endDate: undefined,
 	periodDisplay: "",
 	description: "",
-	responsibilities: [""],
-	technologies: [],
+	responsibilityList: [""],
+	technologyList: [],
 	logo: null as any,
 };
 

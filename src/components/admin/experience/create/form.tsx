@@ -1,23 +1,45 @@
 import { Close, Loading03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+	useMutation,
+	useQueryClient,
+	useSuspenseQuery,
+} from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+	Combobox,
+	ComboboxChip,
+	ComboboxChips,
+	ComboboxChipsInput,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxItem,
+	ComboboxList,
+	ComboboxValue,
+	useComboboxAnchor,
+} from "@/components/ui/combobox";
 import { DatePickerInput } from "@/components/ui/date-picker";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { getTechnologyListOptions } from "@/data/options/technology";
 import {
 	defaultValues,
 	type ExperienceCreateFormSchema,
 	experienceCreateFormSchema,
 } from "@/form-validators/experience/create";
+import type { TechnologyWithIcon } from "@/lib/types";
 
 export default function CreateExperienceForm() {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
+
+	const { data: technologyList } = useSuspenseQuery(
+		getTechnologyListOptions({}),
+	);
 
 	const { mutate: createExperienceMutation, isPending } = useMutation({
 		mutationFn: async (value: ExperienceCreateFormSchema) => {
@@ -37,6 +59,8 @@ export default function CreateExperienceForm() {
 			onSubmit: experienceCreateFormSchema,
 		},
 	});
+
+	const anchor = useComboboxAnchor();
 
 	return (
 		<form
@@ -208,8 +232,56 @@ export default function CreateExperienceForm() {
 					);
 				}}
 			</form.Field>
+
+			<form.Field name="technologyList">
+				{(field) => {
+					const isInvalid = !field.state.meta.isValid;
+					return (
+						<Field data-invalid={isInvalid}>
+							<FieldLabel htmlFor={field.name}>Technologies</FieldLabel>
+							<Combobox multiple autoHighlight items={technologyList}>
+								<ComboboxChips ref={anchor}>
+									<ComboboxValue>
+										{(values) => (
+											<Fragment>
+												{values.map((value: TechnologyWithIcon) => (
+													<ComboboxChip key={value.id}>
+														<img
+															src={value.icon.url}
+															alt={value.icon.altText || value.name}
+															className="size-4"
+														/>
+														{value.name}
+													</ComboboxChip>
+												))}
+												<ComboboxChipsInput />
+											</Fragment>
+										)}
+									</ComboboxValue>
+								</ComboboxChips>
+								<ComboboxContent anchor={anchor}>
+									<ComboboxEmpty>No items found.</ComboboxEmpty>
+									<ComboboxList>
+										{(item: TechnologyWithIcon) => (
+											<ComboboxItem key={item.id} value={item}>
+												<img
+													src={item.icon.url}
+													alt={item.icon.altText || item.name}
+													className="size-4"
+												/>
+												{item.name}
+											</ComboboxItem>
+										)}
+									</ComboboxList>
+								</ComboboxContent>
+							</Combobox>
+						</Field>
+					);
+				}}
+			</form.Field>
+
 			<div className="space-y-4">
-				<form.Field name="responsibilities" mode="array">
+				<form.Field name="responsibilityList" mode="array">
 					{(field) => (
 						<>
 							<div className="flex items-center justify-between">
@@ -233,7 +305,7 @@ export default function CreateExperienceForm() {
 												// biome-ignore lint/suspicious/noArrayIndexKey: <ignore>
 												i
 											}`}
-											name={`responsibilities[${i}]`}
+											name={`responsibilityList[${i}]`}
 										>
 											{(subField) => {
 												const isInvalid = !subField.state.meta.isValid;
