@@ -1,4 +1,4 @@
-import { Loading03Icon } from "@hugeicons/core-free-icons";
+import { Close, Loading03Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -208,6 +208,78 @@ export default function CreateExperienceForm() {
 					);
 				}}
 			</form.Field>
+			<div className="space-y-4">
+				<form.Field name="responsibilities" mode="array">
+					{(field) => (
+						<>
+							<div className="flex items-center justify-between">
+								<FieldLabel>Responsibilities</FieldLabel>
+								<Button
+									type="button"
+									variant="outline"
+									size="sm"
+									onClick={() => field.pushValue("")}
+								>
+									Add Responsibility
+								</Button>
+							</div>
+
+							<div className="space-y-3">
+								{/* Use field.state.value map to render inputs */}
+								{field.state.value.map((_, i) => {
+									return (
+										<form.Field
+											key={`responsibility-${
+												// biome-ignore lint/suspicious/noArrayIndexKey: <ignore>
+												i
+											}`}
+											name={`responsibilities[${i}]`}
+										>
+											{(subField) => {
+												const isInvalid = !subField.state.meta.isValid;
+												return (
+													<div className="flex gap-2">
+														<div className="flex-1">
+															<Textarea
+																value={subField.state.value}
+																onChange={(e) =>
+																	subField.handleChange(e.target.value)
+																}
+																onBlur={subField.handleBlur}
+																placeholder="Describe a key achievement"
+																aria-invalid={isInvalid}
+															/>
+															{isInvalid && (
+																<FieldError>
+																	{subField.state.meta.errors[0]?.message}
+																</FieldError>
+															)}
+														</div>
+														<Button
+															type="button"
+															variant="destructive"
+															size="icon"
+															onClick={() => field.removeValue(i)}
+														>
+															<HugeiconsIcon icon={Close} />
+														</Button>
+													</div>
+												);
+											}}
+										</form.Field>
+									);
+								})}
+
+								{field.state.value.length === 0 && (
+									<p className="text-sm text-muted-foreground italic text-center py-4 border-2 border-dashed rounded-md">
+										No responsibilities added yet.
+									</p>
+								)}
+							</div>
+						</>
+					)}
+				</form.Field>
+			</div>
 
 			<form.Subscribe
 				selector={(state) => [state.canSubmit, state.isSubmitting]}

@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { z } from "zod";
 import {
 	experienceInsertSchema,
@@ -27,7 +28,9 @@ export const experienceCreateFormSchema = z
 			.trim()
 			.max(2000, "Description is too long")
 			.optional(),
-		responsibilities: z.array(z.string()),
+		responsibilities: z
+			.array(z.string().trim().min(1, "Responsibility cannot be empty"))
+			.min(1, "Please add at least one responsibility"),
 		logo: z
 			.instanceof(File)
 			.refine(
@@ -61,12 +64,12 @@ export const defaultValues: ExperienceCreateFormSchema = {
 	title: "",
 	company: "",
 	startDate: new Date(),
-	endDate: new Date(),
+	endDate: undefined,
 	periodDisplay: "",
 	description: "",
-	responsibilities: [],
+	responsibilities: [""],
 	technologies: [],
-	logo: new File([], "logo.png", { type: "image/png" }),
+	logo: null as any,
 };
 
 export const createExperienceFnSchema = z.object({
