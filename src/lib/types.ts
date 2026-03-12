@@ -16,6 +16,9 @@ export type Experience = {
 
 export type TechnologyWithIcon = Technology & {
 	icon: Media;
+};
+export type TechnologyWithRelations = Technology & {
+	icon: Media;
 	featured: FeaturedTechnology;
 };
 

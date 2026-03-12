@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_protected/admin/experience/create")({
 
 function RouteComponent() {
 	return (
-		<main className="p-4 max-w-md mx-auto">
+		<main className="px-4 my-12">
 			<CreateExperienceForm />
 		</main>
 	);

@@ -1,18 +1,24 @@
 import { Building, Calendar } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Badge } from "@/components/ui/badge";
-import type { Experience } from "@/lib/types";
+import type { TechnologyWithIcon } from "@/lib/types";
 
-export function ExperienceItem({ experience }: { experience: Experience }) {
-	const {
-		company,
-		title,
-		period,
-		description,
-		responsibilities,
-		technologyList,
-	} = experience;
+export function ExperienceItem({
+	company,
+	description,
+	period,
+	responsibilities,
+	technologies,
+	title,
+}: {
+	company: string;
+	title: string;
+	period: string;
+	description: string;
 
+	responsibilities: string[];
+	technologies: TechnologyWithIcon[];
+}) {
 	return (
 		<li className="relative mb-12 last:mb-0 pl-8">
 			{/* Decorative Dot */}
@@ -54,7 +60,7 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
 						{description}
 					</p>
 					<ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-						{responsibilities.map((item) => (
+						{responsibilities.map((item: string) => (
 							<li key={item}>{item}</li>
 						))}
 					</ul>
@@ -63,10 +69,10 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
 				<footer className="pt-2">
 					<span className="sr-only">Technology used:</span>
 					<div className="flex flex-wrap gap-2">
-						{technologyList.map((tech) => (
+						{technologies.map((tech) => (
 							<a
-								href={tech.url}
-								key={tech.name}
+								href={tech.icon.url}
+								key={tech.id}
 								target="_blank"
 								rel="noopener noreferrer"
 								aria-label={`Learn more about ${tech.name}`}

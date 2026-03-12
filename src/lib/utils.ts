@@ -50,3 +50,18 @@ export const generateTimestampId = (): string => {
 
 	return `${datePart}-${timePart}-${ms}-${randomSuffix}`;
 };
+
+export const dateToMonthYear = (date: Date): string => {
+	return date.toLocaleDateString("en-US", {
+		month: "long",
+		year: "numeric",
+	});
+};
+
+export const dateToPeriodDisplay = (
+	startDate: Date,
+	endDate?: Date,
+): string => {
+	const periodDisplay = `${dateToMonthYear(startDate)} - ${endDate ? dateToMonthYear(endDate) : "Present"}`;
+	return periodDisplay;
+};

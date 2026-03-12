@@ -21,10 +21,10 @@ import {
 } from "@/data/server/featured-technology.server";
 import { deleteTechnologyFn } from "@/data/server/technology.server";
 import type { Media } from "@/db/types";
-import type { TechnologyWithIcon } from "@/lib/types";
+import type { TechnologyWithRelations } from "@/lib/types";
 import { getContrastColor } from "@/lib/utils";
 
-export const columns: ColumnDef<TechnologyWithIcon>[] = [
+export const columns: ColumnDef<TechnologyWithRelations>[] = [
 	{
 		accessorKey: "icon",
 		header: "Icon",
@@ -112,7 +112,7 @@ export const TechnologyColor = ({ brandColor }: { brandColor: string }) => {
 export const TechnologyActions = ({
 	technology,
 }: {
-	technology: TechnologyWithIcon;
+	technology: TechnologyWithRelations;
 }) => {
 	const queryClient = useQueryClient();
 

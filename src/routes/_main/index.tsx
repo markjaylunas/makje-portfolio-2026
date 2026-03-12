@@ -1,18 +1,20 @@
 /** biome-ignore-all lint/correctness/useUniqueElementIds: <ignore for home section navigation ids> */
 
 import { createFileRoute } from "@tanstack/react-router";
-import ExperienceTimelineSection from "@/components/home/experience/timeline-section";
+import ExperienceTimelineSection from "@/components/home/experience/section";
 import HeroSection from "@/components/home/hero/hero-section";
 import TechListSection from "@/components/home/technology/tech-list-section";
 import ContentMotion from "@/components/motion/content-motion";
+import { getExperienceListOptions } from "@/data/options/experience";
 import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
 
 export const Route = createFileRoute("/_main/")({
 	component: App,
 	loader: async ({ context }) => {
-		return await context.queryClient.ensureQueryData(
-			getFeaturedTechnologyListOptions(),
-		);
+		return await Promise.all([
+			context.queryClient.ensureQueryData(getFeaturedTechnologyListOptions()),
+			context.queryClient.ensureQueryData(getExperienceListOptions()),
+		]);
 	},
 });
 
