@@ -238,7 +238,7 @@ export default function CreateExperienceForm() {
 											{(subField) => {
 												const isInvalid = !subField.state.meta.isValid;
 												return (
-													<div className="flex gap-2">
+													<div className="flex gap-2 relative">
 														<div className="flex-1">
 															<Textarea
 																value={subField.state.value}
@@ -258,7 +258,8 @@ export default function CreateExperienceForm() {
 														<Button
 															type="button"
 															variant="destructive"
-															size="icon"
+															size="icon-xs"
+															className="absolute bottom-2 right-2"
 															onClick={() => field.removeValue(i)}
 														>
 															<HugeiconsIcon icon={Close} />
