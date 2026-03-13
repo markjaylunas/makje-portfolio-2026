@@ -13,6 +13,7 @@ export type Experience = typeof schema.experience.$inferSelect;
 export type Media = typeof schema.media.$inferSelect;
 
 export type ProjectLike = typeof schema.projectLike.$inferSelect;
+export type FeaturedProject = typeof schema.featuredProject.$inferSelect;
 
 export type ProjectToTechnologies =
 	typeof schema.projectToTechnologies.$inferSelect;
@@ -29,6 +30,7 @@ export type InsertTag = typeof schema.tag.$inferInsert;
 export type InsertProjectLike = typeof schema.projectLike.$inferInsert;
 export type InsertMedia = typeof schema.media.$inferInsert;
 export type InsertExperience = typeof schema.experience.$inferInsert;
+export type InsertFeaturedProject = typeof schema.featuredProject.$inferInsert;
 
 export type InsertProjectToTechnologies =
 	typeof schema.projectToTechnologies.$inferInsert;
@@ -45,7 +47,8 @@ export type UpdateTechnology = Partial<Technology> & Pick<Technology, "id">;
 export type UpdateTag = Partial<Tag> & Pick<Tag, "id">;
 export type UpdateExperience = Partial<Experience> & Pick<Experience, "id">;
 export type UpdateMedia = Partial<Media> & Pick<Media, "id">;
-
+export type UpdateFeaturedProject = Partial<FeaturedProject> &
+	Pick<FeaturedProject, "id">;
 export type UpdateProjectLike = Partial<ProjectLike> & Pick<ProjectLike, "id">;
 
 export type UpdateProjectToTechnologies = Partial<ProjectToTechnologies> &

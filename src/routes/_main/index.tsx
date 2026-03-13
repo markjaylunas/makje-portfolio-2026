@@ -7,6 +7,7 @@ import FeaturedProjectSection from "@/components/home/project/section";
 import TechListSection from "@/components/home/technology/tech-list-section";
 import ContentMotion from "@/components/motion/content-motion";
 import { getExperienceListOptions } from "@/data/options/experience";
+import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
 import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
 
 export const Route = createFileRoute("/_main/")({
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/_main/")({
 		return await Promise.all([
 			context.queryClient.ensureQueryData(getFeaturedTechnologyListOptions()),
 			context.queryClient.ensureQueryData(getExperienceListOptions()),
+			context.queryClient.ensureQueryData(getFeaturedProjectListOptions()),
 		]);
 	},
 });
