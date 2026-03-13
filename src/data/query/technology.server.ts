@@ -59,6 +59,38 @@ export const updateTechnology = async ({
 export const deleteTechnology = async ({
 	technologyId,
 }: TechnologyDeleteFormSchema) => {
+	// check if technology is featured
+	const featuredTechnologyExists = await db.query.featuredTechnology.findFirst({
+		where: (featuredTechnology, { eq }) =>
+			eq(featuredTechnology.technologyId, technologyId),
+	});
+
+	if (featuredTechnologyExists) {
+		throw new Error("Technology is featured");
+	}
+
+	// check if technology is used in projects
+	const projectToTechnologiesExists =
+		await db.query.projectToTechnologies.findFirst({
+			where: (projectToTechnologies, { eq }) =>
+				eq(projectToTechnologies.technologyId, technologyId),
+		});
+
+	if (projectToTechnologiesExists) {
+		throw new Error("Technology is used in projects");
+	}
+
+	// check if technology is used in experience
+	const experienceToTechnologiesExists =
+		await db.query.experienceToTechnologies.findFirst({
+			where: (experienceToTechnologies, { eq }) =>
+				eq(experienceToTechnologies.technologyId, technologyId),
+		});
+
+	if (experienceToTechnologiesExists) {
+		throw new Error("Technology is used in experience");
+	}
+
 	const [deleted] = await db
 		.delete(technology)
 		.where(eq(technology.id, technologyId))

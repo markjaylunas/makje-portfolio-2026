@@ -137,6 +137,9 @@ export const TechnologyActions = ({
 			]);
 			toast.success(`Deleted ${data.name} successfully!`);
 		},
+		onError: (e) => {
+			toast.warning(e.message);
+		},
 	});
 
 	const { mutate: addAsFeaturedTechnology } = useMutation({
