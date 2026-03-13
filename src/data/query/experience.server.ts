@@ -9,6 +9,7 @@ import type {
 	Media,
 } from "@/db/types";
 import type { EditExperienceFnSchema } from "@/form-validators/experience/edit";
+import { deleteMedia } from "./media";
 
 export const selectExperienceList = async (): Promise<
 	ExperienceWithRelations[]
@@ -127,10 +128,14 @@ export const deleteExperience = async ({
 }: {
 	experienceId: string;
 }) => {
-	const [result] = await db
+	const [deleted] = await db
 		.delete(experience)
 		.where(eq(experience.id, experienceId))
 		.returning();
 
-	return result;
+	if (deleted.logoId) {
+		await deleteMedia({ mediaId: deleted.logoId });
+	}
+
+	return deleted;
 };

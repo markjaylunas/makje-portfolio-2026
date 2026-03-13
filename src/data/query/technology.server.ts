@@ -8,6 +8,7 @@ import type {
 	UpdateTechnology,
 } from "@/db/types";
 import type { TechnologyDeleteFormSchema } from "@/form-validators/technology/delete";
+import { deleteMedia } from "./media";
 
 export const insertTechnology = async (
 	newTechnology: InsertTechnology,
@@ -61,8 +62,10 @@ export const deleteTechnology = async ({
 	const [deleted] = await db
 		.delete(technology)
 		.where(eq(technology.id, technologyId))
-		.limit(1)
 		.returning();
+
+	await deleteMedia({ mediaId: deleted.iconId });
+
 	return deleted;
 };
 
