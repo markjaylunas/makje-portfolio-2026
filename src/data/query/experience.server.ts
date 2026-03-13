@@ -121,3 +121,16 @@ export const editExperience = async ({
 
 	return experienceResult;
 };
+
+export const deleteExperience = async ({
+	experienceId,
+}: {
+	experienceId: string;
+}) => {
+	const [result] = await db
+		.delete(experience)
+		.where(eq(experience.id, experienceId))
+		.returning();
+
+	return result;
+};

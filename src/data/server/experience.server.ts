@@ -1,9 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getExperienceFnSchema } from "@/form-validators/experience";
+import {
+	deleteExperienceFnSchema,
+	getExperienceFnSchema,
+} from "@/form-validators/experience";
 import { createExperienceFnSchema } from "@/form-validators/experience/create";
 import { editExperienceFnSchema } from "@/form-validators/experience/edit";
 import { ensureAdminFnMiddleware } from "../middleware/auth";
 import {
+	deleteExperience,
 	editExperience,
 	insertExperience,
 	selectExperience,
@@ -29,3 +33,8 @@ export const editExperienceFn = createServerFn({ method: "POST" })
 	.middleware([ensureAdminFnMiddleware])
 	.inputValidator(editExperienceFnSchema)
 	.handler(async ({ data }) => await editExperience(data));
+
+export const deleteExperienceFn = createServerFn({ method: "POST" })
+	.middleware([ensureAdminFnMiddleware])
+	.inputValidator(deleteExperienceFnSchema)
+	.handler(async ({ data }) => await deleteExperience(data));
