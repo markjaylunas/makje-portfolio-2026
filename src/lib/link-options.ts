@@ -84,7 +84,7 @@ export const adminNavLinks = linkOptions([
 	},
 	{
 		title: "Projects",
-		to: "/admin/projects",
+		to: "/admin/project",
 		icon: Folder,
 		activeOptions: {
 			exact: false,

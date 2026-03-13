@@ -25,11 +25,13 @@ import { Route as ApiStorageUploadRouteRouteImport } from './routes/api/storage/
 import { Route as ApiStorageCleanupRouteRouteImport } from './routes/api/storage/cleanup/route'
 import { Route as ProtectedAdminTechnologyIndexRouteImport } from './routes/_protected/admin/technology/index'
 import { Route as ProtectedAdminTagsIndexRouteImport } from './routes/_protected/admin/tags/index'
-import { Route as ProtectedAdminProjectsIndexRouteImport } from './routes/_protected/admin/projects/index'
+import { Route as ProtectedAdminProjectIndexRouteImport } from './routes/_protected/admin/project/index'
 import { Route as ProtectedAdminExperienceIndexRouteImport } from './routes/_protected/admin/experience/index'
 import { Route as ProtectedAdminTechnologyCreateRouteImport } from './routes/_protected/admin/technology/create'
+import { Route as ProtectedAdminProjectCreateRouteImport } from './routes/_protected/admin/project/create'
 import { Route as ProtectedAdminExperienceCreateRouteImport } from './routes/_protected/admin/experience/create'
 import { Route as ProtectedAdminTechnologyTechnologyIdIndexRouteImport } from './routes/_protected/admin/technology/$technologyId/index'
+import { Route as ProtectedAdminProjectProjectIdIndexRouteImport } from './routes/_protected/admin/project/$projectId/index'
 import { Route as ProtectedAdminTechnologyTechnologyIdEditRouteImport } from './routes/_protected/admin/technology/$technologyId/edit'
 import { Route as ProtectedAdminExperienceExperienceIdEditRouteImport } from './routes/_protected/admin/experience/$experienceId/edit'
 
@@ -111,10 +113,10 @@ const ProtectedAdminTagsIndexRoute = ProtectedAdminTagsIndexRouteImport.update({
   path: '/tags/',
   getParentRoute: () => ProtectedAdminRouteRoute,
 } as any)
-const ProtectedAdminProjectsIndexRoute =
-  ProtectedAdminProjectsIndexRouteImport.update({
-    id: '/projects/',
-    path: '/projects/',
+const ProtectedAdminProjectIndexRoute =
+  ProtectedAdminProjectIndexRouteImport.update({
+    id: '/project/',
+    path: '/project/',
     getParentRoute: () => ProtectedAdminRouteRoute,
   } as any)
 const ProtectedAdminExperienceIndexRoute =
@@ -129,6 +131,12 @@ const ProtectedAdminTechnologyCreateRoute =
     path: '/technology/create',
     getParentRoute: () => ProtectedAdminRouteRoute,
   } as any)
+const ProtectedAdminProjectCreateRoute =
+  ProtectedAdminProjectCreateRouteImport.update({
+    id: '/project/create',
+    path: '/project/create',
+    getParentRoute: () => ProtectedAdminRouteRoute,
+  } as any)
 const ProtectedAdminExperienceCreateRoute =
   ProtectedAdminExperienceCreateRouteImport.update({
     id: '/experience/create',
@@ -139,6 +147,12 @@ const ProtectedAdminTechnologyTechnologyIdIndexRoute =
   ProtectedAdminTechnologyTechnologyIdIndexRouteImport.update({
     id: '/technology/$technologyId/',
     path: '/technology/$technologyId/',
+    getParentRoute: () => ProtectedAdminRouteRoute,
+  } as any)
+const ProtectedAdminProjectProjectIdIndexRoute =
+  ProtectedAdminProjectProjectIdIndexRouteImport.update({
+    id: '/project/$projectId/',
+    path: '/project/$projectId/',
     getParentRoute: () => ProtectedAdminRouteRoute,
   } as any)
 const ProtectedAdminTechnologyTechnologyIdEditRoute =
@@ -167,13 +181,15 @@ export interface FileRoutesByFullPath {
   '/projects/': typeof MainProjectsIndexRoute
   '/admin/': typeof ProtectedAdminIndexRoute
   '/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
+  '/admin/project/create': typeof ProtectedAdminProjectCreateRoute
   '/admin/technology/create': typeof ProtectedAdminTechnologyCreateRoute
   '/admin/experience/': typeof ProtectedAdminExperienceIndexRoute
-  '/admin/projects/': typeof ProtectedAdminProjectsIndexRoute
+  '/admin/project/': typeof ProtectedAdminProjectIndexRoute
   '/admin/tags/': typeof ProtectedAdminTagsIndexRoute
   '/admin/technology/': typeof ProtectedAdminTechnologyIndexRoute
   '/admin/experience/$experienceId/edit': typeof ProtectedAdminExperienceExperienceIdEditRoute
   '/admin/technology/$technologyId/edit': typeof ProtectedAdminTechnologyTechnologyIdEditRoute
+  '/admin/project/$projectId/': typeof ProtectedAdminProjectProjectIdIndexRoute
   '/admin/technology/$technologyId/': typeof ProtectedAdminTechnologyTechnologyIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -188,13 +204,15 @@ export interface FileRoutesByTo {
   '/projects': typeof MainProjectsIndexRoute
   '/admin': typeof ProtectedAdminIndexRoute
   '/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
+  '/admin/project/create': typeof ProtectedAdminProjectCreateRoute
   '/admin/technology/create': typeof ProtectedAdminTechnologyCreateRoute
   '/admin/experience': typeof ProtectedAdminExperienceIndexRoute
-  '/admin/projects': typeof ProtectedAdminProjectsIndexRoute
+  '/admin/project': typeof ProtectedAdminProjectIndexRoute
   '/admin/tags': typeof ProtectedAdminTagsIndexRoute
   '/admin/technology': typeof ProtectedAdminTechnologyIndexRoute
   '/admin/experience/$experienceId/edit': typeof ProtectedAdminExperienceExperienceIdEditRoute
   '/admin/technology/$technologyId/edit': typeof ProtectedAdminTechnologyTechnologyIdEditRoute
+  '/admin/project/$projectId': typeof ProtectedAdminProjectProjectIdIndexRoute
   '/admin/technology/$technologyId': typeof ProtectedAdminTechnologyTechnologyIdIndexRoute
 }
 export interface FileRoutesById {
@@ -214,13 +232,15 @@ export interface FileRoutesById {
   '/_main/projects/': typeof MainProjectsIndexRoute
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
   '/_protected/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
+  '/_protected/admin/project/create': typeof ProtectedAdminProjectCreateRoute
   '/_protected/admin/technology/create': typeof ProtectedAdminTechnologyCreateRoute
   '/_protected/admin/experience/': typeof ProtectedAdminExperienceIndexRoute
-  '/_protected/admin/projects/': typeof ProtectedAdminProjectsIndexRoute
+  '/_protected/admin/project/': typeof ProtectedAdminProjectIndexRoute
   '/_protected/admin/tags/': typeof ProtectedAdminTagsIndexRoute
   '/_protected/admin/technology/': typeof ProtectedAdminTechnologyIndexRoute
   '/_protected/admin/experience/$experienceId/edit': typeof ProtectedAdminExperienceExperienceIdEditRoute
   '/_protected/admin/technology/$technologyId/edit': typeof ProtectedAdminTechnologyTechnologyIdEditRoute
+  '/_protected/admin/project/$projectId/': typeof ProtectedAdminProjectProjectIdIndexRoute
   '/_protected/admin/technology/$technologyId/': typeof ProtectedAdminTechnologyTechnologyIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -238,13 +258,15 @@ export interface FileRouteTypes {
     | '/projects/'
     | '/admin/'
     | '/admin/experience/create'
+    | '/admin/project/create'
     | '/admin/technology/create'
     | '/admin/experience/'
-    | '/admin/projects/'
+    | '/admin/project/'
     | '/admin/tags/'
     | '/admin/technology/'
     | '/admin/experience/$experienceId/edit'
     | '/admin/technology/$technologyId/edit'
+    | '/admin/project/$projectId/'
     | '/admin/technology/$technologyId/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -259,13 +281,15 @@ export interface FileRouteTypes {
     | '/projects'
     | '/admin'
     | '/admin/experience/create'
+    | '/admin/project/create'
     | '/admin/technology/create'
     | '/admin/experience'
-    | '/admin/projects'
+    | '/admin/project'
     | '/admin/tags'
     | '/admin/technology'
     | '/admin/experience/$experienceId/edit'
     | '/admin/technology/$technologyId/edit'
+    | '/admin/project/$projectId'
     | '/admin/technology/$technologyId'
   id:
     | '__root__'
@@ -284,13 +308,15 @@ export interface FileRouteTypes {
     | '/_main/projects/'
     | '/_protected/admin/'
     | '/_protected/admin/experience/create'
+    | '/_protected/admin/project/create'
     | '/_protected/admin/technology/create'
     | '/_protected/admin/experience/'
-    | '/_protected/admin/projects/'
+    | '/_protected/admin/project/'
     | '/_protected/admin/tags/'
     | '/_protected/admin/technology/'
     | '/_protected/admin/experience/$experienceId/edit'
     | '/_protected/admin/technology/$technologyId/edit'
+    | '/_protected/admin/project/$projectId/'
     | '/_protected/admin/technology/$technologyId/'
   fileRoutesById: FileRoutesById
 }
@@ -418,11 +444,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminTagsIndexRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
     }
-    '/_protected/admin/projects/': {
-      id: '/_protected/admin/projects/'
-      path: '/projects'
-      fullPath: '/admin/projects/'
-      preLoaderRoute: typeof ProtectedAdminProjectsIndexRouteImport
+    '/_protected/admin/project/': {
+      id: '/_protected/admin/project/'
+      path: '/project'
+      fullPath: '/admin/project/'
+      preLoaderRoute: typeof ProtectedAdminProjectIndexRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
     }
     '/_protected/admin/experience/': {
@@ -439,6 +465,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminTechnologyCreateRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
     }
+    '/_protected/admin/project/create': {
+      id: '/_protected/admin/project/create'
+      path: '/project/create'
+      fullPath: '/admin/project/create'
+      preLoaderRoute: typeof ProtectedAdminProjectCreateRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
+    }
     '/_protected/admin/experience/create': {
       id: '/_protected/admin/experience/create'
       path: '/experience/create'
@@ -451,6 +484,13 @@ declare module '@tanstack/react-router' {
       path: '/technology/$technologyId'
       fullPath: '/admin/technology/$technologyId/'
       preLoaderRoute: typeof ProtectedAdminTechnologyTechnologyIdIndexRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
+    }
+    '/_protected/admin/project/$projectId/': {
+      id: '/_protected/admin/project/$projectId/'
+      path: '/project/$projectId'
+      fullPath: '/admin/project/$projectId/'
+      preLoaderRoute: typeof ProtectedAdminProjectProjectIdIndexRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
     }
     '/_protected/admin/technology/$technologyId/edit': {
@@ -502,13 +542,15 @@ interface ProtectedAdminRouteRouteChildren {
   ProtectedAdminDashboardRoute: typeof ProtectedAdminDashboardRoute
   ProtectedAdminIndexRoute: typeof ProtectedAdminIndexRoute
   ProtectedAdminExperienceCreateRoute: typeof ProtectedAdminExperienceCreateRoute
+  ProtectedAdminProjectCreateRoute: typeof ProtectedAdminProjectCreateRoute
   ProtectedAdminTechnologyCreateRoute: typeof ProtectedAdminTechnologyCreateRoute
   ProtectedAdminExperienceIndexRoute: typeof ProtectedAdminExperienceIndexRoute
-  ProtectedAdminProjectsIndexRoute: typeof ProtectedAdminProjectsIndexRoute
+  ProtectedAdminProjectIndexRoute: typeof ProtectedAdminProjectIndexRoute
   ProtectedAdminTagsIndexRoute: typeof ProtectedAdminTagsIndexRoute
   ProtectedAdminTechnologyIndexRoute: typeof ProtectedAdminTechnologyIndexRoute
   ProtectedAdminExperienceExperienceIdEditRoute: typeof ProtectedAdminExperienceExperienceIdEditRoute
   ProtectedAdminTechnologyTechnologyIdEditRoute: typeof ProtectedAdminTechnologyTechnologyIdEditRoute
+  ProtectedAdminProjectProjectIdIndexRoute: typeof ProtectedAdminProjectProjectIdIndexRoute
   ProtectedAdminTechnologyTechnologyIdIndexRoute: typeof ProtectedAdminTechnologyTechnologyIdIndexRoute
 }
 
@@ -516,15 +558,18 @@ const ProtectedAdminRouteRouteChildren: ProtectedAdminRouteRouteChildren = {
   ProtectedAdminDashboardRoute: ProtectedAdminDashboardRoute,
   ProtectedAdminIndexRoute: ProtectedAdminIndexRoute,
   ProtectedAdminExperienceCreateRoute: ProtectedAdminExperienceCreateRoute,
+  ProtectedAdminProjectCreateRoute: ProtectedAdminProjectCreateRoute,
   ProtectedAdminTechnologyCreateRoute: ProtectedAdminTechnologyCreateRoute,
   ProtectedAdminExperienceIndexRoute: ProtectedAdminExperienceIndexRoute,
-  ProtectedAdminProjectsIndexRoute: ProtectedAdminProjectsIndexRoute,
+  ProtectedAdminProjectIndexRoute: ProtectedAdminProjectIndexRoute,
   ProtectedAdminTagsIndexRoute: ProtectedAdminTagsIndexRoute,
   ProtectedAdminTechnologyIndexRoute: ProtectedAdminTechnologyIndexRoute,
   ProtectedAdminExperienceExperienceIdEditRoute:
     ProtectedAdminExperienceExperienceIdEditRoute,
   ProtectedAdminTechnologyTechnologyIdEditRoute:
     ProtectedAdminTechnologyTechnologyIdEditRoute,
+  ProtectedAdminProjectProjectIdIndexRoute:
+    ProtectedAdminProjectProjectIdIndexRoute,
   ProtectedAdminTechnologyTechnologyIdIndexRoute:
     ProtectedAdminTechnologyTechnologyIdIndexRoute,
 }
