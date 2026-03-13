@@ -3,6 +3,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import ExperienceTimelineSection from "@/components/home/experience/section";
 import HeroSection from "@/components/home/hero/hero-section";
+import FeaturedProjectSection from "@/components/home/project/section";
 import TechListSection from "@/components/home/technology/tech-list-section";
 import ContentMotion from "@/components/motion/content-motion";
 import { getExperienceListOptions } from "@/data/options/experience";
@@ -27,6 +28,12 @@ function App() {
 			<ContentMotion>
 				<ExperienceTimelineSection />
 			</ContentMotion>
+
+			<div id="projects" className="h-12 md:h-24" />
+			<ContentMotion>
+				<FeaturedProjectSection />
+			</ContentMotion>
+
 			<div id="tech-stack" className="h-24" />
 			<ContentMotion>
 				<TechListSection />
