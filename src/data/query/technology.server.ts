@@ -33,19 +33,15 @@ export const updateTechnology = async ({
 }) => {
 	let mediaResult: Media | undefined;
 	if (newMedia) {
-		[mediaResult] = await db.insert(media).values(newMedia).returning();
-	} else {
-		const [{ media: mediaSelectResult }] = await db
-			.select({ media })
-			.from(technology)
-			.where(eq(technology.id, updateTechnology.id))
-			.leftJoin(media, eq(media.id, technology.iconId))
-			.limit(1);
-		if (!mediaSelectResult) {
-			throw new Error("Media not found");
+		if (updateTechnology.iconId) {
+			await db.delete(media).where(eq(media.id, updateTechnology.iconId));
 		}
 
-		mediaResult = mediaSelectResult;
+		const [newMediaResult] = await db
+			.insert(media)
+			.values(newMedia)
+			.returning();
+		mediaResult = newMediaResult;
 	}
 	const [technologyResult] = await db
 		.update(technology)
