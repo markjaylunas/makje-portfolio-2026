@@ -20,6 +20,7 @@ import {
 	technologyEditFormSchema,
 } from "@/form-validators/technology/edit";
 import { extractColorsFromSVG } from "@/lib/helper";
+import { queryKey } from "@/lib/query-key";
 
 export default function EditTechnologyForm({
 	defaultTechnology,
@@ -67,8 +68,18 @@ export default function EditTechnologyForm({
 
 			return result;
 		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["technology"] });
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKey.technology.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.featuredTechnology.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.technology.item(defaultTechnology.id),
+				}),
+			]);
 			form.reset();
 			navigate({ to: "/admin/technology" });
 		},

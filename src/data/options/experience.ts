@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import type { GetExperienceFnSchema } from "@/form-validators/experience";
+import { queryKey } from "@/lib/query-key";
 import {
 	getExperienceFn,
 	getExperienceListFn,
@@ -7,11 +8,11 @@ import {
 
 export const getExperienceListOptions = () =>
 	queryOptions({
-		queryKey: ["experience", "list"],
+		queryKey: queryKey.experience.list(),
 		queryFn: () => getExperienceListFn(),
 	});
 export const getExperienceOptions = (params: GetExperienceFnSchema) =>
 	queryOptions({
-		queryKey: ["experience", params.experienceId],
+		queryKey: queryKey.experience.item(params.experienceId),
 		queryFn: () => getExperienceFn({ data: params }),
 	});

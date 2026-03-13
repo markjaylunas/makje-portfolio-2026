@@ -21,6 +21,7 @@ import {
 } from "@/data/server/featured-technology.server";
 import { deleteTechnologyFn } from "@/data/server/technology.server";
 import type { Media } from "@/db/types";
+import { queryKey } from "@/lib/query-key";
 import type { TechnologyWithRelations } from "@/lib/types";
 import { getContrastColor } from "@/lib/utils";
 
@@ -122,9 +123,18 @@ export const TechnologyActions = ({
 				data: { technologyId: technology.id },
 			});
 		},
-		onSuccess: (data) => {
-			queryClient.invalidateQueries({ queryKey: ["technology"] });
-			queryClient.invalidateQueries({ queryKey: ["featured-technology"] });
+		onSuccess: async (data) => {
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKey.technology.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.featuredTechnology.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.technology.item(technology.id),
+				}),
+			]);
 			toast.success(`Deleted ${data.name} successfully!`);
 		},
 	});
@@ -135,9 +145,18 @@ export const TechnologyActions = ({
 				data: { technologyId: technology.id },
 			});
 		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["technology"] });
-			queryClient.invalidateQueries({ queryKey: ["featured-technology"] });
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKey.technology.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.featuredTechnology.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.technology.item(technology.id),
+				}),
+			]);
 			toast.success(`Added ${technology.name} as featured successfully!`);
 		},
 		onError: (e) => {
@@ -151,9 +170,18 @@ export const TechnologyActions = ({
 				data: { featuredTechnologyId: technology.featured.id },
 			});
 		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["technology"] });
-			queryClient.invalidateQueries({ queryKey: ["featured-technology"] });
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKey.technology.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.featuredTechnology.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.technology.item(technology.id),
+				}),
+			]);
 			toast.success(`Removed ${technology.name} from featured successfully!`);
 		},
 	});

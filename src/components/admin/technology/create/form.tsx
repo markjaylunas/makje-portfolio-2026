@@ -17,6 +17,7 @@ import {
 	technologyCreateFormSchema,
 } from "@/form-validators/technology/create";
 import { extractColorsFromSVG } from "@/lib/helper";
+import { queryKey } from "@/lib/query-key";
 
 export default function CreateTechnologyForm() {
 	const queryClient = useQueryClient();
@@ -40,7 +41,9 @@ export default function CreateTechnologyForm() {
 			return result;
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["technology"] });
+			queryClient.invalidateQueries({
+				queryKey: queryKey.technology.list(),
+			});
 			form.reset();
 			navigate({ to: "/admin/technology" });
 		},

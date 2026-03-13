@@ -16,6 +16,7 @@ import { TechCardPixel } from "@/components/home/technology/card";
 import { Button } from "@/components/ui/button";
 import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
 import { updateTechnologyOrderFn } from "@/data/server/featured-technology.server";
+import { queryKey } from "@/lib/query-key";
 import type { FeaturedTechnologyWithTechnology } from "@/lib/types";
 
 export default function FeaturedTechnologyCardOrderList() {
@@ -32,7 +33,7 @@ export default function FeaturedTechnologyCardOrderList() {
 				}),
 			onSuccess: () => {
 				queryClient.invalidateQueries({
-					queryKey: ["featured-technology", "list"],
+					queryKey: queryKey.featuredTechnology.list(),
 				});
 				toast.success("Technology order updated successfully");
 			},

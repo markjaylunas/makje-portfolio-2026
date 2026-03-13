@@ -38,6 +38,7 @@ import {
 	type ExperienceCreateFormSchema,
 	experienceCreateFormSchema,
 } from "@/form-validators/experience/create";
+import { queryKey } from "@/lib/query-key";
 import type { TechnologyWithRelations } from "@/lib/types";
 import { dateToMonthYear } from "@/lib/utils";
 
@@ -79,7 +80,9 @@ export default function CreateExperienceForm() {
 			});
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["experience"] });
+			queryClient.invalidateQueries({
+				queryKey: queryKey.experience.list(),
+			});
 			form.reset();
 			navigate({ to: "/admin/experience" });
 		},

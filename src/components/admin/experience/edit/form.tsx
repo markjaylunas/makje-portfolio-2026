@@ -40,6 +40,7 @@ import {
 	experienceEditFormSchema,
 } from "@/form-validators/experience/edit";
 import useImageFilePreviewUrl from "@/hooks/use-image-file-preview-url";
+import { queryKey } from "@/lib/query-key";
 import type { TechnologyWithRelations } from "@/lib/types";
 import { dateToMonthYear } from "@/lib/utils";
 
@@ -88,8 +89,15 @@ export default function EditExperienceForm({
 				},
 			});
 		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["experience"] });
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKey.experience.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.experience.item(defaultExperience.id),
+				}),
+			]);
 			form.reset();
 			navigate({ to: "/admin/experience" });
 		},

@@ -1,3 +1,4 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import H2 from "@/components/common/H2";
 import TechCard from "@/components/home/technology/card";
@@ -23,7 +24,14 @@ export const Route = createFileRoute(
 });
 
 function RouteComponent() {
-	const technology = Route.useLoaderData();
+	const { technologyId } = Route.useParams();
+	const { data: technology } = useSuspenseQuery(
+		getTechnologyOptions({ technologyId }),
+	);
+
+	if (!technology) {
+		return null;
+	}
 
 	return (
 		<main className="py-12 px-4 max-w-md mx-auto flex flex-col gap-4 items-center justify-center">

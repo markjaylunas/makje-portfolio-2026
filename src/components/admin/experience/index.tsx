@@ -11,6 +11,7 @@ import { ExperienceItem } from "@/components/home/experience/item";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { getExperienceListOptions } from "@/data/options/experience";
 import { deleteExperienceFn } from "@/data/server/experience.server";
+import { queryKey } from "@/lib/query-key";
 import { cn } from "@/lib/utils";
 
 export default function ExperienceList() {
@@ -23,7 +24,7 @@ export default function ExperienceList() {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: getExperienceListOptions().queryKey,
+				queryKey: queryKey.experience.list(),
 			});
 		},
 	});

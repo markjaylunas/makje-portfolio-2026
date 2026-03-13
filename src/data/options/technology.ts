@@ -3,6 +3,7 @@ import type {
 	GetTechnologyFnSchema,
 	GetTechnologyListFnSchema,
 } from "@/form-validators/technology";
+import { queryKey } from "@/lib/query-key";
 import {
 	getTechnologyFn,
 	getTechnologyListFn,
@@ -10,12 +11,12 @@ import {
 
 export const getTechnologyOptions = (params: GetTechnologyFnSchema) =>
 	queryOptions({
-		queryKey: ["technology", params.technologyId],
+		queryKey: queryKey.technology.item(params.technologyId),
 		queryFn: () => getTechnologyFn({ data: params }),
 	});
 
 export const getTechnologyListOptions = (params: GetTechnologyListFnSchema) =>
 	queryOptions({
-		queryKey: ["technology", "list", params],
+		queryKey: queryKey.technology.list(params),
 		queryFn: () => getTechnologyListFn({ data: params }),
 	});
