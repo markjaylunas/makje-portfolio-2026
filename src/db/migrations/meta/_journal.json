@@ -15,6 +15,13 @@
       "when": 1773201654905,
       "tag": "0001_whole_earthquake",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1773408436273,
+      "tag": "0002_abandoned_brood",
+      "breakpoints": true
     }
   ]
 }

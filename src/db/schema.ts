@@ -265,6 +265,17 @@ export const featuredTechnology = sqliteTable("featured_technology", {
 	...timestamps,
 });
 
+export const featuredProject = sqliteTable("featured_project", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	projectId: text()
+		.notNull()
+		.references(() => project.id, { onDelete: "cascade" }),
+	order: integer().notNull().default(0),
+	...timestamps,
+});
+
 // --- Relations ---
 
 export const projectRelations = relations(project, ({ many, one }) => ({
@@ -274,6 +285,10 @@ export const projectRelations = relations(project, ({ many, one }) => ({
 	coverImage: one(media, {
 		fields: [project.coverImageId],
 		references: [media.id],
+	}),
+	featured: one(featuredProject, {
+		fields: [project.id],
+		references: [featuredProject.projectId],
 	}),
 }));
 
@@ -365,6 +380,16 @@ export const featuredTechnologyRelations = relations(
 		technology: one(technology, {
 			fields: [featuredTechnology.technologyId],
 			references: [technology.id],
+		}),
+	}),
+);
+
+export const featuredProjectRelations = relations(
+	featuredProject,
+	({ one }) => ({
+		project: one(project, {
+			fields: [featuredProject.projectId],
+			references: [project.id],
 		}),
 	}),
 );
