@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 import EditTechnologyForm from "@/components/admin/technology/edit/form";
 import { getTechnologyOptions } from "@/data/options/technology";
 import { adminTechnologyIdRouteParamsSchema } from "@/form-validators/technology";
@@ -9,16 +9,23 @@ export const Route = createFileRoute(
 	component: RouteComponent,
 	params: adminTechnologyIdRouteParamsSchema,
 	loader: async ({ context, params: { technologyId } }) => {
-		return await context.queryClient.ensureQueryData(
+		const data = await context.queryClient.ensureQueryData(
 			getTechnologyOptions({ technologyId }),
 		);
+
+		if (!data) {
+			throw notFound();
+		}
+
+		return data;
 	},
 });
 
 function RouteComponent() {
+	const data = Route.useLoaderData();
 	return (
 		<main className="p-4 max-w-md mx-auto">
-			<EditTechnologyForm />
+			<EditTechnologyForm defaultTechnology={data} />
 		</main>
 	);
 }

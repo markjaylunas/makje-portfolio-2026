@@ -1,3 +1,4 @@
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { experience, experienceToTechnologies, media } from "@/db/schema";
 import type {
@@ -5,7 +6,9 @@ import type {
 	InsertExperience,
 	InsertExperienceToTechnologies,
 	InsertMedia,
+	Media,
 } from "@/db/types";
+import type { EditExperienceFnSchema } from "@/form-validators/experience/edit";
 
 export const selectExperienceList = async (): Promise<
 	ExperienceWithRelations[]
@@ -78,6 +81,43 @@ export const insertExperience = async ({
 			experienceId: experienceResult.id,
 		})),
 	);
+
+	return experienceResult;
+};
+
+export const editExperience = async ({
+	updatedExperience,
+	newExperienceToTechnologies,
+	newMedia,
+}: EditExperienceFnSchema) => {
+	let newMediaResult: Media | undefined;
+
+	if (newMedia) {
+		const [mediaResult] = await db.insert(media).values(newMedia).returning();
+		newMediaResult = mediaResult;
+	}
+
+	const [experienceResult] = await db
+		.update(experience)
+		.set({
+			...updatedExperience,
+			logoId: newMediaResult?.id ?? updatedExperience.logoId,
+			updatedAt: new Date(),
+		})
+		.where(eq(experience.id, updatedExperience.id))
+		.returning();
+
+	if (newExperienceToTechnologies) {
+		await db
+			.delete(experienceToTechnologies)
+			.where(eq(experienceToTechnologies.experienceId, updatedExperience.id));
+
+		if (newExperienceToTechnologies.length > 0) {
+			await db
+				.insert(experienceToTechnologies)
+				.values(newExperienceToTechnologies);
+		}
+	}
 
 	return experienceResult;
 };

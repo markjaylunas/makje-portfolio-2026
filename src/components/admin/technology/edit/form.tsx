@@ -1,38 +1,33 @@
 import { Close, Loading03Icon, Refresh } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
-import {
-	useMutation,
-	useQueryClient,
-	useSuspenseQuery,
-} from "@tanstack/react-query";
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import TechCard from "@/components/home/technology/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { uploadTechnologyIcon } from "@/data/client/storage";
-import { getTechnologyOptions } from "@/data/options/technology";
 import { editTechnologyFn } from "@/data/server/technology.server";
-import type { InsertMedia, UpdateTechnology } from "@/db/types";
+import type {
+	InsertMedia,
+	TechnologyWithRelations,
+	UpdateTechnology,
+} from "@/db/types";
 import {
 	type TechnologyEditFormSchema,
 	technologyEditFormSchema,
 } from "@/form-validators/technology/edit";
 import { extractColorsFromSVG } from "@/lib/helper";
 
-export default function EditTechnologyForm() {
+export default function EditTechnologyForm({
+	defaultTechnology,
+}: {
+	defaultTechnology: TechnologyWithRelations;
+}) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
-
-	const { technologyId } = useParams({
-		from: "/_protected/admin/technology/$technologyId/edit",
-	});
-
-	const { data: defaultTechnology } = useSuspenseQuery(
-		getTechnologyOptions({ technologyId }),
-	);
 
 	const defaultValues: TechnologyEditFormSchema = {
 		id: defaultTechnology.id,

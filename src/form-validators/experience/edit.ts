@@ -1,20 +1,15 @@
 import { z } from "zod";
 import {
-	experienceInsertSchema,
 	experienceToTechnologiesInsertSchema,
+	experienceUpdateSchema,
 	mediaInsertSchema,
 } from "@/db/schema-validation";
+import {
+	COMPANY_LOGO_ACCEPTED_MIME_TYPES,
+	COMPANY_LOGO_MAX_FILE_SIZE,
+} from "./create";
 
-export const COMPANY_LOGO_MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
-export const COMPANY_LOGO_ACCEPTED_MIME_TYPES = [
-	"image/png",
-	"image/jpeg",
-	"image/jpg",
-	"image/webp",
-	"image/svg+xml",
-];
-
-export const experienceCreateFormSchema = z
+export const experienceEditFormSchema = z
 	.object({
 		title: z.string().trim().min(1, "Title is required"),
 		company: z.string().trim().min(1, "Company is required"),
@@ -40,7 +35,10 @@ export const experienceCreateFormSchema = z
 			.refine(
 				(file) => COMPANY_LOGO_ACCEPTED_MIME_TYPES.includes(file.type),
 				"Only PNG, JPG, JPEG, WEBP, and SVG formats are supported.",
-			),
+			)
+			.nullable(),
+		defaultLogo: z.string().optional(),
+
 		technologyList: z.array(z.string()),
 	})
 	.refine(
@@ -55,11 +53,9 @@ export const experienceCreateFormSchema = z
 		},
 	);
 
-export type ExperienceCreateFormSchema = z.infer<
-	typeof experienceCreateFormSchema
->;
+export type ExperienceEditFormSchema = z.infer<typeof experienceEditFormSchema>;
 
-export const defaultValues: ExperienceCreateFormSchema = {
+export const defaultValues: ExperienceEditFormSchema = {
 	title: "",
 	company: "",
 	startDate: new Date(),
@@ -68,12 +64,14 @@ export const defaultValues: ExperienceCreateFormSchema = {
 	description: "",
 	responsibilityList: [""],
 	technologyList: [],
-	// biome-ignore lint/suspicious/noExplicitAny: <ignore>
-	logo: null as any,
+	logo: null,
+	defaultLogo: "",
 };
 
-export const createExperienceFnSchema = z.object({
-	newExperience: experienceInsertSchema,
-	newMedia: mediaInsertSchema,
-	newExperienceToTechnologies: experienceToTechnologiesInsertSchema.array(),
+export const editExperienceFnSchema = z.object({
+	updatedExperience: experienceUpdateSchema,
+	newMedia: mediaInsertSchema.optional(),
+	newExperienceToTechnologies: z.array(experienceToTechnologiesInsertSchema),
 });
+
+export type EditExperienceFnSchema = z.infer<typeof editExperienceFnSchema>;

@@ -1,5 +1,5 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
+import EditExperienceForm from "@/components/admin/experience/edit/form";
 import { getExperienceOptions } from "@/data/options/experience";
 import { adminExperienceIdRouteParamsSchema } from "@/form-validators/experience";
 
@@ -9,20 +9,24 @@ export const Route = createFileRoute(
 	component: RouteComponent,
 	params: adminExperienceIdRouteParamsSchema,
 	loader: async ({ context, params }) => {
-		return await context.queryClient.ensureQueryData(
+		const data = await context.queryClient.ensureQueryData(
 			getExperienceOptions({ experienceId: params.experienceId }),
 		);
+
+		if (!data) {
+			throw notFound();
+		}
+
+		return data;
 	},
 });
 
 function RouteComponent() {
-	const params = Route.useParams();
-	const { data } = useSuspenseQuery(
-		getExperienceOptions({ experienceId: params.experienceId }),
-	);
+	const experience = Route.useLoaderData();
+
 	return (
-		<div>
-			<pre>{JSON.stringify(data, null, 2)}</pre>
-		</div>
+		<main className="px-4 my-12">
+			<EditExperienceForm defaultExperience={experience} />
+		</main>
 	);
 }

@@ -61,6 +61,7 @@ export type UpdateFeaturedTechnology = Partial<FeaturedTechnology> &
 // with relations
 
 type TSchema = ExtractTablesWithRelations<typeof schema>;
+
 export type ExperienceQueryConfig = {
 	with: {
 		logo: true;
@@ -80,4 +81,16 @@ export type ExperienceWithRelations = BuildQueryResult<
 	TSchema,
 	TSchema["experience"],
 	ExperienceQueryConfig
+>;
+
+export type TechnologyQueryConfig = {
+	with: {
+		icon: true;
+	};
+};
+
+export type TechnologyWithRelations = BuildQueryResult<
+	TSchema,
+	TSchema["technology"],
+	TechnologyQueryConfig
 >;
