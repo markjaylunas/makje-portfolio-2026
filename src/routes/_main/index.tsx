@@ -23,7 +23,7 @@ export const Route = createFileRoute("/_main/")({
 
 function App() {
 	return (
-		<>
+		<main>
 			<HeroSection />
 
 			<div id="experience" className="h-12 md:h-24" />
@@ -40,6 +40,6 @@ function App() {
 			<ContentMotion>
 				<TechListSection />
 			</ContentMotion>
-		</>
+		</main>
 	);
 }
