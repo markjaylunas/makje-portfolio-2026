@@ -1,15 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
-import ProjectItem from "./item";
+import { ProjectCard } from "./item";
 
 export default function FeaturedProjectSection() {
 	const { data: projects } = useQuery(getFeaturedProjectListOptions());
 
 	return (
-		<section>
-			<ul>
+		<section className="mx-auto max-w-(--breakpoint-sm) px-6">
+			<ul className="flex flex-col gap-12">
 				{projects?.map((project) => (
-					<ProjectItem key={project.id} project={project} />
+					<li key={project.id} className="size-full relative">
+						<ProjectCard project={project} />
+					</li>
 				))}
 			</ul>
 		</section>
