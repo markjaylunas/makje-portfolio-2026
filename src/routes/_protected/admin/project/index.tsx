@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import FeaturedProjectSection from "@/components/admin/project/featured-project.section";
+import FeaturedProjectSection from "@/components/admin/featured-project/section";
 import { buttonVariants } from "@/components/ui/button";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
 
