@@ -3,7 +3,10 @@ import type {
 	FeaturedTechnology,
 	Media,
 	Project,
+	ProjectLike,
+	Tag,
 	Technology,
+	User,
 } from "@/db/types";
 
 export type Experience = {
@@ -37,6 +40,21 @@ export type FeaturedTechnologyWithTechnology = FeaturedTechnology & {
 export type FeaturedProjectWithRelations = FeaturedProject & {
 	project: Project & {
 		coverImage: Media;
+		tags: Tag[];
+		likes: (ProjectLike & {
+			user: User;
+		})[];
 		technologies: FeaturedTechnologyWithTechnology[];
 	};
+};
+
+export type ProjectWithRelations = Project & {
+	coverImage: Media;
+	tags: Tag[];
+	featured: FeaturedProject;
+	likes: ProjectLike &
+		{
+			user: User;
+		}[];
+	technologies: FeaturedTechnologyWithTechnology[];
 };
