@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import FeaturedProjectSection from "@/components/admin/featured-project/section";
+import ProjectSection from "@/components/admin/project/section";
 import { buttonVariants } from "@/components/ui/button";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
 
@@ -18,6 +19,8 @@ function RouteComponent() {
 			<Link to="/admin/project/create" className={buttonVariants()}>
 				Create Project
 			</Link>
+
+			<ProjectSection />
 
 			<FeaturedProjectSection />
 		</main>
