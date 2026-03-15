@@ -4,8 +4,10 @@ import {
 	getProjectListFnSchema,
 } from "@/form-validators/project";
 import { createProjectFnSchema } from "@/form-validators/project/create";
+import { deleteProjectFnSchema } from "@/form-validators/project/delete";
 import { ensureAdminFnMiddleware } from "../middleware/auth";
 import {
+	deleteProject,
 	insertProject,
 	selectProject,
 	selectProjectList,
@@ -29,4 +31,11 @@ export const getProjectFn = createServerFn({ method: "GET" })
 	.inputValidator(getProjectFnSchema)
 	.handler(async ({ data }) => {
 		return await selectProject(data);
+	});
+
+export const deleteProjectFn = createServerFn({ method: "POST" })
+	.middleware([ensureAdminFnMiddleware])
+	.inputValidator(deleteProjectFnSchema)
+	.handler(async ({ data: { projectId } }) => {
+		return await deleteProject({ projectId });
 	});

@@ -1,7 +1,9 @@
 import { MoreHorizontal } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -9,9 +11,16 @@ import {
 	DropdownMenuGroup,
 	DropdownMenuItem,
 	DropdownMenuLabel,
+	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+	createFeaturedProjectFn,
+	deleteFeaturedProjectFn,
+} from "@/data/server/featured-project.server";
+import { deleteProjectFn } from "@/data/server/project.server";
 import type { Media } from "@/db/types";
+import { queryKey } from "@/lib/query-key";
 import type { ProjectWithRelations } from "@/lib/types";
 
 export const columns: ColumnDef<ProjectWithRelations>[] = [
@@ -75,6 +84,81 @@ export const ProjectActions = ({
 }: {
 	project: ProjectWithRelations;
 }) => {
+	const queryClient = useQueryClient();
+
+	const { mutate: deleteProject } = useMutation({
+		mutationFn: async () => {
+			return await deleteProjectFn({
+				data: { projectId: project.id },
+			});
+		},
+		onSuccess: async (data) => {
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.featuredProject.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.item(project.id),
+				}),
+			]);
+			toast.success(`Deleted ${data.name} successfully!`);
+		},
+		onError: (e) => {
+			toast.warning(e.message);
+		},
+	});
+
+	const { mutate: addAsFeaturedProject } = useMutation({
+		mutationFn: async () => {
+			return await createFeaturedProjectFn({
+				data: { projectId: project.id },
+			});
+		},
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.featuredProject.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.item(project.id),
+				}),
+			]);
+			toast.success(`Added ${project.name} as featured successfully!`);
+		},
+		onError: (e) => {
+			toast.warning(e.message);
+		},
+	});
+
+	const { mutate: removeToFeaturedProject } = useMutation({
+		mutationFn: async () => {
+			if (!project.featured) return;
+			return await deleteFeaturedProjectFn({
+				data: { featuredProjectId: project.featured.id },
+			});
+		},
+		onSuccess: async () => {
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.featuredProject.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.item(project.id),
+				}),
+			]);
+			toast.success(`Removed ${project.name} from featured successfully!`);
+		},
+	});
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger>
@@ -101,6 +185,23 @@ export const ProjectActions = ({
 							</Link>
 						}
 					/>
+					<DropdownMenuSeparator />
+					<DropdownMenuItem
+						onClick={() =>
+							project.featured
+								? removeToFeaturedProject()
+								: addAsFeaturedProject()
+						}
+						variant={project.featured ? "destructive" : "default"}
+					>
+						{project.featured ? "Remove from Featured" : "Add to Featured"}
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						variant="destructive"
+						onClick={() => deleteProject()}
+					>
+						Delete
+					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>

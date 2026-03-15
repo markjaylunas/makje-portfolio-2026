@@ -1,3 +1,4 @@
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import {
 	media,
@@ -103,4 +104,13 @@ export const insertProject = async ({
 	await db.insert(projectToTags).values(tagToProjects);
 
 	return { insertedProject };
+};
+
+export const deleteProject = async ({ projectId }: { projectId: string }) => {
+	const [result] = await db
+		.delete(project)
+		.where(eq(project.id, projectId))
+		.returning();
+
+	return result;
 };
