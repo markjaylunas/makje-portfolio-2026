@@ -65,3 +65,10 @@ export const dateToPeriodDisplay = (
 	const periodDisplay = `${dateToMonthYear(startDate)} - ${endDate ? dateToMonthYear(endDate) : "Present"}`;
 	return periodDisplay;
 };
+
+export const slugify = (text: string): string => {
+	return text
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/^-|-$/g, "");
+};

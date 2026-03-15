@@ -27,13 +27,13 @@ export default function ProjectCard({
 }: {
 	coverImage: string;
 	name: string;
-	description: string;
-	content: string;
-	repositoryUrl: string;
-	liveUrl: string;
+	description: string | null;
+	content: string | null;
+	repositoryUrl: string | null;
+	liveUrl: string | null;
 	likesCount: number;
 	technologyList: { name: string; icon: string }[];
-	tagList: string[];
+	tagList: { name: string; slug: string | null }[];
 }) {
 	return (
 		<Card className="relative mx-auto w-full pt-0">
@@ -94,8 +94,8 @@ export default function ProjectCard({
 
 				<div className="flex flex-wrap gap-2">
 					{tagList.map((t) => (
-						<Badge variant="secondary" key={t}>
-							{t}
+						<Badge variant="secondary" key={t.slug}>
+							{t.name}
 						</Badge>
 					))}
 				</div>

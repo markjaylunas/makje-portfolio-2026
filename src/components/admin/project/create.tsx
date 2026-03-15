@@ -35,6 +35,7 @@ import {
 } from "@/form-validators/project/create";
 import { queryKey } from "@/lib/query-key";
 import type { TechnologyWithRelations } from "@/lib/types";
+import { slugify } from "@/lib/utils";
 
 export default function CreateProjectForm() {
 	const queryClient = useQueryClient();
@@ -126,7 +127,10 @@ export default function CreateProjectForm() {
 											name: t.name,
 											icon: t.icon.url,
 										}))}
-									tagList={project.tags}
+									tagList={project.tags.map((t) => ({
+										name: t,
+										slug: slugify(t),
+									}))}
 								/>
 							)}
 						</FileImagePreview>
