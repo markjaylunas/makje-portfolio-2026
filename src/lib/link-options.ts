@@ -35,7 +35,7 @@ const featuredProjectsLink = {
 };
 
 const projectsLink = {
-	name: "All Projects",
+	name: "Projects",
 	to: "/projects",
 	hash: "",
 	description:
