@@ -8,7 +8,7 @@ import type {
 	UpdateTechnology,
 } from "@/db/types";
 import type { TechnologyDeleteFormSchema } from "@/form-validators/technology/delete";
-import { deleteMedia } from "./media";
+import { deleteMedia } from "./media.server";
 
 export const insertTechnology = async (
 	newTechnology: InsertTechnology,

@@ -9,7 +9,7 @@ import type {
 	Media,
 } from "@/db/types";
 import type { EditExperienceFnSchema } from "@/form-validators/experience/edit";
-import { deleteMedia } from "./media";
+import { deleteMedia } from "./media.server";
 
 export const selectExperienceList = async (): Promise<
 	ExperienceWithRelations[]
