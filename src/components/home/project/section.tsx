@@ -1,12 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useId } from "react";
+import GradientText from "@/components/common/gradient-text";
+import H2 from "@/components/common/H2";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
 import ProjectCard from "./item";
 
 export default function FeaturedProjectSection() {
-	const { data: projects } = useQuery(getFeaturedProjectListOptions());
+	const { data: projects } = useSuspenseQuery(getFeaturedProjectListOptions());
+	const sectionHeadingId = useId();
 
 	return (
-		<section className="mx-auto max-w-(--breakpoint-sm) px-6">
+		<section
+			className="mx-auto max-w-(--breakpoint-sm) px-6"
+			aria-labelledby={sectionHeadingId}
+		>
+			<H2 id={sectionHeadingId} className="flex justify-start">
+				<GradientText>Featured Projects</GradientText>
+			</H2>
 			<ul className="flex flex-col gap-12">
 				{projects?.map(({ project }) => (
 					<li key={project.id} className="size-full relative">
