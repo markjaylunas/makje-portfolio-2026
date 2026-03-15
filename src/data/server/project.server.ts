@@ -21,7 +21,6 @@ export const createProjectFn = createServerFn({ method: "POST" })
 	});
 
 export const getProjectListFn = createServerFn({ method: "GET" })
-	.middleware([ensureAdminFnMiddleware])
 	.inputValidator(getProjectListFnSchema)
 	.handler(async ({ data }) => {
 		return await selectProjectList(data);
