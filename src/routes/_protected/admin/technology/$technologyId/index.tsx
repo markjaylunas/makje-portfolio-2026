@@ -29,9 +29,7 @@ function RouteComponent() {
 		getTechnologyOptions({ technologyId }),
 	);
 
-	if (!technology) {
-		return null;
-	}
+	if (!technology) return null;
 
 	return (
 		<main className="py-12 px-4 max-w-md mx-auto flex flex-col gap-4 items-center justify-center">
