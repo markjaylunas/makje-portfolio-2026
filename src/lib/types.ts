@@ -56,5 +56,5 @@ export type ProjectWithRelations = Project & {
 		{
 			user: User;
 		}[];
-	technologies: FeaturedTechnologyWithTechnology[];
+	technologies: TechnologyWithIcon[];
 };

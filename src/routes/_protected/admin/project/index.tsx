@@ -3,13 +3,15 @@ import FeaturedProjectSection from "@/components/admin/featured-project/section"
 import ProjectSection from "@/components/admin/project/section";
 import { buttonVariants } from "@/components/ui/button";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
+import { getProjectListOptions } from "@/data/options/project";
 
 export const Route = createFileRoute("/_protected/admin/project/")({
 	component: RouteComponent,
 	loader: async ({ context }) => {
-		return await context.queryClient.ensureQueryData(
-			getFeaturedProjectListOptions(),
-		);
+		return await Promise.all([
+			context.queryClient.ensureQueryData(getFeaturedProjectListOptions()),
+			context.queryClient.ensureQueryData(getProjectListOptions()),
+		]);
 	},
 });
 

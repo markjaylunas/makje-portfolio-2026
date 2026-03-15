@@ -1,9 +1,9 @@
 import { queryOptions } from "@tanstack/react-query";
 import { queryKey } from "@/lib/query-key";
-import type { ProjectWithRelations } from "@/lib/types";
+import { getProjectListFn } from "../server/project.server";
 
 export const getProjectListOptions = () =>
 	queryOptions({
 		queryKey: queryKey.project.list(),
-		queryFn: () => [] as ProjectWithRelations[],
+		queryFn: () => getProjectListFn(),
 	});
