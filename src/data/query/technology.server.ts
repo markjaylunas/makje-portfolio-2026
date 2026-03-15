@@ -66,7 +66,9 @@ export const deleteTechnology = async ({
 	});
 
 	if (featuredTechnologyExists) {
-		throw new Error("Technology is featured");
+		throw new Error(
+			"Technology is featured, please remove it from featured technologies first",
+		);
 	}
 
 	// check if technology is used in projects

@@ -8,6 +8,7 @@ import {
 } from "@/db/schema";
 import type { GetProjectListFnSchema } from "@/form-validators/project";
 import type { CreateProjectFnSchema } from "@/form-validators/project/create";
+import { deleteMedia } from "./media.server";
 import { insertTags } from "./tag.server";
 
 export const selectProjectList = async (params: GetProjectListFnSchema) => {
@@ -107,10 +108,25 @@ export const insertProject = async ({
 };
 
 export const deleteProject = async ({ projectId }: { projectId: string }) => {
-	const [result] = await db
+	const featuredProject = await db.query.featuredProject.findFirst({
+		where: (featuredProject, { eq }) =>
+			eq(featuredProject.projectId, projectId),
+	});
+
+	if (featuredProject) {
+		throw new Error(
+			"Project is featured, please remove it from featured projects first",
+		);
+	}
+
+	const [deleted] = await db
 		.delete(project)
 		.where(eq(project.id, projectId))
 		.returning();
 
-	return result;
+	if (deleted.coverImageId) {
+		await deleteMedia({ mediaId: deleted.coverImageId });
+	}
+
+	return deleted;
 };
