@@ -5,10 +5,11 @@ import {
 	projectToTags,
 	projectToTechnologies,
 } from "@/db/schema";
+import type { GetProjectListFnSchema } from "@/form-validators/project";
 import type { CreateProjectFnSchema } from "@/form-validators/project/create";
 import { insertTags } from "./tag.server";
 
-export const selectProjectList = async () => {
+export const selectProjectList = async (params: GetProjectListFnSchema) => {
 	return await db.query.project.findMany({
 		with: {
 			coverImage: true,
@@ -33,6 +34,9 @@ export const selectProjectList = async () => {
 				},
 			},
 		},
+		where: params?.query
+			? (project, { like }) => like(project.name, `%${params.query}%`)
+			: undefined,
 		orderBy: (project, { desc }) => desc(project.createdAt),
 	});
 };

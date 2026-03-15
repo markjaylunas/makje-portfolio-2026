@@ -1,16 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import FeaturedProjectSection from "@/components/admin/featured-project/section";
-import ProjectSection from "@/components/admin/project/section";
+import ProjectList from "@/components/admin/project/list";
 import { buttonVariants } from "@/components/ui/button";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
 import { getProjectListOptions } from "@/data/options/project";
+import { searchSchema } from "@/form-validators/project";
 
 export const Route = createFileRoute("/_protected/admin/project/")({
 	component: RouteComponent,
-	loader: async ({ context }) => {
+	loaderDeps: ({ search }) => ({
+		query: search.query,
+	}),
+	validateSearch: searchSchema,
+	loader: async ({ context, deps: { query } }) => {
 		return await Promise.all([
 			context.queryClient.ensureQueryData(getFeaturedProjectListOptions()),
-			context.queryClient.ensureQueryData(getProjectListOptions()),
+			context.queryClient.ensureQueryData(getProjectListOptions({ query })),
 		]);
 	},
 });
@@ -22,7 +27,7 @@ function RouteComponent() {
 				Create Project
 			</Link>
 
-			<ProjectSection />
+			<ProjectList />
 
 			<FeaturedProjectSection />
 		</main>

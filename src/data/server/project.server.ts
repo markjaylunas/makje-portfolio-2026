@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getProjectListFnSchema } from "@/form-validators/project";
 import { createProjectFnSchema } from "@/form-validators/project/create";
 import { ensureAdminFnMiddleware } from "../middleware/auth";
 import { insertProject, selectProjectList } from "../query/project.server";
@@ -12,6 +13,7 @@ export const createProjectFn = createServerFn({ method: "POST" })
 
 export const getProjectListFn = createServerFn({ method: "GET" })
 	.middleware([ensureAdminFnMiddleware])
-	.handler(async () => {
-		return await selectProjectList();
+	.inputValidator(getProjectListFnSchema)
+	.handler(async ({ data }) => {
+		return await selectProjectList(data);
 	});
