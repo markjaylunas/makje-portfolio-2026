@@ -4,6 +4,8 @@ import type {
 	Media,
 	Project,
 	ProjectLike,
+	ProjectToTags,
+	ProjectToTechnologies,
 	Tag,
 	Technology,
 	User,
@@ -39,22 +41,29 @@ export type FeaturedTechnologyWithTechnology = FeaturedTechnology & {
 
 export type FeaturedProjectWithRelations = FeaturedProject & {
 	project: Project & {
-		coverImage: Media;
-		tags: Tag[];
+		coverImage: Media | null;
+		tags: (ProjectToTags & { tag: Tag })[];
 		likes: (ProjectLike & {
 			user: User;
 		})[];
-		technologies: FeaturedTechnologyWithTechnology[];
+		technologies: (ProjectToTechnologies & {
+			technology: Technology & {
+				icon: Media;
+			};
+		})[];
 	};
 };
 
 export type ProjectWithRelations = Project & {
-	coverImage: Media;
-	tags: Tag[];
-	featured: FeaturedProject;
-	likes: ProjectLike &
-		{
-			user: User;
-		}[];
-	technologies: TechnologyWithIcon[];
+	coverImage: Media | null;
+	tags: (ProjectToTags & { tag: Tag })[];
+	featured: FeaturedProject | null;
+	likes: (ProjectLike & {
+		user: User;
+	})[];
+	technologies: (ProjectToTechnologies & {
+		technology: Technology & {
+			icon: Media;
+		};
+	})[];
 };

@@ -52,10 +52,16 @@ export const mockFeaturedProjectList: FeaturedProjectWithRelations[] = [
 			],
 			tags: [
 				{
-					id: "t-1",
-					name: "Architecture",
-					slug: "architecture",
-					createdAt: new Date(),
+					id: "pt-1",
+					projectId: "p-1",
+					tagId: "t-1",
+					order: 1,
+					tag: {
+						id: "t-1",
+						name: "Architecture",
+						slug: "architecture",
+						createdAt: new Date(),
+					},
 				},
 			],
 			coverImage: {
@@ -73,9 +79,8 @@ export const mockFeaturedProjectList: FeaturedProjectWithRelations[] = [
 			},
 			technologies: [
 				{
-					id: "pt-1",
-					createdAt: new Date(),
-					updatedAt: new Date(),
+					id: "ptech-1",
+					projectId: "p-1",
 					order: 1,
 					technologyId: "tech-1",
 					technology: {
@@ -123,7 +128,18 @@ export const mockFeaturedProjectList: FeaturedProjectWithRelations[] = [
 			updatedAt: new Date("2026-01-20"),
 			likes: [],
 			tags: [
-				{ id: "t-2", name: "Fintech", slug: "fintech", createdAt: new Date() },
+				{
+					id: "pt-2",
+					projectId: "p-2",
+					tagId: "t-2",
+					order: 1,
+					tag: {
+						id: "t-2",
+						name: "Fintech",
+						slug: "fintech",
+						createdAt: new Date(),
+					},
+				},
 			],
 			coverImage: {
 				id: "img-2",
@@ -182,10 +198,16 @@ export const mockFeaturedProjectList: FeaturedProjectWithRelations[] = [
 			],
 			tags: [
 				{
-					id: "t-3",
-					name: "E-commerce",
-					slug: "ecommerce",
-					createdAt: new Date(),
+					id: "pt-3",
+					projectId: "p-3",
+					tagId: "t-3",
+					order: 1,
+					tag: {
+						id: "t-3",
+						name: "E-commerce",
+						slug: "ecommerce",
+						createdAt: new Date(),
+					},
 				},
 			],
 			coverImage: {

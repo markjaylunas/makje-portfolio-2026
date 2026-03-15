@@ -12,7 +12,11 @@ export const selectProjectList = async () => {
 	return await db.query.project.findMany({
 		with: {
 			coverImage: true,
-			tags: true,
+			tags: {
+				with: {
+					tag: true,
+				},
+			},
 			featured: true,
 			likes: {
 				with: {
@@ -37,7 +41,11 @@ export const selectProject = async ({ projectId }: { projectId: string }) => {
 	return await db.query.project.findFirst({
 		with: {
 			coverImage: true,
-			tags: true,
+			tags: {
+				with: {
+					tag: true,
+				},
+			},
 			featured: true,
 			likes: {
 				with: {
