@@ -13,53 +13,63 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import type { FeaturedProjectWithRelations } from "@/lib/types";
 
-export function ProjectCard({
-	project,
+export default function ProjectCard({
+	coverImage,
+	name,
+	description,
+	content,
+	repositoryUrl,
+	liveUrl,
+	likesCount,
+	technologyList,
+	tagList,
 }: {
-	project: FeaturedProjectWithRelations;
+	coverImage: string;
+	name: string;
+	description: string;
+	content: string;
+	repositoryUrl: string;
+	liveUrl: string;
+	likesCount: number;
+	technologyList: { name: string; icon: string }[];
+	tagList: string[];
 }) {
-	const p = project.project;
 	return (
 		<Card className="relative mx-auto w-full pt-0">
 			<div className="absolute inset-0 z-30 aspect-video bg-black/35" />
 			<img
-				src={p.coverImage.url}
+				src={coverImage}
 				alt="Event cover"
 				className="relative z-20 aspect-video w-full object-cover"
 			/>
 			<CardHeader>
 				<CardAction>
-					<Badge variant="secondary">{p.likesCount} likes</Badge>
+					<Badge variant="secondary">{likesCount} likes</Badge>
 				</CardAction>
-				<CardTitle>{p.name}</CardTitle>
-				<CardDescription>{p.description}</CardDescription>
+				<CardTitle>{name}</CardTitle>
+				<CardDescription>{description}</CardDescription>
 			</CardHeader>
 
 			<CardContent>
-				<p>{p.content}</p>
+				<p>{content}</p>
 			</CardContent>
 
 			<CardFooter className="flex flex-col items-start gap-4">
 				<div className="flex flex-wrap gap-2">
-					{p.technologies.map((tech) => (
-						<Badge variant="secondary" key={tech.technology.id}>
-							<img
-								src={tech.technology.icon.url}
-								alt={tech.technology.name}
-								className="size-4"
-							/>
-							{tech.technology.name}
+					{technologyList.map((tech) => (
+						<Badge variant="secondary" key={tech.name}>
+							<img src={tech.icon} alt={tech.name} className="size-4" />
+							{tech.name}
 						</Badge>
 					))}
 				</div>
 
 				<ButtonGroup>
-					{p.liveUrl && (
+					{liveUrl && (
 						<Button
 							render={
-								<Link to={p.liveUrl} target="_blank">
+								<Link to={liveUrl} target="_blank">
 									<HugeiconsIcon icon={ArrowUpRight} />
 									Live
 								</Link>
@@ -68,10 +78,10 @@ export function ProjectCard({
 							variant="default"
 						/>
 					)}
-					{p.repositoryUrl && (
+					{repositoryUrl && (
 						<Button
 							render={
-								<Link to={p.repositoryUrl} target="_blank">
+								<Link to={repositoryUrl} target="_blank">
 									<HugeiconsIcon icon={Github} />
 									Repository
 								</Link>
@@ -83,9 +93,9 @@ export function ProjectCard({
 				</ButtonGroup>
 
 				<div className="flex flex-wrap gap-2">
-					{p.tags.map((t) => (
-						<Badge variant="secondary" key={t.id}>
-							{t.name}
+					{tagList.map((t) => (
+						<Badge variant="secondary" key={t}>
+							{t}
 						</Badge>
 					))}
 				</div>
