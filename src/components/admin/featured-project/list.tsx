@@ -15,14 +15,14 @@ export default function FeaturedProjectList({
 					icon: t.technology.icon.url,
 				}));
 				const tagList = p.tags.map((t) => ({
-					name: t.name,
-					slug: t.slug,
+					name: t.tag.name,
+					slug: t.tag.slug,
 				}));
 
 				return (
 					<li key={featuredProject.id}>
 						<ProjectCard
-							coverImage={p.coverImage.url}
+							coverImage={p.coverImage?.url}
 							name={p.name}
 							description={p.description}
 							content={p.content}

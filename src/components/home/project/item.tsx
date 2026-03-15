@@ -25,7 +25,7 @@ export default function ProjectCard({
 	technologyList,
 	tagList,
 }: {
-	coverImage: string;
+	coverImage?: string;
 	name: string;
 	description: string | null;
 	content: string | null;
