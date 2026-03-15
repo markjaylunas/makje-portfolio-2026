@@ -50,4 +50,12 @@ export const queryKey = {
 		],
 		item: (id: string) => ["featured-project", "item", id],
 	},
+	tag: {
+		list: (params?: Params) => [
+			"tag",
+			"list",
+			...(params ? [paramsSerializer(params)] : []),
+		],
+		item: (id: string) => ["tag", "item", id],
+	},
 };
