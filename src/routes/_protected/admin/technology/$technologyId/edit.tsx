@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import EditTechnologyForm from "@/components/admin/technology/edit/form";
+import EditTechnologyForm from "@/components/admin/technology/edit-form";
 import { getTechnologyOptions } from "@/data/options/technology";
 import { adminTechnologyIdRouteParamsSchema } from "@/form-validators/technology";
 
