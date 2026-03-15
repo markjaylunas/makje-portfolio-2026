@@ -20,7 +20,7 @@ export default function HeaderAdmin() {
 		.filter((path) => path !== "");
 
 	return (
-		<header className="bg-background sticky top-0 flex h-16 shrink-0 items-center gap-2 border-b px-4">
+		<header className="bg-background flex h-16 shrink-0 items-center gap-2 border-b px-4 sticky top-0 z-20">
 			<SidebarTrigger className="-ml-1 cursor-pointer" />
 			<Separator orientation="vertical" className="mr-2 h-16" />
 
