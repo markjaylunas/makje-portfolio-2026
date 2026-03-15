@@ -26,8 +26,11 @@ import {
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { uploadProjectCoverImage } from "@/data/client/storage";
 import { getTagListOptions } from "@/data/options/tag";
 import { getTechnologyListOptions } from "@/data/options/technology";
+import { createProjectFn } from "@/data/server/project.server";
+import type { InsertProject, InsertProjectToTechnologies } from "@/db/types";
 import {
 	defaultValues,
 	type ProjectCreateFormSchema,
@@ -49,33 +52,35 @@ export default function CreateProjectForm() {
 
 	const { mutate: createProjectMutation, isPending } = useMutation({
 		mutationFn: async (values: ProjectCreateFormSchema) => {
-			// const newMedia = await uploadExperienceLogo(values.logo);
+			const newCoverImageMedia = await uploadProjectCoverImage(
+				values.coverImage,
+			);
 
-			// const newExperienceToTechnologies: InsertExperienceToTechnologies[] =
-			// 	values.technologyList.map((v, index) => ({
-			// 		technologyId: v,
-			// 		experienceId: "",
-			// 		order: index + 1,
-			// 	}));
+			const newProjectToTechnologies: InsertProjectToTechnologies[] =
+				values.technologyList.map((v, index) => ({
+					technologyId: v,
+					projectId: "",
+					order: index + 1,
+				}));
 
-			// const newExperience: InsertExperience = {
-			// 	title: values.title,
-			// 	company: values.company,
-			// 	description: values.description,
-			// 	periodDisplay: values.periodDisplay,
-			// 	startDate: values.startDate,
-			// 	endDate: values.endDate,
-			// 	responsibilities: JSON.stringify(values.responsibilityList),
-			// };
+			const newProject: InsertProject = {
+				name: values.name,
+				description: values.description,
+				content: values.content,
+				repositoryUrl: values.repositoryUrl,
+				liveUrl: values.liveUrl,
+				likesCount: values.likesCount,
+				coverImageId: newCoverImageMedia.id,
+			};
 
-			// return await createExperienceFn({
-			// 	data: {
-			// 		newExperience,
-			// 		newExperienceToTechnologies,
-			// 		newMedia,
-			// 	},
-			// });
-			alert(JSON.stringify({ values }));
+			return await createProjectFn({
+				data: {
+					newProject,
+					newProjectToTechnologies,
+					newTags: values.tags,
+					newMedia: newCoverImageMedia,
+				},
+			});
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({

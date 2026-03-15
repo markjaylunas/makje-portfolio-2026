@@ -60,3 +60,5 @@ export const createProjectFnSchema = z.object({
 	newProjectToTechnologies: projectToTechnologiesInsertSchema.array(),
 	newTags: z.array(z.string()),
 });
+
+export type CreateProjectFnSchema = z.infer<typeof createProjectFnSchema>;

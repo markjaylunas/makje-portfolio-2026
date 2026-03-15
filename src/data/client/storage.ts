@@ -1,6 +1,7 @@
 import z from "zod";
 import type { InsertMedia } from "@/db/types";
 import { COMPANY_LOGO_ACCEPTED_MIME_TYPES } from "@/form-validators/experience/create";
+import { PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES } from "@/form-validators/project/create";
 import { BUCKET_DIRECTORIES } from "@/lib/bucket-directories";
 import { generateTimestampId } from "@/lib/utils";
 
@@ -65,5 +66,16 @@ export const uploadExperienceLogo = async (file: File) => {
 	}
 
 	const keyDirectory = BUCKET_DIRECTORIES.EXPERIENCE.COMPANY_LOGO;
+	return await uploadFileToR2(keyDirectory, file);
+};
+
+export const uploadProjectCoverImage = async (file: File) => {
+	if (!PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.includes(file.type)) {
+		throw new Error(
+			`File must be of type ${PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.join(", ")}`,
+		);
+	}
+
+	const keyDirectory = BUCKET_DIRECTORIES.PROJECT.COVER_IMAGE;
 	return await uploadFileToR2(keyDirectory, file);
 };
