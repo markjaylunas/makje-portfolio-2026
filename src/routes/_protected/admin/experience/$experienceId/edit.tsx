@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import EditExperienceForm from "@/components/admin/experience/edit/form";
+import EditExperienceForm from "@/components/admin/experience/edit-form";
 import { getExperienceOptions } from "@/data/options/experience";
 import { adminExperienceIdRouteParamsSchema } from "@/form-validators/experience";
 

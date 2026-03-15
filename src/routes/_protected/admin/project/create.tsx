@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import CreateProjectForm from "@/components/admin/project/create";
+import CreateProjectForm from "@/components/admin/project/create-form";
 import { getTagListOptions } from "@/data/options/tag";
 import { getTechnologyListOptions } from "@/data/options/technology";
 

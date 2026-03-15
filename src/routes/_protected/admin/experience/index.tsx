@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import ExperienceList from "@/components/admin/experience";
+import ExperienceList from "@/components/admin/experience/list";
 import LinkButton from "@/components/common/link-button";
 import { getExperienceListOptions } from "@/data/options/experience";
 

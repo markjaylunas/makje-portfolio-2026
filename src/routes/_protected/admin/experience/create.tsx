@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import CreateExperienceForm from "@/components/admin/experience/create/form";
+import CreateExperienceForm from "@/components/admin/experience/create-form";
 import { getTechnologyListOptions } from "@/data/options/technology";
 
 export const Route = createFileRoute("/_protected/admin/experience/create")({
