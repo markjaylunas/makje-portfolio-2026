@@ -11,21 +11,21 @@ export default function Footer() {
 
 	return (
 		<footer className="relative w-full py-12 mt-12 max-w-(--breakpoint-lg) mx-auto px-6">
-			<div className="absolute inset-0 -z-10 top-12 left-2">
+			<div className="absolute inset-0 -z-10 top-16 left-2 overflow-hidden">
 				<div className="absolute inset-0 bg-linear-to-b from-background/80 via-background/90 to-background" />
 
 				<img
 					src={footerBackground}
 					alt="Footer Background of Logo"
-					className="w-3/4 h-full object-cover z-0"
+					className="min-w-lg sm:w-3/4 h-full object-contain z-0"
 				/>
 			</div>
 
 			<Separator className="border border-muted mb-12" />
 
-			<div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start mx-auto">
+			<div className="grid grid-cols-2 md:grid-cols-3 gap-12 items-start mx-auto">
 				{/* Brand Section */}
-				<div className="flex flex-col gap-2">
+				<div className="col-span-2 sm:col-span-1 flex flex-col gap-2">
 					<div className="flex items-center gap-2 justify-self-center">
 						<Link to="/" className="flex items-center space-x-2">
 							<img src={makjeLogoDark} alt="Logo" className="size-8" />
@@ -43,17 +43,20 @@ export default function Footer() {
 				</div>
 
 				{/* Navigation Section */}
-				<nav aria-label="Footer Navigation" className="justify-self-center">
-					<h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">
+				<nav
+					aria-label="Footer Navigation"
+					className="justify-self-start sm:justify-self-center"
+				>
+					<h3 className="text-sm text-accent-foreground uppercase tracking-wider mb-4">
 						Explore
 					</h3>
-					<ul className="space-y-2">
+					<ul className="space-y-1">
 						{navigationLinks.map((link) => (
 							<li key={link.to}>
 								<Link
 									to={link.to}
 									hash={link.hash}
-									className="text-sm text-accent-foreground flex items-center gap-2 hover:underline"
+									className="text-sm text-muted-foreground flex items-center gap-2  hover:opacity-60 transition-opacity duration-300 ease-in-out"
 								>
 									<HugeiconsIcon icon={link.icon} className="size-4" />
 									{link.name}
@@ -65,17 +68,17 @@ export default function Footer() {
 
 				{/* Social Section */}
 				<div>
-					<h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">
+					<h3 className="text-sm text-accent-foreground uppercase tracking-wider mb-4">
 						Connect
 					</h3>
-					<ul className="space-y-2">
+					<ul className="space-y-1">
 						{socialLinks.map((social) => (
 							<li key={social.name}>
 								<a
 									href={social.href}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="text-sm text-accent-foreground flex items-center gap-2 hover:underline"
+									className="text-sm text-muted-foreground flex items-center gap-2  hover:opacity-60 transition-opacity duration-300 ease-in-out"
 								>
 									<HugeiconsIcon icon={social.icon} className="size-4" />
 									{social.name}
