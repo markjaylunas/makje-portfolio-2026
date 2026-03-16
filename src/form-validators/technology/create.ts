@@ -19,7 +19,7 @@ export const technologyCreateFormSchema = z.object({
 		)
 		.refine(
 			//minimum size for required icon
-			(file) => file.size >= 1024, // 1KB
+			(file) => file.size >= 1, // 1KB
 			"SVG icon is required.",
 		),
 	iconSVG: z.string().optional(),
