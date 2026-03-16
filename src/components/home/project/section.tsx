@@ -15,7 +15,7 @@ export default function FeaturedProjectSection() {
 			aria-labelledby={sectionHeadingId}
 		>
 			<H2 id={sectionHeadingId} className="flex justify-start">
-				<GradientText>Featured Projects</GradientText>
+				<GradientText>Projects</GradientText>
 			</H2>
 			<ul className="flex flex-col gap-12">
 				{projects?.map(({ project }) => (

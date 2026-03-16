@@ -31,7 +31,7 @@ function App() {
 				<ExperienceTimelineSection />
 			</ContentMotion>
 
-			<div id="projects" className="h-12 md:h-24" />
+			<div id="featured-projects" className="h-12 md:h-24" />
 			<ContentMotion>
 				<FeaturedProjectSection />
 			</ContentMotion>
