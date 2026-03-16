@@ -260,10 +260,9 @@ export default function CreateTechnologyForm() {
 													e.preventDefault();
 													const trimmedColor = manualColor.trim();
 													if (trimmedColor) {
-														form.setFieldValue("brandColors", [
-															...brandColors,
-															trimmedColor,
-														]);
+														const newColors = [...brandColors, trimmedColor];
+														form.setFieldValue("brandColors", newColors);
+														form.setFieldValue("brandColorsDefault", newColors);
 														setManualColor("");
 														setIsAddingManualColor(false);
 													}
@@ -275,10 +274,9 @@ export default function CreateTechnologyForm() {
 											onClick={() => {
 												const trimmedColor = manualColor.trim();
 												if (trimmedColor) {
-													form.setFieldValue("brandColors", [
-														...brandColors,
-														trimmedColor,
-													]);
+													const newColors = [...brandColors, trimmedColor];
+													form.setFieldValue("brandColors", newColors);
+													form.setFieldValue("brandColorsDefault", newColors);
 													setManualColor("");
 													setIsAddingManualColor(false);
 												}
