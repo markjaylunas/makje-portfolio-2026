@@ -1,8 +1,15 @@
-import { Close, Loading03Icon, Refresh } from "@hugeicons/core-free-icons";
+import {
+	Close,
+	Loading03Icon,
+	PlusSignIcon,
+	Refresh,
+	Tick01Icon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import TechCard from "@/components/home/technology/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,6 +29,9 @@ import { queryKey } from "@/lib/query-key";
 export default function CreateTechnologyForm() {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
+
+	const [isAddingManualColor, setIsAddingManualColor] = useState(false);
+	const [manualColor, setManualColor] = useState("");
 
 	const { mutate: createMutation, isPending } = useMutation({
 		mutationFn: async (value: TechnologyCreateFormSchema) => {
@@ -237,23 +247,94 @@ export default function CreateTechnologyForm() {
 										</button>
 									</Badge>
 								))}
-								{/* reset button for color */}
-								{iconSVG && (
+								{isAddingManualColor && (
+									<div className="flex items-center gap-2">
+										<Input
+											value={manualColor}
+											onChange={(e) => setManualColor(e.target.value)}
+											placeholder="#HEX"
+											className="w-24 h-8 text-xs p-1"
+											autoFocus
+											onKeyDown={(e) => {
+												if (e.key === "Enter") {
+													e.preventDefault();
+													const trimmedColor = manualColor.trim();
+													if (trimmedColor) {
+														form.setFieldValue("brandColors", [
+															...brandColors,
+															trimmedColor,
+														]);
+														setManualColor("");
+														setIsAddingManualColor(false);
+													}
+												}
+											}}
+										/>
+										<button
+											type="button"
+											onClick={() => {
+												const trimmedColor = manualColor.trim();
+												if (trimmedColor) {
+													form.setFieldValue("brandColors", [
+														...brandColors,
+														trimmedColor,
+													]);
+													setManualColor("");
+													setIsAddingManualColor(false);
+												}
+											}}
+										>
+											<HugeiconsIcon
+												icon={Tick01Icon}
+												className="size-5 cursor-pointer hover:bg-muted rounded-xs"
+											/>
+											<span className="sr-only">Add</span>
+										</button>
+										<button
+											type="button"
+											onClick={() => {
+												setManualColor("");
+												setIsAddingManualColor(false);
+											}}
+										>
+											<HugeiconsIcon
+												icon={Close}
+												className="size-5 cursor-pointer hover:bg-muted rounded-xs"
+											/>
+											<span className="sr-only">Cancel</span>
+										</button>
+									</div>
+								)}
+
+								<div className="flex items-center gap-2">
+									{/* reset button for color */}
+									{iconSVG && (
+										<Button
+											type="button"
+											variant="secondary"
+											size="icon"
+											className="cursor-pointer"
+											onClick={() => {
+												const defaultBrandColors =
+													form.state.values.brandColorsDefault;
+												form.setFieldValue("brandColors", defaultBrandColors);
+											}}
+										>
+											<HugeiconsIcon icon={Refresh} />
+											<span className="sr-only">Reset Colors</span>
+										</Button>
+									)}
 									<Button
 										type="button"
 										variant="secondary"
 										size="icon"
 										className="cursor-pointer"
-										onClick={() => {
-											const defaultBrandColors =
-												form.state.values.brandColorsDefault;
-											form.setFieldValue("brandColors", defaultBrandColors);
-										}}
+										onClick={() => setIsAddingManualColor(true)}
 									>
-										<HugeiconsIcon icon={Refresh} />
-										<span className="sr-only">Reset Colors</span>
+										<HugeiconsIcon icon={PlusSignIcon} />
+										<span className="sr-only">Add Color</span>
 									</Button>
-								)}
+								</div>
 							</div>
 						</div>
 					)}
