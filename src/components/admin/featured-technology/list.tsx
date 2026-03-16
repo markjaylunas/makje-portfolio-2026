@@ -60,6 +60,8 @@ export default function FeaturedTechnologyCardOrderList() {
 		handleResetList();
 	}, [handleResetList]);
 
+	if (defaultFeaturedTechnologyList.length === 0) return null;
+
 	return (
 		<form
 			onSubmit={(e) => {
