@@ -4,25 +4,32 @@ import {
 	technologyInsertSchema,
 } from "@/db/schema-validation";
 
-const MAX_FILE_SIZE = 1024 * 1024; // 1MB
-const ACCEPTED_MIME_TYPES = ["image/svg+xml"];
+export const TECHNOLOGY_ICON_MAX_FILE_SIZE = 1024 * 1024 * 5; // 5MB
+export const TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES = [
+	"image/svg+xml",
+	"image/png",
+	"image/jpeg",
+	"image/webp",
+];
 
 export const technologyCreateFormSchema = z.object({
 	name: z.string().min(1, "Name is required"),
 	url: z.url(),
 	icon: z
 		.file()
-		.refine((file) => file.size <= MAX_FILE_SIZE, `Max file size is 1MB.`)
 		.refine(
-			(file) => ACCEPTED_MIME_TYPES.includes(file.type),
-			"Only .svg format is supported.",
+			(file) => file.size <= TECHNOLOGY_ICON_MAX_FILE_SIZE,
+			`Max file size is ${TECHNOLOGY_ICON_MAX_FILE_SIZE / 1024 / 1024}MB.`,
+		)
+		.refine(
+			(file) => TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES.includes(file.type),
+			`File must be of type ${TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES.join(", ")}`,
 		)
 		.refine(
 			//minimum size for required icon
 			(file) => file.size >= 1, // 1KB
-			"SVG icon is required.",
+			"Icon is required.",
 		),
-	iconSVG: z.string().optional(),
 	brandColors: z.array(z.string()).min(1, "Brand color is required"),
 	brandColorsDefault: z.array(z.string()).min(1, "Brand color is required"),
 });
@@ -35,7 +42,6 @@ export const defaultValues: TechnologyCreateFormSchema = {
 	name: "",
 	url: "",
 	icon: new File([], "icon.svg", { type: "image/svg+xml" }),
-	iconSVG: "",
 	brandColors: [],
 	brandColorsDefault: [],
 };

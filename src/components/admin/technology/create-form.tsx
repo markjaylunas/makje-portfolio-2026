@@ -10,6 +10,7 @@ import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import FileImagePreview from "@/components/common/file-image-preview";
 import TechCard from "@/components/home/technology/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,10 +21,10 @@ import { createTechnologyFn } from "@/data/server/technology.server";
 import type { InsertTechnology } from "@/db/types";
 import {
 	defaultValues,
+	TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES,
 	type TechnologyCreateFormSchema,
 	technologyCreateFormSchema,
 } from "@/form-validators/technology/create";
-import { extractColorsFromSVG } from "@/lib/helper";
 import { queryKey } from "@/lib/query-key";
 
 export default function CreateTechnologyForm() {
@@ -72,12 +73,16 @@ export default function CreateTechnologyForm() {
 			<div className="mx-auto max-w-48">
 				<form.Subscribe selector={(state) => state.values}>
 					{(values) => (
-						<TechCard
-							icon={values.iconSVG || undefined}
-							colors={values.brandColors.join(", ")}
-							name={values.name}
-							url={values.url}
-						/>
+						<FileImagePreview file={values.icon}>
+							{(url) => (
+								<TechCard
+									icon={url}
+									colors={values.brandColors.join(", ")}
+									name={values.name}
+									url={values.url}
+								/>
+							)}
+						</FileImagePreview>
 					)}
 				</form.Subscribe>
 			</div>
@@ -148,41 +153,21 @@ export default function CreateTechnologyForm() {
 							if (!file) {
 								field.form.resetField("brandColors");
 								field.form.resetField("brandColorsDefault");
-								field.form.resetField("iconSVG");
 								return;
 							}
 
-							const reader = new FileReader();
-							reader.onload = (event) => {
-								const svgContent = event.target?.result as string;
-
-								// 1. Extract colors as before
-								const detectedColors = extractColorsFromSVG(svgContent);
-								field.form.setFieldValue("brandColors", detectedColors);
-								field.form.setFieldValue("brandColorsDefault", detectedColors);
-
-								// 2. Convert string to a safe Data URL for the preview
-								// This encodes the string so it's treated as an image source, not code
-								const base64Svg = btoa(
-									unescape(encodeURIComponent(svgContent)),
-								);
-								const dataUrl = `data:image/svg+xml;base64,${base64Svg}`;
-
-								field.handleChange(file);
-								field.form.setFieldValue("iconSVG", dataUrl);
-								field.validate("blur");
-							};
-							reader.readAsText(file);
+							field.handleChange(file);
+							field.validate("blur");
 						};
 
 						return (
 							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Icon (SVG)</FieldLabel>
+								<FieldLabel htmlFor={field.name}>Icon</FieldLabel>
 								<Input
 									id={field.name}
 									name={field.name}
 									type="file"
-									accept=".svg"
+									accept={TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES.join(",")}
 									onChange={handleFileChange}
 									onBlur={field.handleBlur}
 									className="cursor-pointer"
@@ -199,19 +184,23 @@ export default function CreateTechnologyForm() {
 
 				<form.Subscribe
 					selector={(state) => ({
-						iconSVG: state.values.iconSVG,
+						icon: state.values.icon,
 						brandColors: state.values.brandColors,
 					})}
 				>
-					{({ iconSVG, brandColors }) => (
+					{({ icon, brandColors }) => (
 						<div className="flex items-center gap-4">
 							<div className="size-24 flex items-center justify-center border rounded bg-muted p-2">
-								{iconSVG ? (
-									<img
-										src={iconSVG}
-										alt="Icon preview"
-										className="w-full h-full object-contain"
-									/>
+								{icon ? (
+									<FileImagePreview file={icon}>
+										{(url) => (
+											<img
+												src={url}
+												alt="Icon preview"
+												className="w-full h-full object-contain"
+											/>
+										)}
+									</FileImagePreview>
 								) : (
 									<p className="text-muted-foreground text-xs text-center">
 										No icon selected
@@ -306,7 +295,7 @@ export default function CreateTechnologyForm() {
 
 								<div className="flex items-center gap-2">
 									{/* reset button for color */}
-									{iconSVG && (
+									{icon && (
 										<Button
 											type="button"
 											variant="secondary"

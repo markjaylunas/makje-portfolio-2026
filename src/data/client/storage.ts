@@ -2,6 +2,7 @@ import z from "zod";
 import type { InsertMedia } from "@/db/types";
 import { COMPANY_LOGO_ACCEPTED_MIME_TYPES } from "@/form-validators/experience/create";
 import { PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES } from "@/form-validators/project/create";
+import { TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES } from "@/form-validators/technology/create";
 import { BUCKET_DIRECTORIES } from "@/lib/bucket-directories";
 import { generateTimestampId } from "@/lib/utils";
 
@@ -50,8 +51,10 @@ const uploadFileToR2 = async (keyDirectory: string, file: File) => {
 };
 
 export const uploadTechnologyIcon = async (file: File) => {
-	if (file.type !== "image/svg+xml") {
-		throw new Error("File must be an SVG");
+	if (!TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES.includes(file.type)) {
+		throw new Error(
+			`File must be of type ${TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES.join(", ")}`,
+		);
 	}
 
 	const keyDirectory = BUCKET_DIRECTORIES.TECHNOLOGY.ICON;
