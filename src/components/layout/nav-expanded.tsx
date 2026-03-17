@@ -4,7 +4,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
-import { Activity, type ComponentProps } from "react";
+import { type ComponentProps } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { socialLinks } from "@/lib/constants";
 import {
@@ -13,25 +13,18 @@ import {
 	projectLinks,
 } from "@/lib/link-options";
 import { cn } from "@/lib/utils";
-import SlideDownMotion from "../motion/slide-down-motion";
+import ZoomMotion from "../motion/zoom-motion";
 import { useMenu } from "../providers/nav-menu-provider";
 import AuthNavCard from "./auth-nav-card";
 
 export default function NavExpanded() {
-	const { menuOpen } = useMenu();
-	return (
-		<div className="backdrop-blur-md">
-			<Activity mode={menuOpen ? "visible" : "hidden"}>
-				<NavLinks />
-			</Activity>
-		</div>
-	);
-}
+	const { menuOpen, toggleMenu } = useMenu();
 
-export function NavLinks() {
-	const { toggleMenu } = useMenu();
 	return (
-		<SlideDownMotion className="bg-primary/20 p-2 sm:p-4  border border-transparent mt-4 rounded-xl grid grid-cols-2 gap-2 sm:gap-4">
+		<ZoomMotion
+			isOpen={menuOpen}
+			className="bg-primary/20 p-2 sm:p-4  border border-transparent mt-4 rounded-xl grid grid-cols-2 gap-2 sm:gap-4 backdrop-blur-md"
+		>
 			<NavLinkGroupCard title="About">
 				<ul className="flex flex-col">
 					{aboutLinks.map((link) => (
@@ -67,7 +60,7 @@ export function NavLinks() {
 			<NavLinkGroupCard title="Auth">
 				<AuthNavCard />
 			</NavLinkGroupCard>
-		</SlideDownMotion>
+		</ZoomMotion>
 	);
 }
 
