@@ -1,4 +1,4 @@
-import { desc, eq, inArray, sql } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { featuredTechnology } from "@/db/schema";
 import type { InsertFeaturedTechnology } from "@/db/types";
@@ -72,51 +72,31 @@ export const deleteFeaturedTechnology = async ({
 	return result;
 };
 
+const CHUNK_SIZE = 20;
+
 export const updateTechnologyOrder = async ({
-	featuredTechnologyIdList,
+	technologyIdList,
 }: {
-	featuredTechnologyIdList: string[];
+	technologyIdList: string[];
 }) => {
-	// 1. Fetch current items to handle reconciliation
-	const currentItems = await db.query.featuredTechnology.findMany({
-		columns: { id: true, updatedAt: true },
-	});
+	await db.delete(featuredTechnology);
 
-	const currentIds = currentItems.map((f) => f.id);
+	const technologyIdListWithOrder: InsertFeaturedTechnology[] =
+		technologyIdList.map((technologyId, index) => ({
+			technologyId,
+			order: index + 1,
+		}));
 
-	// 2. Identify missing IDs and sort by updatedAt
-	const missingIds = currentItems
-		.filter((f) => !featuredTechnologyIdList.includes(f.id))
-		.sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime())
-		.map((f) => f.id);
+	const results: (typeof featuredTechnology.$inferSelect)[] = [];
 
-	// 3. Create the final ordered array of IDs
-	const finalOrder = [...featuredTechnologyIdList, ...missingIds].filter((id) =>
-		currentIds.includes(id),
-	);
+	for (let i = 0; i < technologyIdListWithOrder.length; i += CHUNK_SIZE) {
+		const chunk = technologyIdListWithOrder.slice(i, i + CHUNK_SIZE);
+		const inserted = await db
+			.insert(featuredTechnology)
+			.values(chunk)
+			.returning();
+		results.push(...inserted);
+	}
 
-	if (finalOrder.length === 0) return;
-
-	// 4. Build the CASE statement for a single UPDATE
-	// SQL: UPDATE featured_technology SET order = CASE id WHEN 'id1' THEN 1 WHEN 'id2' THEN 2 END...
-	const sqlChunks = [];
-	sqlChunks.push(sql`CASE ${featuredTechnology.id}`);
-
-	finalOrder.forEach((id, index) => {
-		sqlChunks.push(sql`WHEN ${id} THEN ${index + 1}`);
-	});
-
-	sqlChunks.push(sql`END`);
-
-	// 5. Execute as one single statement
-	const result = await db
-		.update(featuredTechnology)
-		.set({
-			order: sql.join(sqlChunks, sql.raw(" ")),
-			updatedAt: new Date(),
-		})
-		.where(inArray(featuredTechnology.id, finalOrder))
-		.returning();
-
-	return result;
+	return results;
 };

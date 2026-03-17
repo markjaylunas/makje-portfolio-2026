@@ -29,7 +29,7 @@ export default function FeaturedTechnologyCardOrderList() {
 		{
 			mutationFn: async (data: FeaturedTechnologyWithTechnology[]) =>
 				await updateTechnologyOrderFn({
-					data: { featuredTechnologyIdList: data.map((t) => t.id) },
+					data: { technologyIdList: data.map((t) => t.technologyId) },
 				}),
 			onSuccess: () => {
 				queryClient.invalidateQueries({
@@ -38,7 +38,7 @@ export default function FeaturedTechnologyCardOrderList() {
 				toast.success("Technology order updated successfully");
 			},
 			onError: (error) => {
-				toast.error(error.message);
+				console.error(error);
 			},
 		},
 	);

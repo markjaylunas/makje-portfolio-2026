@@ -9,5 +9,5 @@ export type UpdateTechnologyOrderFnSchema = z.infer<
 >;
 
 export const updateTechnologyOrderFnSchema = z.object({
-	featuredTechnologyIdList: z.array(z.string()),
+	technologyIdList: z.array(z.string()),
 });
