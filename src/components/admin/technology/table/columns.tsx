@@ -78,7 +78,7 @@ export const TechnologyIconImage = ({
 			<img
 				src={icon.url}
 				alt={icon.altText ?? undefined}
-				className="size-full p-1"
+				className="size-full max-w-12 p-1"
 			/>
 		</Link>
 	);
