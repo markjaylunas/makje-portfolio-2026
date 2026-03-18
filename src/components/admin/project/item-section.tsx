@@ -14,6 +14,7 @@ export default function ProjectItemSection() {
 	return (
 		<ProjectCard
 			name={p.name}
+			coverImage={p.coverImage?.url}
 			description={p.description}
 			content={p.content}
 			repositoryUrl={p.repositoryUrl}
