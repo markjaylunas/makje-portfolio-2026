@@ -36,9 +36,9 @@ export function TechCardPixel({ colors, name, alt, icon }: TechCardProps) {
 					<img
 						src={icon}
 						alt={alt}
-						className="size-10 transition-all duration-500 grayscale-100 group-hover:grayscale-0 mt-4 group-hover:mt-0"
+						className="size-10 transition-all duration-500 grayscale-0 sm:grayscale-100 group-hover:grayscale-0 mt-0 sm:mt-4 group-hover:mt-0"
 					/>
-					<p className="transition-opacity duration-400 opacity-0  group-hover:opacity-100">
+					<p className="transition-opacity duration-400 opacity-100 sm:opacity-0 group-hover:opacity-100">
 						{name}
 					</p>
 				</div>

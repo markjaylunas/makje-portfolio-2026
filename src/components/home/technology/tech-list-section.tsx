@@ -4,6 +4,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import GradientText from "@/components/common/gradient-text";
 import H2 from "@/components/common/H2";
+import PopOutMotion from "@/components/motion/pop-out-motion";
 import { Button } from "@/components/ui/button";
 import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
 import TechCard from "./card";
@@ -58,13 +59,15 @@ export default function TechListSection() {
 			<ul className="mx-auto max-w-(--breakpoint-sm) grid grid-cols-2 md:grid-cols-4 mt-12 gap-px bg-muted border border-muted">
 				{visibleTech.map(({ id, technology }) => (
 					<li key={id}>
-						<TechCard
-							icon={technology.icon?.url ?? undefined}
-							colors={technology.brandColor}
-							name={technology.name}
-							url={technology.url}
-							alt={technology.icon?.altText ?? undefined}
-						/>
+						<PopOutMotion>
+							<TechCard
+								icon={technology.icon?.url ?? undefined}
+								colors={technology.brandColor}
+								name={technology.name}
+								url={technology.url}
+								alt={technology.icon?.altText ?? undefined}
+							/>
+						</PopOutMotion>
 					</li>
 				))}
 			</ul>
