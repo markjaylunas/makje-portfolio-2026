@@ -113,35 +113,33 @@ export default function CreateProjectForm() {
 
 	return (
 		<div className="flex flex-col md:flex-row-reverse gap-4 md:gap-16 justify-between relative">
-			<div className="w-full sticky top-0  max-w-sm">
-				<form.Subscribe selector={(state) => state.values}>
-					{(project) => (
-						<FileImagePreview file={project.coverImage as File | string | null}>
-							{(coverImageUrl) => (
-								<ProjectCard
-									coverImage={coverImageUrl}
-									name={project.name}
-									description={project.description || ""}
-									content={project.content || ""}
-									repositoryUrl={project.repositoryUrl || ""}
-									liveUrl={project.liveUrl || ""}
-									likesCount={project.likesCount || 0}
-									technologyList={technologyList
-										.filter((t) => project.technologyList.includes(t.id))
-										.map((t) => ({
-											name: t.name,
-											icon: t.icon.url,
-										}))}
-									tagList={project.tags.map((t) => ({
-										name: t,
-										slug: slugify(t),
+			<form.Subscribe selector={(state) => state.values}>
+				{(project) => (
+					<FileImagePreview file={project.coverImage as File | string | null}>
+						{(coverImageUrl) => (
+							<ProjectCard
+								coverImage={coverImageUrl}
+								name={project.name}
+								description={project.description || ""}
+								content={project.content || ""}
+								repositoryUrl={project.repositoryUrl || ""}
+								liveUrl={project.liveUrl || ""}
+								likesCount={project.likesCount || 0}
+								technologyList={technologyList
+									.filter((t) => project.technologyList.includes(t.id))
+									.map((t) => ({
+										name: t.name,
+										icon: t.icon.url,
 									}))}
-								/>
-							)}
-						</FileImagePreview>
-					)}
-				</form.Subscribe>
-			</div>
+								tagList={project.tags.map((t) => ({
+									name: t,
+									slug: slugify(t),
+								}))}
+							/>
+						)}
+					</FileImagePreview>
+				)}
+			</form.Subscribe>
 
 			<form
 				onSubmit={(e) => {
