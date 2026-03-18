@@ -68,7 +68,7 @@ export function ExperienceItem({
 					<div className="flex flex-wrap gap-2">
 						{technologies.map((tech) => (
 							<a
-								href={tech.icon.url}
+								href={tech.url}
 								key={tech.id}
 								target="_blank"
 								rel="noopener noreferrer"
