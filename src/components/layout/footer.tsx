@@ -52,7 +52,7 @@ export default function Footer() {
 					</h3>
 					<ul className="space-y-1">
 						{navigationLinks.map((link) => (
-							<li key={link.to}>
+							<li key={`footer-explore-${link.to}-${link.hash}`}>
 								<Link
 									to={link.to}
 									hash={link.hash}
@@ -73,7 +73,7 @@ export default function Footer() {
 					</h3>
 					<ul className="space-y-1">
 						{socialLinks.map((social) => (
-							<li key={social.name}>
+							<li key={`footer-connect-${social.name}-${social.href}`}>
 								<a
 									href={social.href}
 									target="_blank"
