@@ -48,11 +48,13 @@ export default function ProjectCard({
 					<Badge variant="secondary">{likesCount} likes</Badge>
 				</CardAction>
 				<CardTitle>{name}</CardTitle>
-				<CardDescription>{description}</CardDescription>
+				<CardDescription className="line-clamp-2 text-pretty">
+					{description}
+				</CardDescription>
 			</CardHeader>
 
 			<CardContent>
-				<p>{content}</p>
+				<p className="line-clamp-5 text-pretty">{content}</p>
 			</CardContent>
 
 			<CardFooter className="flex flex-col items-start gap-4">
