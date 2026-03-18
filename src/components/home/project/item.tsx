@@ -2,7 +2,7 @@ import { ArrowUpRight, Github } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
 	Card,
@@ -69,28 +69,24 @@ export default function ProjectCard({
 
 				<ButtonGroup>
 					{liveUrl && (
-						<Button
-							render={
-								<Link to={liveUrl} target="_blank">
-									<HugeiconsIcon icon={ArrowUpRight} />
-									Live
-								</Link>
-							}
-							size="sm"
-							variant="default"
-						/>
+						<Link
+							to={liveUrl}
+							target="_blank"
+							className={buttonVariants({ variant: "default", size: "sm" })}
+						>
+							<HugeiconsIcon icon={ArrowUpRight} />
+							Live
+						</Link>
 					)}
 					{repositoryUrl && (
-						<Button
-							render={
-								<Link to={repositoryUrl} target="_blank">
-									<HugeiconsIcon icon={Github} />
-									Repository
-								</Link>
-							}
-							size="sm"
-							variant="outline"
-						/>
+						<Link
+							to={repositoryUrl}
+							target="_blank"
+							className={buttonVariants({ variant: "outline", size: "sm" })}
+						>
+							<HugeiconsIcon icon={Github} />
+							Repository
+						</Link>
 					)}
 				</ButtonGroup>
 
