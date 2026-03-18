@@ -6,7 +6,21 @@ import HeroLogo from "./logo";
 
 export default function HeroSection() {
 	return (
-		<section className="flex min-h-dvh flex-col items-center justify-center gap-2 px-4 sm:px-6">
+		<section className="relative flex min-h-dvh flex-col items-center justify-center gap-2 px-4 sm:px-6">
+			<div
+				className="absolute inset-0 opacity-30"
+				style={{
+					backgroundImage: `
+            linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
+        `,
+					backgroundSize: "60px 60px",
+					// This mask creates the fade effect
+					maskImage: "linear-gradient(to bottom, white 50%, transparent 100%)",
+					WebkitMaskImage:
+						"linear-gradient(to bottom, white 50%, transparent 100%)",
+				}}
+			/>
 			<HeroLogo />
 			<div className="relative flex flex-col items-center justify-center gap-2">
 				<div className="to-primary pointer-events-none absolute top-1/2 left-1/2 -z-10 h-dvh w-full max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-full bg-linear-to-br from-emerald-300 from-0% to-60%  opacity-12 blur-[60px] md:h-100 md:opacity-20 md:blur-[90px]"></div>
