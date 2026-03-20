@@ -4,6 +4,7 @@ import { lazy } from "react";
 const TextField = lazy(() => import("./fields/text-field"));
 const FileField = lazy(() => import("./fields/file-field"));
 const SubmitButton = lazy(() => import("./subscribe/submit-button"));
+const ResetButton = lazy(() => import("./subscribe/reset-button"));
 
 export const { fieldContext, formContext, useFieldContext, useFormContext } =
 	createFormHookContexts();
@@ -17,5 +18,6 @@ export const { useAppForm } = createFormHook({
 	},
 	formComponents: {
 		SubmitButton,
+		ResetButton,
 	},
 });

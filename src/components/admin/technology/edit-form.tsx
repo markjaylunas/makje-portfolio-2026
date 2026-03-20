@@ -1,13 +1,9 @@
-import { Close, Loading03Icon, Refresh } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import FileImagePreview from "@/components/common/file-image-preview";
+import { useAppForm } from "@/components/form/context";
+import FieldError from "@/components/form/fields/error";
 import TechCard from "@/components/home/technology/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 import { uploadTechnologyIcon } from "@/data/client/storage";
 import { editTechnologyFn } from "@/data/server/technology.server";
 import type {
@@ -15,12 +11,13 @@ import type {
 	TechnologyWithRelations,
 	UpdateTechnology,
 } from "@/db/types";
+import { TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES } from "@/form-validators/technology/create";
 import {
 	type TechnologyEditFormSchema,
 	technologyEditFormSchema,
 } from "@/form-validators/technology/edit";
-import { extractColorsFromSVG } from "@/lib/helper";
 import { queryKey } from "@/lib/query-key";
+import { IconColorField, IconPreview } from "./create-form";
 
 export default function EditTechnologyForm({
 	defaultTechnology,
@@ -34,12 +31,11 @@ export default function EditTechnologyForm({
 		id: defaultTechnology.id,
 		name: defaultTechnology.name,
 		url: defaultTechnology.url,
+		iconUrl: defaultTechnology.icon.url,
 		brandColors: defaultTechnology.brandColor.split(", "),
-		brandColorsDefault: defaultTechnology.brandColor.split(", "),
-		iconSVG: defaultTechnology.icon?.url,
 	};
 
-	const form = useForm({
+	const form = useAppForm({
 		defaultValues,
 		onSubmit: ({ value }) => createMutation(value),
 		validators: {
@@ -90,15 +86,20 @@ export default function EditTechnologyForm({
 			<div className="mx-auto max-w-48">
 				<form.Subscribe selector={(state) => state.values}>
 					{(values) => (
-						<TechCard
-							icon={values.iconSVG || undefined}
-							colors={values.brandColors.join(", ")}
-							name={values.name}
-							url={values.url}
-						/>
+						<FileImagePreview file={values.icon || values.iconUrl}>
+							{(url) => (
+								<TechCard
+									icon={url}
+									colors={values.brandColors.join(", ")}
+									name={values.name}
+									url={values.url}
+								/>
+							)}
+						</FileImagePreview>
 					)}
 				</form.Subscribe>
 			</div>
+
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
@@ -108,205 +109,99 @@ export default function EditTechnologyForm({
 				className="space-y-6 max-w-md"
 			>
 				{/* Name Field */}
-				<form.Field name="name">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Name</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									placeholder="e.g. React"
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="name">
+					{(field) => <field.TextField label="Name" placeholder="e.g. React" />}
+				</form.AppField>
 
 				{/* URL Field */}
-				<form.Field name="url">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Website URL</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									placeholder="https://..."
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="url">
+					{(field) => (
+						<field.TextField label="Website URL" placeholder="https://..." />
+					)}
+				</form.AppField>
 
 				{/* Icon Field */}
-				<form.Field name="icon">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						const handleFileChange = (
-							e: React.ChangeEvent<HTMLInputElement>,
-						) => {
-							const file = e.target.files?.[0];
-							if (!file) {
-								field.form.resetField("brandColors");
-								field.form.resetField("brandColorsDefault");
-								field.form.resetField("iconSVG");
-								return;
-							}
-
-							const reader = new FileReader();
-							reader.onload = (event) => {
-								const svgContent = event.target?.result as string;
-
-								// 1. Extract colors as before
-								const detectedColors = extractColorsFromSVG(svgContent);
-								field.form.setFieldValue("brandColors", detectedColors);
-								field.form.setFieldValue("brandColorsDefault", detectedColors);
-
-								// 2. Convert string to a safe Data URL for the preview
-								// This encodes the string so it's treated as an image source, not code
-								const base64Svg = btoa(
-									unescape(encodeURIComponent(svgContent)),
-								);
-								const dataUrl = `data:image/svg+xml;base64,${base64Svg}`;
-
-								field.handleChange(file);
-								field.form.setFieldValue("iconSVG", dataUrl);
-								field.validate("blur");
-							};
-							reader.readAsText(file);
-						};
-
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Icon (SVG)</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									type="file"
-									accept=".svg"
-									onChange={handleFileChange}
-									onBlur={field.handleBlur}
-									className="cursor-pointer"
-									aria-invalid={isInvalid}
-								/>
-
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="icon">
+					{(field) => (
+						<field.FileField
+							label="Icon"
+							accept={TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES.join(",")}
+							onChangeExt={(file) => {
+								if (!file) {
+									form.resetField("brandColors");
+									return;
+								}
+							}}
+							placeholder="Click to add icon"
+						/>
+					)}
+				</form.AppField>
 
 				<form.Subscribe
 					selector={(state) => ({
-						iconSVG: state.values.iconSVG,
-						brandColors: state.values.brandColors,
+						icon: state.values.icon,
+						iconUrl: state.values.iconUrl,
 					})}
 				>
-					{({ iconSVG, brandColors }) => (
-						<div className="flex items-center gap-4">
-							<div className="size-24 flex items-center justify-center border rounded bg-muted p-2">
-								{iconSVG ? (
-									<img
-										src={iconSVG}
-										alt="Icon preview"
-										className="w-full h-full object-contain"
-									/>
-								) : (
-									<p className="text-muted-foreground text-xs text-center">
-										No icon selected
-									</p>
-								)}
-							</div>
-							<div className="flex flex-col flex-wrap gap-2">
-								{brandColors.map((color: string) => (
-									<Badge
-										key={color}
-										style={{
-											backgroundColor: color,
-											color: color === "#ffffff" ? "#000000" : "#ffffff",
-										}}
-										className="text-shadow-2xs"
-									>
-										{color}
-										<button
-											type="button"
-											onClick={() =>
-												form.setFieldValue(
-													"brandColors",
-													brandColors.filter((c: string) => c !== color),
-												)
-											}
-										>
-											<HugeiconsIcon
-												icon={Close}
-												data-icon="inline-end"
-												className="size-5 cursor-pointer hover:bg-muted rounded-xs"
-											/>
-											<span className="sr-only">Remove</span>
-										</button>
-									</Badge>
-								))}
-								{/* reset button for color */}
-								{iconSVG && (
-									<Button
-										type="button"
-										variant="secondary"
-										size="icon"
-										className="cursor-pointer"
-										onClick={() => {
-											const defaultBrandColors =
-												form.state.values.brandColorsDefault;
-											form.setFieldValue("brandColors", defaultBrandColors);
-										}}
-									>
-										<HugeiconsIcon icon={Refresh} />
-										<span className="sr-only">Reset Colors</span>
-									</Button>
-								)}
-							</div>
-						</div>
+					{({ icon, iconUrl }) => {
+						if (icon) {
+							return (
+								<FileImagePreview file={icon}>
+									{(url) => <IconPreview icon={url} />}
+								</FileImagePreview>
+							);
+						}
+
+						return <IconPreview icon={iconUrl} />;
+					}}
+				</form.Subscribe>
+
+				<form.Subscribe
+					selector={(state) => ({
+						brandColors: state.values.brandColors,
+						isInvalid:
+							state.fieldMeta.brandColors?.errorMap.onSubmit?.length > 0,
+					})}
+				>
+					{({ brandColors, isInvalid }) => (
+						<IconColorField
+							name="brandColors"
+							isInvalid={isInvalid}
+							onBrandColorsChange={(colors) =>
+								form.setFieldValue("brandColors", colors)
+							}
+							brandColors={brandColors}
+						/>
 					)}
 				</form.Subscribe>
 
 				<form.Subscribe
-					selector={(state) => [
-						state.canSubmit,
-						state.isSubmitting,
-						state.isDirty,
-					]}
+					selector={(state) => ({
+						brandColorsErrors: state.fieldMeta.brandColors?.errors,
+					})}
 				>
-					{([canSubmit, isSubmitting, isDirty]) => (
-						<Button
-							type="submit"
-							className="w-full"
-							disabled={!canSubmit || isSubmitting || isPending || !isDirty}
-						>
-							{(isSubmitting || isPending) && (
-								<HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
-							)}
-							Submit Changes
-						</Button>
-					)}
+					{({ brandColorsErrors }) => {
+						const errors = [...(brandColorsErrors ?? [])];
+
+						if (!errors.length) return null;
+
+						return (
+							<FieldError
+								errors={errors.map((v) => v.message)}
+								isInvalid={true}
+							/>
+						);
+					}}
 				</form.Subscribe>
+
+				<form.AppForm>
+					<div className="flex gap-2 w-full">
+						<form.ResetButton isPending={isPending}>Reset</form.ResetButton>
+						<form.SubmitButton isPending={isPending}>
+							Submit Changes
+						</form.SubmitButton>
+					</div>
+				</form.AppForm>
 			</form>
 		</>
 	);

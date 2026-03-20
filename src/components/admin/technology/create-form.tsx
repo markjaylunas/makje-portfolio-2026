@@ -124,7 +124,11 @@ export default function CreateTechnologyForm() {
 						icon: state.values.icon,
 					})}
 				>
-					{({ icon }) => <IconPreview icon={icon} />}
+					{({ icon }) => (
+						<FileImagePreview file={icon}>
+							{(url) => <IconPreview icon={url} />}
+						</FileImagePreview>
+					)}
 				</form.Subscribe>
 
 				<form.Subscribe
@@ -174,19 +178,15 @@ export default function CreateTechnologyForm() {
 	);
 }
 
-export function IconPreview({ icon }: { icon: File | null | undefined }) {
+export function IconPreview({ icon }: { icon: string | null | undefined }) {
 	return (
 		<div className="size-24 flex items-center justify-center border rounded bg-muted p-2">
-			{icon && icon.size > 0 ? (
-				<FileImagePreview file={icon}>
-					{(url) => (
-						<img
-							src={url}
-							alt="Icon preview"
-							className="w-full h-full object-contain"
-						/>
-					)}
-				</FileImagePreview>
+			{icon ? (
+				<img
+					src={icon}
+					alt="Icon preview"
+					className="w-full h-full object-contain"
+				/>
 			) : (
 				<p className="text-muted-foreground text-xs text-center">
 					No icon selected
