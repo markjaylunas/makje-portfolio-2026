@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import FileImagePreview from "@/components/common/file-image-preview";
+import ImagePreview from "@/components/common/image-preview";
 import { useAppForm } from "@/components/form/context";
 import FieldError from "@/components/form/fields/error";
 import TechCard from "@/components/home/technology/card";
@@ -17,7 +18,7 @@ import {
 	technologyEditFormSchema,
 } from "@/form-validators/technology/edit";
 import { queryKey } from "@/lib/query-key";
-import { IconColorField, IconPreview } from "./create-form";
+import { IconColorField } from "./create-form";
 
 export default function EditTechnologyForm({
 	defaultTechnology,
@@ -147,12 +148,12 @@ export default function EditTechnologyForm({
 						if (icon) {
 							return (
 								<FileImagePreview file={icon}>
-									{(url) => <IconPreview icon={url} />}
+									{(url) => <ImagePreview url={url} alt="Icon" />}
 								</FileImagePreview>
 							);
 						}
 
-						return <IconPreview icon={iconUrl} />;
+						return <ImagePreview url={iconUrl || undefined} alt="Icon" />;
 					}}
 				</form.Subscribe>
 

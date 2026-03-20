@@ -5,6 +5,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import FileImagePreview from "@/components/common/file-image-preview";
+import ImagePreview from "@/components/common/image-preview";
 import { useAppForm } from "@/components/form/context";
 import FieldError from "@/components/form/fields/error";
 import TechCard from "@/components/home/technology/card";
@@ -126,7 +127,7 @@ export default function CreateTechnologyForm() {
 				>
 					{({ icon }) => (
 						<FileImagePreview file={icon}>
-							{(url) => <IconPreview icon={url} />}
+							{(url) => <ImagePreview url={url} alt="Icon" />}
 						</FileImagePreview>
 					)}
 				</form.Subscribe>
@@ -175,24 +176,6 @@ export default function CreateTechnologyForm() {
 				</form.AppForm>
 			</form>
 		</>
-	);
-}
-
-export function IconPreview({ icon }: { icon: string | null | undefined }) {
-	return (
-		<div className="size-24 flex items-center justify-center border rounded bg-muted p-2">
-			{icon ? (
-				<img
-					src={icon}
-					alt="Icon preview"
-					className="w-full h-full object-contain"
-				/>
-			) : (
-				<p className="text-muted-foreground text-xs text-center">
-					No icon selected
-				</p>
-			)}
-		</div>
 	);
 }
 

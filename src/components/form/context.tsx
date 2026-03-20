@@ -2,7 +2,10 @@ import { createFormHook, createFormHookContexts } from "@tanstack/react-form";
 import { lazy } from "react";
 
 const TextField = lazy(() => import("./fields/text-field"));
+const TextareaField = lazy(() => import("./fields/textarea-field"));
+const DatePickerField = lazy(() => import("./fields/date-picker-field"));
 const FileField = lazy(() => import("./fields/file-field"));
+const ComboboxField = lazy(() => import("./fields/combobox-field"));
 const SubmitButton = lazy(() => import("./subscribe/submit-button"));
 const ResetButton = lazy(() => import("./subscribe/reset-button"));
 
@@ -14,7 +17,10 @@ export const { useAppForm } = createFormHook({
 	formContext,
 	fieldComponents: {
 		TextField,
+		TextareaField,
+		DatePickerField,
 		FileField,
+		ComboboxField,
 	},
 	formComponents: {
 		SubmitButton,

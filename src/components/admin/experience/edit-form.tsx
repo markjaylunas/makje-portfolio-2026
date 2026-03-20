@@ -1,31 +1,17 @@
-import { Close, Loading03Icon } from "@hugeicons/core-free-icons";
+import { Close, PlusSignIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useForm } from "@tanstack/react-form";
 import {
 	useMutation,
 	useQueryClient,
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { Fragment } from "react";
+import FileImagePreview from "@/components/common/file-image-preview";
+import ImagePreview from "@/components/common/image-preview";
+import { useAppForm } from "@/components/form/context";
 import { ExperienceItem } from "@/components/home/experience/item";
 import { Button } from "@/components/ui/button";
-import {
-	Combobox,
-	ComboboxChip,
-	ComboboxChips,
-	ComboboxChipsInput,
-	ComboboxContent,
-	ComboboxEmpty,
-	ComboboxItem,
-	ComboboxList,
-	ComboboxValue,
-	useComboboxAnchor,
-} from "@/components/ui/combobox";
-import { DatePickerInput } from "@/components/ui/date-picker";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { FieldLabel } from "@/components/ui/field";
 import { uploadExperienceLogo } from "@/data/client/storage";
 import { getTechnologyListOptions } from "@/data/options/technology";
 import { editExperienceFn } from "@/data/server/experience.server";
@@ -35,13 +21,12 @@ import type {
 	InsertMedia,
 	UpdateExperience,
 } from "@/db/types";
+import { COMPANY_LOGO_ACCEPTED_MIME_TYPES } from "@/form-validators/experience/create";
 import {
 	type ExperienceEditFormSchema,
 	experienceEditFormSchema,
 } from "@/form-validators/experience/edit";
-import useImageFilePreviewUrl from "@/hooks/use-image-file-preview-url";
 import { queryKey } from "@/lib/query-key";
-import type { TechnologyWithRelations } from "@/lib/types";
 import { dateToMonthYear } from "@/lib/utils";
 
 export default function EditExperienceForm({
@@ -89,13 +74,13 @@ export default function EditExperienceForm({
 				},
 			});
 		},
-		onSuccess: async () => {
+		onSuccess: async (data) => {
 			await Promise.all([
 				queryClient.invalidateQueries({
 					queryKey: queryKey.experience.list(),
 				}),
 				queryClient.invalidateQueries({
-					queryKey: queryKey.experience.item(defaultExperience.id),
+					queryKey: queryKey.experience.item(data.id),
 				}),
 			]);
 			form.reset();
@@ -104,6 +89,7 @@ export default function EditExperienceForm({
 	});
 
 	const defaultValues: ExperienceEditFormSchema = {
+		id: defaultExperience.id,
 		title: defaultExperience.title,
 		company: defaultExperience.company,
 		startDate: defaultExperience.startDate,
@@ -112,11 +98,11 @@ export default function EditExperienceForm({
 		description: defaultExperience.description || "",
 		responsibilityList: JSON.parse(defaultExperience.responsibilities),
 		technologyList: defaultExperience.technologies.map((v) => v.technologyId),
-		defaultLogo: defaultExperience.logo?.url,
+		logoUrl: defaultExperience.logo?.url,
 		logo: null,
 	};
 
-	const form = useForm({
+	const form = useAppForm({
 		defaultValues,
 		onSubmit: ({ value }) => editExperienceMutation(value),
 		validators: {
@@ -124,16 +110,16 @@ export default function EditExperienceForm({
 		},
 	});
 
-	const anchor = useComboboxAnchor();
-
 	const handlePeriodChange = (startDate: Date, endDate?: Date) => {
-		const periodDisplay = `${dateToMonthYear(startDate)} - ${endDate ? dateToMonthYear(endDate) : "Present"}`;
+		const periodDisplay = `${dateToMonthYear(startDate)} - ${
+			endDate ? dateToMonthYear(endDate) : "Present"
+		}`;
 		form.setFieldValue("periodDisplay", periodDisplay);
 	};
 
 	return (
 		<div className="flex flex-col md:flex-row-reverse gap-4 md:gap-16 justify-between">
-			<ol className="relative ml-3 border-l-2 border-muted">
+			<ol className="relative ml-3 border-l-2 border-muted max-w-lg w-full">
 				<form.Subscribe selector={(state) => [state.values]}>
 					{([exp]) => {
 						const selectedTechnologyList = technologyList.filter((v) =>
@@ -141,15 +127,19 @@ export default function EditExperienceForm({
 						);
 
 						return (
-							<ExperienceItemPreview
-								title={exp.title}
-								company={exp.company}
-								logo={exp.logo || exp.defaultLogo}
-								description={exp.description}
-								period={exp.periodDisplay}
-								responsibilities={exp.responsibilityList}
-								technologies={selectedTechnologyList}
-							/>
+							<FileImagePreview file={exp.logo}>
+								{(url) => (
+									<ExperienceItem
+										title={exp.title}
+										company={exp.company}
+										description={exp.description || ""}
+										period={exp.periodDisplay || ""}
+										responsibilities={exp.responsibilityList}
+										technologies={selectedTechnologyList}
+										logo={url || exp.logoUrl}
+									/>
+								)}
+							</FileImagePreview>
 						);
 					}}
 				</form.Subscribe>
@@ -161,379 +151,159 @@ export default function EditExperienceForm({
 					e.stopPropagation();
 					void form.handleSubmit();
 				}}
-				className="space-y-6 overflow-x-hidden"
+				className="space-y-6 "
 			>
-				<form.Field name="title">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Title</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									placeholder="e.g. Software Engineer"
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="title">
+					{(field) => (
+						<field.TextField
+							label="Title"
+							placeholder="e.g. Software Engineer"
+						/>
+					)}
+				</form.AppField>
 
-				<form.Field name="company">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Company</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									placeholder="e.g. Google"
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="company">
+					{(field) => (
+						<field.TextField label="Company" placeholder="e.g. Google" />
+					)}
+				</form.AppField>
 
-				<form.Field name="logo">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-							const file = e.target.files?.[0];
-							if (!file) {
-								field.form.resetField("logo");
-								return;
-							}
-							field.handleChange(file);
-							field.handleBlur();
-						};
+				<form.AppField name="logo">
+					{(field) => (
+						<field.FileField
+							label="Company Logo"
+							accept={COMPANY_LOGO_ACCEPTED_MIME_TYPES.join(",")}
+						/>
+					)}
+				</form.AppField>
 
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Company Logo</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									type="file"
-									accept=".png,.jpg,.jpeg,.webp,.svg"
-									onChange={fileHandler}
-									onBlur={field.handleBlur}
-									className="cursor-pointer"
-									aria-invalid={isInvalid}
-								/>
-
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
-
-				<form.Subscribe
-					selector={(state) => ({
-						logo: state.values.logo,
-						defaultLogo: state.values.defaultLogo,
-					})}
-				>
-					{({ logo, defaultLogo }) => (
-						<LogoPreview logo={logo || defaultLogo} />
+				<form.Subscribe selector={(state) => state.values.logo}>
+					{(logo) => (
+						<FileImagePreview file={logo}>
+							{(url) => (
+								<ImagePreview url={url || defaultValues.logoUrl} alt="Logo" />
+							)}
+						</FileImagePreview>
 					)}
 				</form.Subscribe>
 
-				<form.Field name="startDate">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Start Date</FieldLabel>
-								<DatePickerInput
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(v) => {
-										if (v === undefined) return;
-										field.handleChange(v);
-										const endDate = form.state.values.endDate;
-										handlePeriodChange(v, endDate);
-									}}
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="startDate">
+					{(field) => (
+						<field.DatePickerField
+							label="Start Date"
+							onChangeExt={(v) => {
+								if (!v) return;
+								const endDate = form.state.values.endDate;
+								handlePeriodChange(v, endDate);
+							}}
+						/>
+					)}
+				</form.AppField>
 
-				<form.Field name="endDate">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>End Date</FieldLabel>
-								<DatePickerInput
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(v) => {
-										if (v === undefined) return;
-										const date = v ? v : new Date();
-										field.handleChange(date);
-										const startDate = form.state.values.startDate;
-										handlePeriodChange(startDate, date);
-									}}
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="endDate">
+					{(field) => (
+						<field.DatePickerField
+							label="End Date"
+							onChangeExt={(v) => {
+								const date = v ? v : new Date();
+								const startDate = form.state.values.startDate;
+								handlePeriodChange(startDate, date);
+							}}
+						/>
+					)}
+				</form.AppField>
 
-				<form.Field name="description">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Description</FieldLabel>
-								<Textarea
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									placeholder="Enter description here..."
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="description">
+					{(field) => (
+						<field.TextareaField
+							label="Description"
+							placeholder="Describe your role..."
+						/>
+					)}
+				</form.AppField>
 
-				<form.Field name="technologyList">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
+				<form.AppField name="technologyList">
+					{(field) => (
+						<field.ComboboxField
+							label="Technologies"
+							optionList={technologyList.map((v) => ({
+								icon: v.icon.url,
+								label: v.name,
+								value: v.id,
+							}))}
+						/>
+					)}
+				</form.AppField>
 
-						const selectedObjects = technologyList.filter((item) =>
-							field.state.value.includes(item.id),
-						);
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Technologies</FieldLabel>
-								<Combobox
-									multiple
-									autoHighlight
-									items={technologyList}
-									value={selectedObjects}
-									onValueChange={(v: TechnologyWithRelations[]) => {
-										const ids = v.map((v) => v.id);
-										field.handleChange(ids);
-									}}
-									aria-invalid={isInvalid}
-								>
-									<ComboboxChips ref={anchor}>
-										<ComboboxValue>
-											{(values) => (
-												<Fragment>
-													{values.map((value: TechnologyWithRelations) => (
-														<ComboboxChip key={value.id}>
-															<img
-																src={value.icon.url}
-																alt={value.icon.altText || value.name}
-																className="size-4"
+				<form.AppField name="responsibilityList">
+					{(field) => (
+						<div className="space-y-4">
+							<FieldLabel>Responsibilities</FieldLabel>
+
+							<div className="space-y-3">
+								{field.state.value.map((_, i) => {
+									return (
+										<form.AppField
+											key={`responsibility-${
+												// biome-ignore lint/suspicious/noArrayIndexKey: <ignore>
+												i
+											}`}
+											name={`responsibilityList[${i}]`}
+										>
+											{(subField) => {
+												return (
+													<div className="flex gap-2 relative">
+														<div className="flex-1">
+															<subField.TextField
+																label={`Responsibility ${i + 1}`}
+																placeholder="Describe responsibility"
 															/>
-															{value.name}
-														</ComboboxChip>
-													))}
-													<ComboboxChipsInput />
-												</Fragment>
-											)}
-										</ComboboxValue>
-									</ComboboxChips>
-									<ComboboxContent anchor={anchor}>
-										<ComboboxEmpty>No items found.</ComboboxEmpty>
-										<ComboboxList>
-											{(item: TechnologyWithRelations) => (
-												<ComboboxItem key={item.id} value={item}>
-													<img
-														src={item.icon.url}
-														alt={item.icon.altText || item.name}
-														className="size-4"
-													/>
-													{item.name}
-												</ComboboxItem>
-											)}
-										</ComboboxList>
-									</ComboboxContent>
-								</Combobox>
-							</Field>
-						);
-					}}
-				</form.Field>
-
-				<div className="space-y-4">
-					<form.Field name="responsibilityList" mode="array">
-						{(field) => (
-							<>
-								<div className="flex items-center justify-between">
-									<FieldLabel>Responsibilities</FieldLabel>
-									<Button
-										type="button"
-										variant="outline"
-										size="sm"
-										onClick={() => field.pushValue("")}
-									>
-										Add Responsibility
-									</Button>
-								</div>
-
-								<div className="space-y-3">
-									{field.state.value.map((_, i) => {
-										return (
-											<form.Field
-												key={`responsibility-${
-													// biome-ignore lint/suspicious/noArrayIndexKey: <ignore>
-													i
-												}`}
-												name={`responsibilityList[${i}]`}
-											>
-												{(subField) => {
-													const isInvalid = !subField.state.meta.isValid;
-													return (
-														<div className="flex gap-2 relative">
-															<div className="flex-1">
-																<Textarea
-																	value={subField.state.value}
-																	onChange={(e) =>
-																		subField.handleChange(e.target.value)
-																	}
-																	onBlur={subField.handleBlur}
-																	placeholder="Describe a key achievement"
-																	aria-invalid={isInvalid}
-																/>
-																{isInvalid && (
-																	<FieldError>
-																		{subField.state.meta.errors[0]?.message}
-																	</FieldError>
-																)}
-															</div>
-															<Button
-																type="button"
-																variant="destructive"
-																size="icon-xs"
-																className="absolute bottom-2 right-2"
-																onClick={() => field.removeValue(i)}
-															>
-																<HugeiconsIcon icon={Close} />
-															</Button>
 														</div>
-													);
-												}}
-											</form.Field>
-										);
-									})}
+														<Button
+															type="button"
+															variant="destructive"
+															size="icon-xs"
+															className="absolute bottom-2 right-2"
+															onClick={() => field.removeValue(i)}
+														>
+															<HugeiconsIcon icon={Close} />
+														</Button>
+													</div>
+												);
+											}}
+										</form.AppField>
+									);
+								})}
 
-									{field.state.value.length === 0 && (
-										<p className="text-sm text-muted-foreground italic text-center py-4 border-2 border-dashed rounded-md">
+								{field.state.value.length === 0 && (
+									<div className="flex flex-col items-center justify-center py-8 border-2 border-dashed rounded-lg bg-muted/30">
+										<p className="text-sm text-muted-foreground italic">
 											No responsibilities added yet.
 										</p>
-									)}
-								</div>
-							</>
-						)}
-					</form.Field>
-				</div>
+									</div>
+								)}
 
-				<form.Subscribe selector={(state) => [state.canSubmit, state.isDirty]}>
-					{([canSubmit, isDirty]) => (
-						<Button
-							type="submit"
-							className="w-full"
-							disabled={!canSubmit || isPending || !isDirty}
-						>
-							{isPending && (
-								<HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
-							)}
-							Submit
-						</Button>
+								<Button
+									type="button"
+									variant="outline"
+									size="sm"
+									onClick={() => field.pushValue("")}
+									className="gap-2"
+								>
+									<HugeiconsIcon icon={PlusSignIcon} className="size-4" />
+									Add Responsibility
+								</Button>
+							</div>
+						</div>
 					)}
-				</form.Subscribe>
+				</form.AppField>
+
+				<form.AppForm>
+					<form.SubmitButton isPending={isPending} className="w-full">
+						Submit
+					</form.SubmitButton>
+				</form.AppForm>
 			</form>
 		</div>
-	);
-}
-
-function LogoPreview({ logo }: { logo: File | string | null | undefined }) {
-	const previewUrl = useImageFilePreviewUrl(logo);
-
-	return (
-		<div className="size-24 flex items-center justify-center border rounded bg-muted p-2 overflow-x-hidden">
-			{previewUrl ? (
-				<img
-					src={previewUrl}
-					alt="Logo preview"
-					className="w-full h-full object-contain"
-				/>
-			) : (
-				<p className="text-muted-foreground text-[10px] text-center uppercase font-medium">
-					No logo
-				</p>
-			)}
-		</div>
-	);
-}
-
-function ExperienceItemPreview({
-	company,
-	logo,
-	description,
-	title,
-	period,
-	responsibilities,
-	technologies,
-}: {
-	title: string;
-	company: string;
-	logo: File | string | null | undefined;
-	description?: string;
-	period: string;
-	responsibilities: string[];
-	technologies: TechnologyWithRelations[];
-}) {
-	const previewUrl = useImageFilePreviewUrl(logo);
-
-	return (
-		<ExperienceItem
-			title={title}
-			company={company}
-			logo={previewUrl}
-			description={description || ""}
-			period={period || ""}
-			responsibilities={responsibilities}
-			technologies={technologies}
-		/>
 	);
 }
