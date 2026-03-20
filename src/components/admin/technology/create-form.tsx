@@ -65,10 +65,6 @@ export default function CreateTechnologyForm() {
 
 	return (
 		<>
-			<form.Subscribe selector={(state) => state.errors}>
-				{(errors) => <pre>{JSON.stringify(errors, null, 2)}</pre>}
-			</form.Subscribe>
-
 			<div className="mx-auto max-w-48">
 				<form.Subscribe selector={(state) => state.values}>
 					{(values) => (
@@ -178,7 +174,7 @@ export default function CreateTechnologyForm() {
 	);
 }
 
-function IconPreview({ icon }: { icon: File | null | undefined }) {
+export function IconPreview({ icon }: { icon: File | null | undefined }) {
 	return (
 		<div className="size-24 flex items-center justify-center border rounded bg-muted p-2">
 			{icon && icon.size > 0 ? (
@@ -200,7 +196,7 @@ function IconPreview({ icon }: { icon: File | null | undefined }) {
 	);
 }
 
-function IconColorField({
+export function IconColorField({
 	onBrandColorsChange,
 	brandColors,
 	isInvalid,
