@@ -1,4 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import EditExperienceData from "@/components/admin/experience/edit-data";
 import EditExperienceForm from "@/components/admin/experience/edit-form";
 import { getExperienceOptions } from "@/data/options/experience";
 import { adminExperienceIdRouteParamsSchema } from "@/form-validators/experience";
@@ -22,11 +23,11 @@ export const Route = createFileRoute(
 });
 
 function RouteComponent() {
-	const experience = Route.useLoaderData();
-
 	return (
 		<main className="px-4 my-12">
-			<EditExperienceForm defaultExperience={experience} />
+			<EditExperienceData>
+				{(experience) => <EditExperienceForm defaultExperience={experience} />}
+			</EditExperienceData>
 		</main>
 	);
 }

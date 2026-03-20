@@ -1,4 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
+import EditTechnologyData from "@/components/admin/technology/edit-data";
 import EditTechnologyForm from "@/components/admin/technology/edit-form";
 import { getTechnologyOptions } from "@/data/options/technology";
 import { adminTechnologyIdRouteParamsSchema } from "@/form-validators/technology";
@@ -22,10 +23,11 @@ export const Route = createFileRoute(
 });
 
 function RouteComponent() {
-	const data = Route.useLoaderData();
 	return (
 		<main className="p-4 max-w-md mx-auto">
-			<EditTechnologyForm defaultTechnology={data} />
+			<EditTechnologyData>
+				{(technology) => <EditTechnologyForm defaultTechnology={technology} />}
+			</EditTechnologyData>
 		</main>
 	);
 }
