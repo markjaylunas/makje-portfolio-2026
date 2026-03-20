@@ -6,8 +6,8 @@ export default function FileImagePreview({
 	children,
 }: {
 	file: File | string | null | undefined;
-	children: (url: string) => React.ReactNode;
+	children: (url?: string) => React.ReactNode;
 }) {
 	const url = useImageFilePreviewUrl(file);
-	return <Fragment>{children(url || "")}</Fragment>;
+	return <Fragment>{children(url || undefined)}</Fragment>;
 }

@@ -31,7 +31,6 @@ export const technologyCreateFormSchema = z.object({
 			"Icon is required.",
 		),
 	brandColors: z.array(z.string()).min(1, "Brand color is required"),
-	brandColorsDefault: z.array(z.string()).min(1, "Brand color is required"),
 });
 
 export type TechnologyCreateFormSchema = z.infer<
@@ -43,7 +42,6 @@ export const defaultValues: TechnologyCreateFormSchema = {
 	url: "",
 	icon: new File([], "icon.svg", { type: "image/svg+xml" }),
 	brandColors: [],
-	brandColorsDefault: [],
 };
 
 export const createTechnologyFnSchema = z.object({

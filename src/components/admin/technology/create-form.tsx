@@ -1,20 +1,15 @@
-import {
-	Close,
-	Loading03Icon,
-	PlusSignIcon,
-	Refresh,
-	Tick01Icon,
-} from "@hugeicons/core-free-icons";
+import { Close, Tick01Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useForm } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { toast } from "sonner";
 import FileImagePreview from "@/components/common/file-image-preview";
+import { useAppForm } from "@/components/form/context";
+import FieldError from "@/components/form/fields/error";
 import TechCard from "@/components/home/technology/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { uploadTechnologyIcon } from "@/data/client/storage";
 import { createTechnologyFn } from "@/data/server/technology.server";
@@ -30,9 +25,6 @@ import { queryKey } from "@/lib/query-key";
 export default function CreateTechnologyForm() {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
-
-	const [isAddingManualColor, setIsAddingManualColor] = useState(false);
-	const [manualColor, setManualColor] = useState("");
 
 	const { mutate: createMutation, isPending } = useMutation({
 		mutationFn: async (value: TechnologyCreateFormSchema) => {
@@ -58,9 +50,12 @@ export default function CreateTechnologyForm() {
 			form.reset();
 			navigate({ to: "/admin/technology" });
 		},
+		onError: (error) => {
+			toast.error(error.message);
+		},
 	});
 
-	const form = useForm({
+	const form = useAppForm({
 		defaultValues,
 		onSubmit: ({ value }) => createMutation(value),
 		validators: {
@@ -70,6 +65,10 @@ export default function CreateTechnologyForm() {
 
 	return (
 		<>
+			<form.Subscribe selector={(state) => state.errors}>
+				{(errors) => <pre>{JSON.stringify(errors, null, 2)}</pre>}
+			</form.Subscribe>
+
 			<div className="mx-auto max-w-48">
 				<form.Subscribe selector={(state) => state.values}>
 					{(values) => (
@@ -86,6 +85,7 @@ export default function CreateTechnologyForm() {
 					)}
 				</form.Subscribe>
 			</div>
+
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
@@ -95,255 +95,200 @@ export default function CreateTechnologyForm() {
 				className="space-y-6 max-w-md"
 			>
 				{/* Name Field */}
-				<form.Field name="name">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Name</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									placeholder="e.g. React"
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="name">
+					{(field) => <field.TextField label="Name" placeholder="e.g. React" />}
+				</form.AppField>
 
 				{/* URL Field */}
-				<form.Field name="url">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Website URL</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									placeholder="https://..."
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="url">
+					{(field) => (
+						<field.TextField label="Website URL" placeholder="https://..." />
+					)}
+				</form.AppField>
 
 				{/* Icon Field */}
-				<form.Field name="icon">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						const handleFileChange = (
-							e: React.ChangeEvent<HTMLInputElement>,
-						) => {
-							const file = e.target.files?.[0];
-							if (!file) {
-								field.form.resetField("brandColors");
-								field.form.resetField("brandColorsDefault");
-								return;
-							}
-
-							field.handleChange(file);
-							field.validate("blur");
-						};
-
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Icon</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									type="file"
-									accept={TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES.join(",")}
-									onChange={handleFileChange}
-									onBlur={field.handleBlur}
-									className="cursor-pointer"
-									aria-invalid={isInvalid}
-								/>
-
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="icon">
+					{(field) => (
+						<field.FileField
+							label="Icon"
+							accept={TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES.join(",")}
+							onChangeExt={(file) => {
+								if (!file) {
+									form.resetField("brandColors");
+									return;
+								}
+							}}
+							placeholder="Click to add icon"
+						/>
+					)}
+				</form.AppField>
 
 				<form.Subscribe
 					selector={(state) => ({
 						icon: state.values.icon,
-						brandColors: state.values.brandColors,
 					})}
 				>
-					{({ icon, brandColors }) => (
-						<div className="flex items-center gap-4">
-							<div className="size-24 flex items-center justify-center border rounded bg-muted p-2">
-								{icon ? (
-									<FileImagePreview file={icon}>
-										{(url) => (
-											<img
-												src={url}
-												alt="Icon preview"
-												className="w-full h-full object-contain"
-											/>
-										)}
-									</FileImagePreview>
-								) : (
-									<p className="text-muted-foreground text-xs text-center">
-										No icon selected
-									</p>
-								)}
-							</div>
-							<div className="flex flex-col flex-wrap gap-2">
-								{brandColors.map((color: string) => (
-									<Badge
-										key={color}
-										style={{
-											backgroundColor: color,
-											color: color === "#ffffff" ? "#000000" : "#ffffff",
-										}}
-										className="text-shadow-2xs"
-									>
-										{color}
-										<button
-											type="button"
-											onClick={() =>
-												form.setFieldValue(
-													"brandColors",
-													brandColors.filter((c: string) => c !== color),
-												)
-											}
-										>
-											<HugeiconsIcon
-												icon={Close}
-												data-icon="inline-end"
-												className="size-5 cursor-pointer hover:bg-muted rounded-xs"
-											/>
-											<span className="sr-only">Remove</span>
-										</button>
-									</Badge>
-								))}
-								{isAddingManualColor && (
-									<div className="flex items-center gap-2">
-										<Input
-											value={manualColor}
-											onChange={(e) => setManualColor(e.target.value)}
-											placeholder="#HEX"
-											className="w-24 h-8 text-xs p-1"
-											autoFocus
-											onKeyDown={(e) => {
-												if (e.key === "Enter") {
-													e.preventDefault();
-													const trimmedColor = manualColor.trim();
-													if (trimmedColor) {
-														const newColors = [...brandColors, trimmedColor];
-														form.setFieldValue("brandColors", newColors);
-														form.setFieldValue("brandColorsDefault", newColors);
-														setManualColor("");
-														setIsAddingManualColor(false);
-													}
-												}
-											}}
-										/>
-										<button
-											type="button"
-											onClick={() => {
-												const trimmedColor = manualColor.trim();
-												if (trimmedColor) {
-													const newColors = [...brandColors, trimmedColor];
-													form.setFieldValue("brandColors", newColors);
-													form.setFieldValue("brandColorsDefault", newColors);
-													setManualColor("");
-													setIsAddingManualColor(false);
-												}
-											}}
-										>
-											<HugeiconsIcon
-												icon={Tick01Icon}
-												className="size-5 cursor-pointer hover:bg-muted rounded-xs"
-											/>
-											<span className="sr-only">Add</span>
-										</button>
-										<button
-											type="button"
-											onClick={() => {
-												setManualColor("");
-												setIsAddingManualColor(false);
-											}}
-										>
-											<HugeiconsIcon
-												icon={Close}
-												className="size-5 cursor-pointer hover:bg-muted rounded-xs"
-											/>
-											<span className="sr-only">Cancel</span>
-										</button>
-									</div>
-								)}
+					{({ icon }) => <IconPreview icon={icon} />}
+				</form.Subscribe>
 
-								<div className="flex items-center gap-2">
-									{/* reset button for color */}
-									{icon && (
-										<Button
-											type="button"
-											variant="secondary"
-											size="icon"
-											className="cursor-pointer"
-											onClick={() => {
-												const defaultBrandColors =
-													form.state.values.brandColorsDefault;
-												form.setFieldValue("brandColors", defaultBrandColors);
-											}}
-										>
-											<HugeiconsIcon icon={Refresh} />
-											<span className="sr-only">Reset Colors</span>
-										</Button>
-									)}
-									<Button
-										type="button"
-										variant="secondary"
-										size="icon"
-										className="cursor-pointer"
-										onClick={() => setIsAddingManualColor(true)}
-									>
-										<HugeiconsIcon icon={PlusSignIcon} />
-										<span className="sr-only">Add Color</span>
-									</Button>
-								</div>
-							</div>
-						</div>
+				<form.Subscribe
+					selector={(state) => ({
+						brandColors: state.values.brandColors,
+						isInvalid: !state.fieldMeta.brandColors?.isValid,
+					})}
+				>
+					{({ brandColors, isInvalid }) => (
+						<IconColorField
+							name="brandColors"
+							isInvalid={isInvalid}
+							onBrandColorsChange={(colors) =>
+								form.setFieldValue("brandColors", colors)
+							}
+							brandColors={brandColors}
+						/>
 					)}
 				</form.Subscribe>
 
 				<form.Subscribe
-					selector={(state) => [state.canSubmit, state.isSubmitting]}
+					selector={(state) => ({
+						brandColorsErrors: state.fieldMeta.brandColors?.errors,
+					})}
 				>
-					{([canSubmit, isSubmitting]) => (
-						<Button
-							type="submit"
-							className="w-full"
-							disabled={!canSubmit || isSubmitting || isPending}
-						>
-							{(isSubmitting || isPending) && (
-								<HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
-							)}
-							Submit
-						</Button>
-					)}
+					{({ brandColorsErrors }) => {
+						const errors = [...(brandColorsErrors ?? [])];
+
+						if (!errors.length) return null;
+
+						return (
+							<FieldError
+								errors={errors.map((v) => v.message)}
+								isInvalid={true}
+							/>
+						);
+					}}
 				</form.Subscribe>
+
+				<form.AppForm>
+					<form.SubmitButton isPending={isPending} className="w-full">
+						Submit
+					</form.SubmitButton>
+				</form.AppForm>
 			</form>
+		</>
+	);
+}
+
+function IconPreview({ icon }: { icon: File | null | undefined }) {
+	return (
+		<div className="size-24 flex items-center justify-center border rounded bg-muted p-2">
+			{icon && icon.size > 0 ? (
+				<FileImagePreview file={icon}>
+					{(url) => (
+						<img
+							src={url}
+							alt="Icon preview"
+							className="w-full h-full object-contain"
+						/>
+					)}
+				</FileImagePreview>
+			) : (
+				<p className="text-muted-foreground text-xs text-center">
+					No icon selected
+				</p>
+			)}
+		</div>
+	);
+}
+
+function IconColorField({
+	onBrandColorsChange,
+	brandColors,
+	isInvalid,
+	name,
+}: {
+	onBrandColorsChange: (colors: string[]) => void;
+	brandColors: string[];
+	isInvalid: boolean;
+	name: string;
+}) {
+	const [manualColor, setManualColor] = useState("");
+
+	const addManualColor = (currentColors: string[]) => {
+		const trimmedColor = manualColor.trim();
+		if (!trimmedColor) return;
+		const newColors = [...currentColors, trimmedColor];
+		onBrandColorsChange(newColors);
+		setManualColor("");
+	};
+
+	return (
+		<div className="flex flex-col flex-wrap gap-2">
+			<Field data-invalid={isInvalid}>
+				<FieldLabel htmlFor={name}>Brand Colors</FieldLabel>
+				<div className="flex items-center gap-2">
+					<Input
+						id={name}
+						value={manualColor}
+						onChange={(e) => setManualColor(e.target.value)}
+						placeholder="#HEX"
+						onKeyDown={(e) => {
+							if (e.key === "Enter") {
+								e.preventDefault();
+								addManualColor(brandColors);
+							}
+						}}
+					/>
+					<button type="button" onClick={() => addManualColor(brandColors)}>
+						<HugeiconsIcon
+							icon={Tick01Icon}
+							className="size-5 cursor-pointer hover:bg-muted rounded-xs"
+						/>
+						<span className="sr-only">Add</span>
+					</button>
+				</div>
+			</Field>
+			<BrandColorsList
+				brandColors={brandColors}
+				onBrandColorsChange={onBrandColorsChange}
+			/>
+		</div>
+	);
+}
+
+function BrandColorsList({
+	brandColors,
+	onBrandColorsChange,
+}: {
+	brandColors: string[];
+	onBrandColorsChange: (colors: string[]) => void;
+}) {
+	return (
+		<>
+			{brandColors.map((color) => (
+				<Badge
+					key={color}
+					style={{
+						backgroundColor: color,
+						color: color === "#ffffff" ? "#000000" : "#ffffff",
+					}}
+					className="text-shadow-2xs"
+				>
+					{color}
+					<button
+						type="button"
+						onClick={() =>
+							onBrandColorsChange(brandColors.filter((c) => c !== color))
+						}
+					>
+						<HugeiconsIcon
+							icon={Close}
+							data-icon="inline-end"
+							className="size-5 cursor-pointer hover:bg-muted rounded-xs"
+						/>
+						<span className="sr-only">Remove</span>
+					</button>
+				</Badge>
+			))}
 		</>
 	);
 }
