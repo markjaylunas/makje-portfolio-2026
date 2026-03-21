@@ -163,7 +163,7 @@ export const tag = sqliteTable("tag", {
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
 	name: text().notNull().unique(),
-	slug: text().unique(),
+	slug: text().notNull().unique(),
 	createdAt,
 });
 

@@ -15,10 +15,10 @@ export const getProjectFnSchema = z.object({
 
 export type GetProjectFnSchema = z.infer<typeof getProjectFnSchema>;
 
-export const adminProjectItemSearchSchema = z.object({
+export const adminProjectIdRouteParamsSchema = z.object({
 	projectId: z.string(),
 });
 
-export type AdminProjectItemSearchSchema = z.infer<
-	typeof adminProjectItemSearchSchema
+export type AdminProjectIdRouteParamsSchema = z.infer<
+	typeof adminProjectIdRouteParamsSchema
 >;

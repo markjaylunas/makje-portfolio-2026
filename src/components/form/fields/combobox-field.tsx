@@ -52,13 +52,15 @@ export default function ComboboxField({
 					<ComboboxValue placeholder={placeholder}>
 						{(values: ComboboxOption[]) => (
 							<>
-								{values.map((value) => (
+								{values.map((value: ComboboxOption) => (
 									<ComboboxChip key={value.value}>
-										<img
-											src={value.icon}
-											alt={value.label}
-											className="size-4"
-										/>
+										{value.icon && (
+											<img
+												src={value.icon}
+												alt={value.label}
+												className="size-4"
+											/>
+										)}
 										{value.label}
 									</ComboboxChip>
 								))}
@@ -72,7 +74,9 @@ export default function ComboboxField({
 					<ComboboxList>
 						{(item: ComboboxOption) => (
 							<ComboboxItem key={item.value} value={item}>
-								<img src={item.icon} alt={item.label} className="size-4" />
+								{item.icon && (
+									<img src={item.icon} alt={item.label} className="size-4" />
+								)}
 								{item.label}
 							</ComboboxItem>
 						)}

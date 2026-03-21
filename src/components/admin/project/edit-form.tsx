@@ -11,17 +11,25 @@ import ProjectCard from "@/components/home/project/item";
 import { uploadProjectCoverImage } from "@/data/client/storage";
 import { getTagListOptions } from "@/data/options/tag";
 import { getTechnologyListOptions } from "@/data/options/technology";
-import { createProjectFn } from "@/data/server/project.server";
-import type { InsertProject, InsertProjectToTechnologies } from "@/db/types";
+import { editProjectFn } from "@/data/server/project.server";
+import type {
+	InsertMedia,
+	InsertProjectToTechnologies,
+	ProjectWithRelations,
+	UpdateProject,
+} from "@/db/types";
+import { PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES } from "@/form-validators/project/create";
 import {
-	defaultValues,
-	PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES,
-	type ProjectCreateFormSchema,
-	projectCreateFormSchema,
-} from "@/form-validators/project/create";
+	type ProjectEditFormSchema,
+	projectEditFormSchema,
+} from "@/form-validators/project/edit";
 import { queryKey } from "@/lib/query-key";
 
-export default function CreateProjectForm() {
+export default function EditProjectForm({
+	defaultProject,
+}: {
+	defaultProject: ProjectWithRelations;
+}) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
 
@@ -31,35 +39,37 @@ export default function CreateProjectForm() {
 
 	const { data: tagList } = useSuspenseQuery(getTagListOptions());
 
-	const { mutate: createProjectMutation, isPending } = useMutation({
-		mutationFn: async (values: ProjectCreateFormSchema) => {
-			const newCoverImageMedia = await uploadProjectCoverImage(
-				values.coverImage,
-			);
+	const { mutate: editProjectMutation, isPending } = useMutation({
+		mutationFn: async (values: ProjectEditFormSchema) => {
+			let newMedia: InsertMedia | undefined;
+			if (values.coverImage) {
+				newMedia = await uploadProjectCoverImage(values.coverImage);
+			}
 
 			const newProjectToTechnologies: InsertProjectToTechnologies[] =
 				values.technologyList.map((v, index) => ({
 					technologyId: v,
-					projectId: "",
+					projectId: defaultProject.id,
 					order: index + 1,
 				}));
 
-			const newProject: InsertProject = {
+			const updatedProject: UpdateProject = {
+				id: defaultProject.id,
 				name: values.name,
 				description: values.description,
 				content: values.content,
 				repositoryUrl: values.repositoryUrl,
 				liveUrl: values.liveUrl,
 				likesCount: values.likesCount,
-				coverImageId: newCoverImageMedia.id,
+				coverImageId: defaultProject.coverImageId,
 			};
 
-			return await createProjectFn({
+			return await editProjectFn({
 				data: {
-					newProject,
+					updatedProject,
 					newProjectToTechnologies,
 					newTags: values.tags,
-					newMedia: newCoverImageMedia,
+					newMedia,
 				},
 			});
 		},
@@ -67,6 +77,9 @@ export default function CreateProjectForm() {
 			await Promise.all([
 				queryClient.invalidateQueries({
 					queryKey: queryKey.project.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.item(defaultProject.id),
 				}),
 				queryClient.invalidateQueries({
 					queryKey: queryKey.tag.list(),
@@ -77,11 +90,28 @@ export default function CreateProjectForm() {
 		},
 	});
 
+	const defaultValues: ProjectEditFormSchema = {
+		id: defaultProject.id,
+		name: defaultProject.name,
+		description: defaultProject.description || "",
+		content: defaultProject.content || "",
+		repositoryUrl: defaultProject.repositoryUrl || "",
+		liveUrl: defaultProject.liveUrl || "",
+		likesCount: defaultProject.likesCount || 0,
+		technologyList: defaultProject.technologies.map((v) => v.technologyId),
+		tags: defaultProject.tags.map((v) => ({
+			label: v.tag.name,
+			value: v.tag.id,
+		})),
+		coverImageUrl: defaultProject.coverImage?.url,
+		coverImage: null,
+	};
+
 	const form = useAppForm({
 		defaultValues,
-		onSubmit: ({ value }) => createProjectMutation(value),
+		onSubmit: ({ value }) => editProjectMutation(value),
 		validators: {
-			onSubmit: projectCreateFormSchema,
+			onSubmit: projectEditFormSchema,
 		},
 	});
 
@@ -93,7 +123,7 @@ export default function CreateProjectForm() {
 						{(coverImageUrl) => (
 							<div className="w-sm mx-auto">
 								<ProjectCard
-									coverImage={coverImageUrl}
+									coverImage={coverImageUrl || project.coverImageUrl}
 									name={project.name}
 									description={project.description || ""}
 									content={project.content || ""}
@@ -176,7 +206,12 @@ export default function CreateProjectForm() {
 				<form.Subscribe selector={(state) => state.values.coverImage}>
 					{(coverImage) => (
 						<FileImagePreview file={coverImage}>
-							{(url) => <ImagePreview url={url} alt="Cover" />}
+							{(url) => (
+								<ImagePreview
+									url={url || defaultValues.coverImageUrl}
+									alt="Cover"
+								/>
+							)}
 						</FileImagePreview>
 					)}
 				</form.Subscribe>

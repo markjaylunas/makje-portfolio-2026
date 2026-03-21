@@ -97,3 +97,35 @@ export type TechnologyWithRelations = BuildQueryResult<
 	TSchema["technology"],
 	TechnologyQueryConfig
 >;
+
+export type ProjectQueryConfig = {
+	with: {
+		coverImage: true;
+		tags: {
+			with: {
+				tag: true;
+			};
+		};
+		featured: true;
+		likes: {
+			with: {
+				user: true;
+			};
+		};
+		technologies: {
+			with: {
+				technology: {
+					with: {
+						icon: true;
+					};
+				};
+			};
+		};
+	};
+};
+
+export type ProjectWithRelations = BuildQueryResult<
+	TSchema,
+	TSchema["project"],
+	ProjectQueryConfig
+>;

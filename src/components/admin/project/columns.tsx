@@ -199,6 +199,16 @@ export const ProjectActions = ({
 						{project.featured ? "Remove from Featured" : "Add to Featured"}
 					</DropdownMenuItem>
 					<DropdownMenuItem
+						render={
+							<Link
+								to="/admin/project/$projectId/edit"
+								params={{ projectId: project.id }}
+							>
+								Edit
+							</Link>
+						}
+					/>
+					<DropdownMenuItem
 						variant="destructive"
 						onClick={() => deleteProject()}
 					>

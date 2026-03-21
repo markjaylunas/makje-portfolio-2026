@@ -5,13 +5,22 @@ import {
 } from "@/form-validators/project";
 import { createProjectFnSchema } from "@/form-validators/project/create";
 import { deleteProjectFnSchema } from "@/form-validators/project/delete";
+import { editProjectFnSchema } from "@/form-validators/project/edit";
 import { ensureAdminFnMiddleware } from "../middleware/auth";
 import {
 	deleteProject,
 	insertProject,
 	selectProject,
 	selectProjectList,
+	updateProject,
 } from "../query/project.server";
+
+export const editProjectFn = createServerFn({ method: "POST" })
+	.middleware([ensureAdminFnMiddleware])
+	.inputValidator(editProjectFnSchema)
+	.handler(async ({ data }) => {
+		return await updateProject(data);
+	});
 
 export const createProjectFn = createServerFn({ method: "POST" })
 	.middleware([ensureAdminFnMiddleware])

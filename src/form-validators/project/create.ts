@@ -14,7 +14,7 @@ export const PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES = [
 	"image/svg+xml",
 ];
 
-export const projectCreateFormSchema = z.object({
+export const projectFormSchema = z.object({
 	name: z.string().trim().min(1, "Name is required"),
 	description: z
 		.string()
@@ -36,8 +36,16 @@ export const projectCreateFormSchema = z.object({
 	liveUrl: z.string().trim().optional(),
 	likesCount: z.number().optional(),
 	technologyList: z.array(z.string()),
-	tags: z.array(z.string()),
+	tags: z.array(
+		z.object({
+			label: z.string(),
+			value: z.string(),
+			isInsert: z.boolean().optional(),
+		}),
+	),
 });
+
+export const projectCreateFormSchema = projectFormSchema;
 
 export type ProjectCreateFormSchema = z.infer<typeof projectCreateFormSchema>;
 
@@ -58,7 +66,13 @@ export const createProjectFnSchema = z.object({
 	newProject: projectInsertSchema,
 	newMedia: mediaInsertSchema,
 	newProjectToTechnologies: projectToTechnologiesInsertSchema.array(),
-	newTags: z.array(z.string()),
+	newTags: z.array(
+		z.object({
+			label: z.string(),
+			value: z.string(),
+			isInsert: z.boolean().optional(),
+		}),
+	),
 });
 
 export type CreateProjectFnSchema = z.infer<typeof createProjectFnSchema>;

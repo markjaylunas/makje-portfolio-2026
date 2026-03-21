@@ -1,9 +1,12 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import ProjectItemSection from "@/components/admin/project/item-section";
+import EditProjectData from "@/components/admin/project/edit-data";
+import EditProjectForm from "@/components/admin/project/edit-form";
 import { getProjectOptions } from "@/data/options/project";
 import { adminProjectIdRouteParamsSchema } from "@/form-validators/project";
 
-export const Route = createFileRoute("/_protected/admin/project/$projectId/")({
+export const Route = createFileRoute(
+	"/_protected/admin/project/$projectId/edit",
+)({
 	component: RouteComponent,
 	params: adminProjectIdRouteParamsSchema,
 	loader: async ({ context, params }) => {
@@ -21,8 +24,10 @@ export const Route = createFileRoute("/_protected/admin/project/$projectId/")({
 
 function RouteComponent() {
 	return (
-		<main className="py-12 px-4 max-w-2xl mx-auto flex flex-col gap-4 items-center justify-center">
-			<ProjectItemSection />
+		<main className="px-4 my-12">
+			<EditProjectData>
+				{(project) => <EditProjectForm defaultProject={project} />}
+			</EditProjectData>
 		</main>
 	);
 }

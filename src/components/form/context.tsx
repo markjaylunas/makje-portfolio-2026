@@ -6,6 +6,9 @@ const TextareaField = lazy(() => import("./fields/textarea-field"));
 const DatePickerField = lazy(() => import("./fields/date-picker-field"));
 const FileField = lazy(() => import("./fields/file-field"));
 const ComboboxField = lazy(() => import("./fields/combobox-field"));
+const ComboboxInsertField = lazy(
+	() => import("./fields/combobox-insert-field"),
+);
 const SubmitButton = lazy(() => import("./subscribe/submit-button"));
 const ResetButton = lazy(() => import("./subscribe/reset-button"));
 
@@ -21,6 +24,7 @@ export const { useAppForm } = createFormHook({
 		DatePickerField,
 		FileField,
 		ComboboxField,
+		ComboboxInsertField,
 	},
 	formComponents: {
 		SubmitButton,
