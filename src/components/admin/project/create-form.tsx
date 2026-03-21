@@ -1,6 +1,5 @@
-import { Loading03Icon } from "@hugeicons/core-free-icons";
+import { PlusSignIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useForm } from "@tanstack/react-form";
 import {
 	useMutation,
 	useQueryClient,
@@ -9,8 +8,9 @@ import {
 import { useNavigate } from "@tanstack/react-router";
 import { Fragment, useState } from "react";
 import FileImagePreview from "@/components/common/file-image-preview";
+import ImagePreview from "@/components/common/image-preview";
+import { useAppForm } from "@/components/form/context";
 import ProjectCard from "@/components/home/project/item";
-import { Button } from "@/components/ui/button";
 import {
 	Combobox,
 	ComboboxChip,
@@ -23,9 +23,7 @@ import {
 	ComboboxValue,
 	useComboboxAnchor,
 } from "@/components/ui/combobox";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { FieldLabel } from "@/components/ui/field";
 import { uploadProjectCoverImage } from "@/data/client/storage";
 import { getTagListOptions } from "@/data/options/tag";
 import { getTechnologyListOptions } from "@/data/options/technology";
@@ -33,11 +31,11 @@ import { createProjectFn } from "@/data/server/project.server";
 import type { InsertProject, InsertProjectToTechnologies } from "@/db/types";
 import {
 	defaultValues,
+	PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES,
 	type ProjectCreateFormSchema,
 	projectCreateFormSchema,
 } from "@/form-validators/project/create";
 import { queryKey } from "@/lib/query-key";
-import type { TechnologyWithRelations } from "@/lib/types";
 import { slugify } from "@/lib/utils";
 
 export default function CreateProjectForm() {
@@ -45,7 +43,7 @@ export default function CreateProjectForm() {
 	const navigate = useNavigate();
 
 	const { data: technologyList } = useSuspenseQuery(
-		getTechnologyListOptions({}),
+		getTechnologyListOptions({ query: "" }),
 	);
 
 	const { data: tagList } = useSuspenseQuery(getTagListOptions());
@@ -91,7 +89,7 @@ export default function CreateProjectForm() {
 		},
 	});
 
-	const form = useForm({
+	const form = useAppForm({
 		defaultValues,
 		onSubmit: ({ value }) => createProjectMutation(value),
 		validators: {
@@ -99,23 +97,11 @@ export default function CreateProjectForm() {
 		},
 	});
 
-	const anchor = useComboboxAnchor();
-	const tagsAnchor = useComboboxAnchor();
-	const [tagInput, setTagInput] = useState("");
-	const [existingTags, setExistingTags] = useState(tagList.map((t) => t.name));
-
-	const exactTagMatch = existingTags.some(
-		(tag) => tag.toLowerCase() === tagInput.toLowerCase(),
-	);
-	const filteredTags = existingTags.filter((tag) =>
-		tag.toLowerCase().includes(tagInput.toLowerCase()),
-	);
-
 	return (
 		<div className="flex flex-col md:flex-row-reverse gap-4 md:gap-16 justify-between relative">
 			<form.Subscribe selector={(state) => state.values}>
 				{(project) => (
-					<FileImagePreview file={project.coverImage as File | string | null}>
+					<FileImagePreview file={project.coverImage}>
 						{(coverImageUrl) => (
 							<ProjectCard
 								coverImage={coverImageUrl}
@@ -147,280 +133,157 @@ export default function CreateProjectForm() {
 					e.stopPropagation();
 					void form.handleSubmit();
 				}}
-				className="space-y-6 overflow-x-hidden"
+				className="space-y-6 overflow-x-hidden flex-1"
 			>
-				<form.Field name="name">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Name</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="name">
+					{(field) => (
+						<field.TextField label="Name" placeholder="e.g. My Project" />
+					)}
+				</form.AppField>
 
-				<form.Field name="description">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Description</FieldLabel>
-								<Textarea
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="description">
+					{(field) => (
+						<field.TextareaField
+							label="Description"
+							placeholder="A short summary..."
+						/>
+					)}
+				</form.AppField>
 
-				<form.Field name="content">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Content</FieldLabel>
-								<Textarea
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="content">
+					{(field) => (
+						<field.TextareaField
+							label="Content"
+							placeholder="Detailed information..."
+						/>
+					)}
+				</form.AppField>
 
-				<form.Field name="repositoryUrl">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Repository URL</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="repositoryUrl">
+					{(field) => (
+						<field.TextField
+							label="Repository URL"
+							placeholder="https://github.com/..."
+						/>
+					)}
+				</form.AppField>
 
-				<form.Field name="liveUrl">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Live URL</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									value={field.state.value}
-									onBlur={field.handleBlur}
-									onChange={(e) => field.handleChange(e.target.value)}
-									aria-invalid={isInvalid}
-								/>
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
+				<form.AppField name="liveUrl">
+					{(field) => (
+						<field.TextField label="Live URL" placeholder="https://..." />
+					)}
+				</form.AppField>
 
-				<form.Field name="coverImage">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-							const file = e.target.files?.[0];
-							if (!file) {
-								field.form.resetField("coverImage");
-								return;
-							}
-							field.handleChange(file);
-							field.handleBlur();
-						};
+				<form.AppField name="coverImage">
+					{(field) => (
+						<field.FileField
+							label="Cover Image"
+							accept={PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.join(",")}
+						/>
+					)}
+				</form.AppField>
 
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Cover Image</FieldLabel>
-								<Input
-									id={field.name}
-									name={field.name}
-									type="file"
-									accept=".png,.jpg,.jpeg,.webp,.svg"
-									onChange={fileHandler}
-									onBlur={field.handleBlur}
-									className="cursor-pointer"
-									aria-invalid={isInvalid}
-								/>
-
-								{isInvalid && (
-									<FieldError>{field.state.meta.errors[0]?.message}</FieldError>
-								)}
-							</Field>
-						);
-					}}
-				</form.Field>
-
-				<form.Field name="technologyList">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Technologies</FieldLabel>
-								<Combobox
-									multiple
-									autoHighlight
-									items={technologyList}
-									onValueChange={(v: TechnologyWithRelations[]) => {
-										const ids = v.map((v) => v.id);
-										field.handleChange(ids);
-									}}
-								>
-									<ComboboxChips ref={anchor}>
-										<ComboboxValue>
-											{(values) => (
-												<Fragment>
-													{values.map((value: TechnologyWithRelations) => (
-														<ComboboxChip key={value.id}>
-															<img
-																src={value.icon.url}
-																alt={value.icon.altText || value.name}
-																className="size-4"
-															/>
-															{value.name}
-														</ComboboxChip>
-													))}
-													<ComboboxChipsInput />
-												</Fragment>
-											)}
-										</ComboboxValue>
-									</ComboboxChips>
-									<ComboboxContent anchor={anchor}>
-										<ComboboxEmpty>No items found.</ComboboxEmpty>
-										<ComboboxList>
-											{(item: TechnologyWithRelations) => (
-												<ComboboxItem key={item.id} value={item}>
-													<img
-														src={item.icon.url}
-														alt={item.icon.altText || item.name}
-														className="size-4"
-													/>
-													{item.name}
-												</ComboboxItem>
-											)}
-										</ComboboxList>
-									</ComboboxContent>
-								</Combobox>
-							</Field>
-						);
-					}}
-				</form.Field>
-
-				<form.Field name="tags">
-					{(field) => {
-						const isInvalid = !field.state.meta.isValid;
-						return (
-							<Field data-invalid={isInvalid}>
-								<FieldLabel htmlFor={field.name}>Tags</FieldLabel>
-								<Combobox
-									multiple
-									autoHighlight
-									onInputValueChange={(val) => setTagInput(val)}
-									onValueChange={(val: string[]) => {
-										const newTags = val.filter(
-											(v) => !existingTags.includes(v),
-										);
-										if (newTags.length > 0) {
-											setExistingTags((prev) => [...prev, ...newTags]);
-										}
-										field.handleChange(val);
-										setTagInput("");
-									}}
-								>
-									<ComboboxChips ref={tagsAnchor}>
-										<ComboboxValue>
-											{(values) => (
-												<Fragment>
-													{values.map((value: string) => (
-														<ComboboxChip key={value}>{value}</ComboboxChip>
-													))}
-													<ComboboxChipsInput />
-												</Fragment>
-											)}
-										</ComboboxValue>
-									</ComboboxChips>
-									<ComboboxContent anchor={tagsAnchor}>
-										<ComboboxEmpty>No items found.</ComboboxEmpty>
-										<ComboboxList>
-											{tagInput && !exactTagMatch && (
-												<ComboboxItem
-													value={tagInput}
-													className="italic text-primary"
-												>
-													+ Add "{tagInput}"
-												</ComboboxItem>
-											)}
-											{filteredTags.map((tag) => (
-												<ComboboxItem key={tag} value={tag}>
-													{tag}
-												</ComboboxItem>
-											))}
-										</ComboboxList>
-									</ComboboxContent>
-								</Combobox>
-							</Field>
-						);
-					}}
-				</form.Field>
-
-				<form.Subscribe selector={(state) => [state.canSubmit]}>
-					{([canSubmit]) => (
-						<Button
-							type="submit"
-							className="w-full"
-							disabled={!canSubmit || isPending}
-						>
-							{isPending && (
-								<HugeiconsIcon icon={Loading03Icon} className="animate-spin" />
-							)}
-							Submit
-						</Button>
+				<form.Subscribe selector={(state) => state.values.coverImage}>
+					{(coverImage) => (
+						<FileImagePreview file={coverImage}>
+							{(url) => <ImagePreview url={url} alt="Cover" />}
+						</FileImagePreview>
 					)}
 				</form.Subscribe>
+
+				<form.AppField name="technologyList">
+					{(field) => (
+						<field.ComboboxField
+							label="Technologies"
+							optionList={technologyList.map((v) => ({
+								icon: v.icon.url,
+								label: v.name,
+								value: v.id,
+							}))}
+						/>
+					)}
+				</form.AppField>
+
+				<form.AppField name="tags">
+					{(field) => (
+						<TagField field={field} initialTags={tagList.map((t) => t.name)} />
+					)}
+				</form.AppField>
+
+				<form.AppForm>
+					<form.SubmitButton isPending={isPending} className="w-full">
+						Submit
+					</form.SubmitButton>
+				</form.AppForm>
 			</form>
+		</div>
+	);
+}
+
+function TagField({
+	field,
+	initialTags,
+}: {
+	// biome-ignore lint/suspicious/noExplicitAny: React form field types are too deep
+	field: any;
+	initialTags: string[];
+}) {
+	const tagsAnchor = useComboboxAnchor();
+	const [tagInput, setTagInput] = useState("");
+	const [existingTags, setExistingTags] = useState(initialTags);
+
+	const exactTagMatch = existingTags.some(
+		(tag) => tag.toLowerCase() === tagInput.toLowerCase(),
+	);
+	const filteredTags = existingTags.filter((tag) =>
+		tag.toLowerCase().includes(tagInput.toLowerCase()),
+	);
+
+	return (
+		<div className="space-y-2">
+			<FieldLabel htmlFor={field.name}>Tags</FieldLabel>
+			<Combobox
+				multiple
+				autoHighlight
+				onInputValueChange={(val) => setTagInput(val)}
+				onValueChange={(val: string[]) => {
+					const newTags = val.filter((v) => !existingTags.includes(v));
+					if (newTags.length > 0) {
+						setExistingTags((prev) => [...prev, ...newTags]);
+					}
+					field.handleChange(val);
+					setTagInput("");
+				}}
+			>
+				<ComboboxChips ref={tagsAnchor}>
+					<ComboboxValue>
+						{(values) => (
+							<Fragment>
+								{values.map((value: string) => (
+									<ComboboxChip key={value}>{value}</ComboboxChip>
+								))}
+								<ComboboxChipsInput />
+							</Fragment>
+						)}
+					</ComboboxValue>
+				</ComboboxChips>
+				<ComboboxContent anchor={tagsAnchor}>
+					<ComboboxEmpty>No items found.</ComboboxEmpty>
+					<ComboboxList>
+						{tagInput && !exactTagMatch && (
+							<ComboboxItem value={tagInput} className="italic text-primary">
+								<HugeiconsIcon icon={PlusSignIcon} className="size-4 mr-2" />
+								Add "{tagInput}"
+							</ComboboxItem>
+						)}
+						{filteredTags.map((tag) => (
+							<ComboboxItem key={tag} value={tag}>
+								{tag}
+							</ComboboxItem>
+						))}
+					</ComboboxList>
+				</ComboboxContent>
+			</Combobox>
 		</div>
 	);
 }
