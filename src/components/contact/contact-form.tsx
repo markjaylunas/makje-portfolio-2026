@@ -1,7 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAppForm } from "@/components/form/context";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import {
 	type ContactCreateFormSchema,
 	contactCreateFormSchema,
@@ -32,6 +38,12 @@ export default function ContactForm() {
 
 	return (
 		<Card className="flex-1 mx-auto w-full">
+			<CardHeader>
+				<CardTitle>Send me a message</CardTitle>
+				<CardDescription>
+					Send me a message and I'll get back to you as soon as possible.
+				</CardDescription>
+			</CardHeader>
 			<CardContent>
 				<form
 					onSubmit={(e) => {
