@@ -31,7 +31,7 @@ export default function ContactForm() {
 	});
 
 	return (
-		<Card className="mx-auto max-w-md w-full">
+		<Card className="flex-1 mx-auto max-w-md w-full">
 			<CardContent>
 				<form
 					onSubmit={(e) => {

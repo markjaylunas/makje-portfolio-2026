@@ -1,6 +1,6 @@
 export default function ContactDetails() {
 	return (
-		<section className="flex flex-col gap-2">
+		<section className="flex-1 flex flex-col gap-2">
 			<p className="leading-relaxed text-muted-foreground">
 				I&apos;m always open to new opportunities and collaborations. If you
 				have a project in mind or would like to discuss a potential
