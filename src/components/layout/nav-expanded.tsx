@@ -1,7 +1,6 @@
 import {
 	ArrowRight02Icon,
 	ArrowUpRight01Icon,
-	Message02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
@@ -10,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { socialLinks } from "@/lib/constants";
 import {
 	aboutLinks,
+	contactLinks,
 	type NavigationLink,
 	projectLinks,
 } from "@/lib/link-options";
@@ -46,14 +46,11 @@ export default function NavExpanded() {
 			</NavLinkGroupCard>
 			<NavLinkGroupCard title="Socials">
 				<ul className="flex flex-col">
-					<InternalLink
-						name="Contact"
-						to="/contact"
-						icon={Message02Icon}
-						description=""
-						hash=""
-						onClick={toggleMenu}
-					/>
+					{contactLinks.map((link) => (
+						<li key={link.to}>
+							<InternalLink {...link} onClick={toggleMenu} />
+						</li>
+					))}
 					{socialLinks.map((social) => (
 						<li key={social.name}>
 							<ExternalLink
@@ -101,7 +98,7 @@ export function InternalLink(
 	return (
 		<Link
 			className={cn(
-				"flex items-center px-2 sm:px-4 py-2 sm:py-3 text-xs transition-colors hover:text-white hover:bg-accent rounded-lg gap-1 ease-in-out duration-300",
+				"flex items-center px-2 sm:px-4 py-2 sm:py-3 text-xs transition-colors text-muted-foreground data-active:text-primary hover:text-foreground hover:bg-accent rounded-lg gap-1 ease-in-out duration-300",
 			)}
 			to={props.to}
 			hash={props.hash}
@@ -110,6 +107,8 @@ export function InternalLink(
 			}}
 			hashScrollIntoView={true}
 			onClick={props.onClick}
+			activeProps={{ "data-active": true }}
+			activeOptions={props.activeOptions}
 		>
 			<HugeiconsIcon icon={props.icon} className="size-4 sm:size-5" />
 			<span className="truncate">{props.name}</span>
@@ -137,7 +136,7 @@ function ExternalLink({
 			target="_blank"
 			rel="noopener noreferrer"
 			onClick={onClick}
-			className="flex items-center px-2 sm:px-4 py-2 sm:py-3 text-xs  transition-colors hover:bg-accent rounded-lg gap-1 ease-in-out duration-300"
+			className="flex items-center px-2 sm:px-4 py-2 sm:py-3 text-xs  transition-colors hover:bg-accent rounded-lg gap-1 ease-in-out duration-300 text-muted-foreground data-active:text-primary hover:text-foreground"
 			href={href}
 		>
 			<HugeiconsIcon icon={icon} className="size-4 sm:size-5" />

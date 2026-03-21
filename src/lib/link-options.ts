@@ -4,7 +4,7 @@ import {
 	Folder,
 	Home,
 	Layers,
-	Mail01Icon,
+	Message02Icon,
 	Tag,
 } from "@hugeicons/core-free-icons";
 import { linkOptions } from "@tanstack/react-router";
@@ -15,6 +15,7 @@ const homeLink = {
 	hash: "",
 	description: "Return to the landing page and overview of my creative work.",
 	icon: Home,
+	activeOptions: {},
 };
 
 const experienceLink = {
@@ -23,6 +24,7 @@ const experienceLink = {
 	hash: "experience",
 	description: "A timeline of my professional journey and key contributions.",
 	icon: Briefcase,
+	activeOptions: {},
 };
 
 const featuredProjectsLink = {
@@ -32,6 +34,9 @@ const featuredProjectsLink = {
 	description:
 		"Showcasing featured work, open-source tools, and side experiments.",
 	icon: Folder,
+	activeOptions: {
+		exact: true,
+	},
 };
 
 const projectsLink = {
@@ -41,6 +46,9 @@ const projectsLink = {
 	description:
 		"Showcasing featured work, open-source tools, and side experiments.",
 	icon: Folder,
+	activeOptions: {
+		exact: true,
+	},
 };
 const techStackLink = {
 	name: "Tech Stack",
@@ -48,6 +56,9 @@ const techStackLink = {
 	hash: "tech-stack",
 	description: "The modern tools and languages I use to bring ideas to life.",
 	icon: Layers,
+	activeOptions: {
+		exact: true,
+	},
 };
 
 const contactLink = {
@@ -56,11 +67,14 @@ const contactLink = {
 	hash: "",
 	description:
 		"Get in touch for collaborations, inquiries, or just to say hello.",
-	icon: Mail01Icon,
+	icon: Message02Icon,
+	activeOptions: {
+		exact: true,
+	},
 };
 
 export const aboutLinks = linkOptions([experienceLink, techStackLink]);
-export const projectLinks = linkOptions([featuredProjectsLink, projectsLink]); //TODO: add featured and more
+export const projectLinks = linkOptions([featuredProjectsLink, projectsLink]);
 export const contactLinks = linkOptions([contactLink]);
 
 export const navigationLinks = linkOptions([
