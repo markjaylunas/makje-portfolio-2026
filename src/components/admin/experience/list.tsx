@@ -48,7 +48,7 @@ export default function ExperienceList() {
 	return (
 		<ol className="relative ml-3 border-l-2 border-muted mt-16 space-y-16">
 			{data.map((exp) => (
-				<li key={exp.id} className="relative">
+				<div key={exp.id} className="relative">
 					<div className="absolute z-10 top-0 right-0 flex flex-col justify-end items-end gap-2">
 						<Link
 							to={`/admin/experience/$experienceId/edit`}
@@ -84,7 +84,7 @@ export default function ExperienceList() {
 						technologies={exp.technologies.flatMap((v) => v.technology)}
 						logo={exp.logo?.url || undefined}
 					/>
-				</li>
+				</div>
 			))}
 		</ol>
 	);
