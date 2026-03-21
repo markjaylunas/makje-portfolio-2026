@@ -56,7 +56,7 @@ export default function ContactForm() {
 					{/* Name Field */}
 					<form.AppField name="name">
 						{(field) => (
-							<field.TextField label="Name" placeholder="Juan Dela Cruz" />
+							<field.TextField label="Name" placeholder="Your Name" />
 						)}
 					</form.AppField>
 
@@ -65,7 +65,7 @@ export default function ContactForm() {
 						{(field) => (
 							<field.TextField
 								label="Email"
-								placeholder="juandelacruz@makje.com"
+								placeholder="yourmailaddress@email.com"
 							/>
 						)}
 					</form.AppField>
