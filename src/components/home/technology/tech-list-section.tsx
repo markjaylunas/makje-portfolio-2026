@@ -49,14 +49,14 @@ export default function TechListSection() {
 
 	return (
 		<section
-			className="mx-auto max-w-(--breakpoint-sm) px-6"
+			className="mx-auto max-w-(--breakpoint-lg) px-6"
 			aria-labelledby={sectionHeadingId}
 		>
 			<H2 id={sectionHeadingId}>
 				<GradientText>Tech Stack</GradientText>
 			</H2>
 
-			<ul className="mx-auto max-w-(--breakpoint-sm) grid grid-cols-2 md:grid-cols-4 mt-12 gap-px bg-muted border border-muted">
+			<ul className="grid grid-cols-2 md:grid-cols-4 mt-12 gap-px bg-muted border border-muted">
 				{visibleTech.map(({ id, technology }) => (
 					<li key={id}>
 						<PopOutMotion>
