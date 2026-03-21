@@ -8,14 +8,14 @@ export const Route = createFileRoute("/_main/contact")({
 
 function RouteComponent() {
 	return (
-		<main className="max-w-(--breakpoint-lg) mx-auto px-4 sm:px-6 pt-32 min-h-dvh">
-			<div className="aurora-midnight-background absolute inset-0 z-0 h-[90dvh]">
-				<h1 className="text-7xl md:text-[8rem] lg:text-[10rem] font-bold text-center bg-clip-text text-transparent bg-linear-to-b from-white/10 via-white/5 via-30% to-90% to-transparent uppercase tracking-tight mt-32">
+		<main className="relative mx-auto max-w-(--breakpoint-lg) px-4 pt-32 sm:px-6">
+			<div className="aurora-midnight-background pointer-events-none absolute inset-0 z-0 h-[90dvh] select-none">
+				<h1 className="mt-32 select-none bg-linear-to-b from-white/10 via-white/5 via-30% to-transparent to-90% bg-clip-text text-center text-7xl font-bold uppercase tracking-tight text-transparent md:text-[8rem] lg:text-[10rem]">
 					Contact
 				</h1>
 			</div>
 
-			<div className="flex flex-col sm:flex-row gap-6 justify-around items-center">
+			<div className="relative z-10 mt-32 sm:mt-42 flex flex-col items-center sm:items-start justify-around gap-6 sm:flex-row">
 				<ContactDetails />
 				<ContactForm />
 			</div>
