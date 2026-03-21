@@ -4,13 +4,12 @@ import footerBackground from "@/assets/png/makje-textured.png";
 import makjeLogoDark from "@/assets/svg/makje-dark.svg";
 import { socialLinks } from "@/lib/constants";
 import { navigationLinks } from "@/lib/link-options";
-import { Separator } from "../ui/separator";
 
 export default function Footer() {
 	const currentYear = new Date().getFullYear();
 
 	return (
-		<footer className="relative w-full py-12 mt-12 max-w-(--breakpoint-lg) mx-auto px-6">
+		<footer className="relative w-full py-12 max-w-(--breakpoint-lg) mx-auto px-6">
 			<div className="absolute inset-0 -z-10 top-16 left-2 overflow-hidden">
 				<div className="absolute inset-0 bg-linear-to-b from-background/80 via-background/90 to-background" />
 
@@ -20,8 +19,6 @@ export default function Footer() {
 					className="min-w-lg sm:w-3/4 h-full object-contain z-0"
 				/>
 			</div>
-
-			<Separator className="border border-muted mb-12" />
 
 			<div className="grid grid-cols-2 md:grid-cols-3 gap-12 items-start mx-auto">
 				{/* Brand Section */}
@@ -45,7 +42,7 @@ export default function Footer() {
 				{/* Navigation Section */}
 				<nav
 					aria-label="Footer Navigation"
-					className="justify-self-start sm:justify-self-center"
+					className="justify-self-start sm:justify-self-end"
 				>
 					<h3 className="text-sm text-accent-foreground uppercase tracking-wider mb-4">
 						Explore
@@ -67,7 +64,7 @@ export default function Footer() {
 				</nav>
 
 				{/* Social Section */}
-				<div>
+				<div className="justify-self-start sm:justify-self-center">
 					<h3 className="text-sm text-accent-foreground uppercase tracking-wider mb-4">
 						Connect
 					</h3>
