@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
+import ContentMotion from "@/components/motion/content-motion";
 
 export const Route = createFileRoute("/_main/contact")({
 	component: RouteComponent,
@@ -13,7 +14,9 @@ function RouteComponent() {
 				</h1>
 			</div>
 
-			<Outlet />
+			<ContentMotion>
+				<Outlet />
+			</ContentMotion>
 		</div>
 	);
 }
