@@ -183,5 +183,9 @@
   -webkit-mask-image: linear-gradient(to bottom, white 50%, transparent 100%);
 }
 
+.aurora-midnight-background {
+  background: radial-gradient(ellipse 80% 70% at 50% 0%, rgba(120, 180, 255, 0.25), transparent 70%), #00000000;
+}
+
 
    
