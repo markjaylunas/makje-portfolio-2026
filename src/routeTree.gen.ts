@@ -13,12 +13,13 @@ import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as MainRouteRouteImport } from './routes/_main/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as MainIndexRouteImport } from './routes/_main/index'
-import { Route as MainContactRouteImport } from './routes/_main/contact'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as ApiHealthRouteRouteImport } from './routes/api/health/route'
 import { Route as ProtectedAdminRouteRouteImport } from './routes/_protected/admin/route'
+import { Route as MainContactRouteRouteImport } from './routes/_main/contact/route'
 import { Route as ProtectedAdminIndexRouteImport } from './routes/_protected/admin/index'
 import { Route as MainProjectsIndexRouteImport } from './routes/_main/projects/index'
+import { Route as MainContactIndexRouteImport } from './routes/_main/contact/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ProtectedAdminDashboardRouteImport } from './routes/_protected/admin/dashboard'
 import { Route as ApiStorageUploadRouteRouteImport } from './routes/api/storage/upload/route'
@@ -53,11 +54,6 @@ const MainIndexRoute = MainIndexRouteImport.update({
   path: '/',
   getParentRoute: () => MainRouteRoute,
 } as any)
-const MainContactRoute = MainContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => MainRouteRoute,
-} as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -73,6 +69,11 @@ const ProtectedAdminRouteRoute = ProtectedAdminRouteRouteImport.update({
   path: '/admin',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const MainContactRouteRoute = MainContactRouteRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => MainRouteRoute,
+} as any)
 const ProtectedAdminIndexRoute = ProtectedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -82,6 +83,11 @@ const MainProjectsIndexRoute = MainProjectsIndexRouteImport.update({
   id: '/projects/',
   path: '/projects/',
   getParentRoute: () => MainRouteRoute,
+} as any)
+const MainContactIndexRoute = MainContactIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainContactRouteRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
@@ -177,14 +183,15 @@ const ProtectedAdminExperienceExperienceIdEditRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
+  '/contact': typeof MainContactRouteRouteWithChildren
   '/admin': typeof ProtectedAdminRouteRouteWithChildren
   '/api/health': typeof ApiHealthRouteRoute
   '/login': typeof AuthLoginRoute
-  '/contact': typeof MainContactRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/contact/': typeof MainContactIndexRoute
   '/projects/': typeof MainProjectsIndexRoute
   '/admin/': typeof ProtectedAdminIndexRoute
   '/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
@@ -204,11 +211,11 @@ export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
   '/api/health': typeof ApiHealthRouteRoute
   '/login': typeof AuthLoginRoute
-  '/contact': typeof MainContactRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/contact': typeof MainContactIndexRoute
   '/projects': typeof MainProjectsIndexRoute
   '/admin': typeof ProtectedAdminIndexRoute
   '/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
@@ -229,15 +236,16 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_main': typeof MainRouteRouteWithChildren
   '/_protected': typeof ProtectedRouteWithChildren
+  '/_main/contact': typeof MainContactRouteRouteWithChildren
   '/_protected/admin': typeof ProtectedAdminRouteRouteWithChildren
   '/api/health': typeof ApiHealthRouteRoute
   '/_auth/login': typeof AuthLoginRoute
-  '/_main/contact': typeof MainContactRoute
   '/_main/': typeof MainIndexRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
   '/_protected/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_main/contact/': typeof MainContactIndexRoute
   '/_main/projects/': typeof MainProjectsIndexRoute
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
   '/_protected/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
@@ -257,14 +265,15 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/contact'
     | '/admin'
     | '/api/health'
     | '/login'
-    | '/contact'
     | '/api/storage/cleanup'
     | '/api/storage/upload'
     | '/admin/dashboard'
     | '/api/auth/$'
+    | '/contact/'
     | '/projects/'
     | '/admin/'
     | '/admin/experience/create'
@@ -284,11 +293,11 @@ export interface FileRouteTypes {
     | '/'
     | '/api/health'
     | '/login'
-    | '/contact'
     | '/api/storage/cleanup'
     | '/api/storage/upload'
     | '/admin/dashboard'
     | '/api/auth/$'
+    | '/contact'
     | '/projects'
     | '/admin'
     | '/admin/experience/create'
@@ -308,15 +317,16 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_main'
     | '/_protected'
+    | '/_main/contact'
     | '/_protected/admin'
     | '/api/health'
     | '/_auth/login'
-    | '/_main/contact'
     | '/_main/'
     | '/api/storage/cleanup'
     | '/api/storage/upload'
     | '/_protected/admin/dashboard'
     | '/api/auth/$'
+    | '/_main/contact/'
     | '/_main/projects/'
     | '/_protected/admin/'
     | '/_protected/admin/experience/create'
@@ -373,13 +383,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIndexRouteImport
       parentRoute: typeof MainRouteRoute
     }
-    '/_main/contact': {
-      id: '/_main/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof MainContactRouteImport
-      parentRoute: typeof MainRouteRoute
-    }
     '/_auth/login': {
       id: '/_auth/login'
       path: '/login'
@@ -401,6 +404,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminRouteRouteImport
       parentRoute: typeof ProtectedRoute
     }
+    '/_main/contact': {
+      id: '/_main/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof MainContactRouteRouteImport
+      parentRoute: typeof MainRouteRoute
+    }
     '/_protected/admin/': {
       id: '/_protected/admin/'
       path: '/'
@@ -414,6 +424,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/projects/'
       preLoaderRoute: typeof MainProjectsIndexRouteImport
       parentRoute: typeof MainRouteRoute
+    }
+    '/_main/contact/': {
+      id: '/_main/contact/'
+      path: '/'
+      fullPath: '/contact/'
+      preLoaderRoute: typeof MainContactIndexRouteImport
+      parentRoute: typeof MainContactRouteRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -542,14 +559,25 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface MainContactRouteRouteChildren {
+  MainContactIndexRoute: typeof MainContactIndexRoute
+}
+
+const MainContactRouteRouteChildren: MainContactRouteRouteChildren = {
+  MainContactIndexRoute: MainContactIndexRoute,
+}
+
+const MainContactRouteRouteWithChildren =
+  MainContactRouteRoute._addFileChildren(MainContactRouteRouteChildren)
+
 interface MainRouteRouteChildren {
-  MainContactRoute: typeof MainContactRoute
+  MainContactRouteRoute: typeof MainContactRouteRouteWithChildren
   MainIndexRoute: typeof MainIndexRoute
   MainProjectsIndexRoute: typeof MainProjectsIndexRoute
 }
 
 const MainRouteRouteChildren: MainRouteRouteChildren = {
-  MainContactRoute: MainContactRoute,
+  MainContactRouteRoute: MainContactRouteRouteWithChildren,
   MainIndexRoute: MainIndexRoute,
   MainProjectsIndexRoute: MainProjectsIndexRoute,
 }
