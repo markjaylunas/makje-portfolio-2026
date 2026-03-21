@@ -161,12 +161,14 @@ export const ProjectActions = ({
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger>
-				<Button variant="ghost" className="h-8 w-8 p-0">
-					<span className="sr-only">Open menu</span>
-					<HugeiconsIcon icon={MoreHorizontal} className="h-4 w-4" />
-				</Button>
-			</DropdownMenuTrigger>
+			<DropdownMenuTrigger
+				render={
+					<Button variant="ghost" className="h-8 w-8 p-0">
+						<span className="sr-only">Open menu</span>
+						<HugeiconsIcon icon={MoreHorizontal} className="h-4 w-4" />
+					</Button>
+				}
+			/>
 			<DropdownMenuContent align="end">
 				<DropdownMenuGroup>
 					<DropdownMenuLabel>Actions</DropdownMenuLabel>
