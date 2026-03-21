@@ -14,7 +14,7 @@ export default function FeaturedProjectSection() {
 			className="mx-auto max-w-(--breakpoint-lg) px-6"
 			aria-labelledby={sectionHeadingId}
 		>
-			<H2 id={sectionHeadingId} className="flex justify-start">
+			<H2 id={sectionHeadingId} className="flex justify-start mb-12">
 				<GradientText>Projects</GradientText>
 			</H2>
 			<ul className="flex flex-col gap-12">
