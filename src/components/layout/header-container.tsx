@@ -25,6 +25,7 @@ export default function HeaderContainer({
 			ref={headerRef}
 			className={cn(
 				isVisible ? "translate-y-4" : "-translate-y-full",
+				"max-w-(--breakpoint-lg) mx-auto px-6",
 				className,
 			)}
 			{...props}

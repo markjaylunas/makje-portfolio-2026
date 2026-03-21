@@ -11,7 +11,7 @@ export default function FeaturedProjectSection() {
 
 	return (
 		<section
-			className="mx-auto max-w-(--breakpoint-sm) px-6"
+			className="mx-auto max-w-(--breakpoint-lg) px-6"
 			aria-labelledby={sectionHeadingId}
 		>
 			<H2 id={sectionHeadingId} className="flex justify-start">

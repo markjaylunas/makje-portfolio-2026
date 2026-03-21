@@ -32,13 +32,13 @@ export function TechCardPixel({ colors, name, alt, icon }: TechCardProps) {
 	return (
 		<div className="group bg-background hover:cursor-pointer">
 			<PixelCard colors={colors} noFocus={true}>
-				<div className="absolute flex flex-col items-center justify-center ">
+				<div className="absolute flex flex-col items-center justify-center">
 					<img
 						src={icon}
 						alt={alt}
-						className="size-10 transition-all duration-500 grayscale-0 sm:grayscale-100 group-hover:grayscale-0 mt-0 sm:mt-4 group-hover:mt-0"
+						className="size-16 transition-all duration-500 grayscale-0 sm:grayscale-100 group-hover:grayscale-0 -mt-2 sm:mt-6 group-hover:mt-0"
 					/>
-					<p className="transition-opacity duration-400 opacity-100 sm:opacity-0 group-hover:opacity-100">
+					<p className="transition-opacity duration-400 opacity-100 sm:opacity-0 group-hover:opacity-100 font-semibold mt-2">
 						{name}
 					</p>
 				</div>

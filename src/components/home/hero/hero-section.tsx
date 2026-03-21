@@ -6,7 +6,7 @@ import HeroLogo from "./logo";
 
 export default function HeroSection() {
 	return (
-		<section className="relative flex min-h-dvh flex-col items-center justify-center gap-2 px-4 sm:px-6">
+		<section className="relative flex min-h-dvh flex-col items-center justify-center gap-2 px-4 sm:px-6 max-w-(--breakpoint-lg) mx-auto">
 			<div
 				className="absolute inset-0 opacity-30"
 				style={{
