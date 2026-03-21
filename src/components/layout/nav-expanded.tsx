@@ -1,6 +1,7 @@
 import {
 	ArrowRight02Icon,
 	ArrowUpRight01Icon,
+	Message02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
@@ -45,6 +46,14 @@ export default function NavExpanded() {
 			</NavLinkGroupCard>
 			<NavLinkGroupCard title="Socials">
 				<ul className="flex flex-col">
+					<InternalLink
+						name="Contact"
+						to="/contact"
+						icon={Message02Icon}
+						description=""
+						hash=""
+						onClick={toggleMenu}
+					/>
 					{socialLinks.map((social) => (
 						<li key={social.name}>
 							<ExternalLink
