@@ -168,8 +168,19 @@
 }
 
 .text-content {
-  @apply inline-block relative z-[2] bg-clip-text text-transparent;
+  @apply inline-block relative z-2 bg-clip-text text-transparent;
+	}
 }
+
+.grid-subtle-background {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: linear-gradient(to bottom, white 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, white 50%, transparent 100%);
 }
 
 

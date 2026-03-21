@@ -24,6 +24,8 @@ export const Route = createFileRoute("/_main/")({
 function App() {
 	return (
 		<main>
+			<div className="grid-subtle-background absolute inset-0 opacity-30 h-dvh" />
+
 			<HeroSection />
 
 			<div id="experience" className="h-12 md:h-24" />
