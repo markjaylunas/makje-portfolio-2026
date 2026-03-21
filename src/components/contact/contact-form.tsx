@@ -41,7 +41,7 @@ export default function ContactForm() {
 			<CardHeader>
 				<CardTitle>Send me a message</CardTitle>
 				<CardDescription>
-					Send me a message and I'll get back to you as soon as possible.
+					I typically respond within 24-48 hours.
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
