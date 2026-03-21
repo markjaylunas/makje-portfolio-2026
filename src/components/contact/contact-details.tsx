@@ -5,6 +5,7 @@ import {
 	Item,
 	ItemActions,
 	ItemContent,
+	ItemDescription,
 	ItemMedia,
 	ItemTitle,
 } from "../ui/item";
@@ -46,6 +47,7 @@ export default function ContactDetails() {
 								<ItemTitle className="group-hover:text-primary transition-all duration-300 ease-in-out">
 									{social.name}
 								</ItemTitle>
+								<ItemDescription>{social.description}</ItemDescription>
 							</ItemContent>
 
 							<ItemActions>
