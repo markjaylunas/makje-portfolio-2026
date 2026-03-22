@@ -35,7 +35,11 @@ export function ExperienceItem({
 							className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent"
 							aria-hidden="true"
 						>
-							<img src={logo} alt={company} className="text-muted-foreground" />
+							<img
+								src={logo}
+								alt={company}
+								className="text-muted-foreground rounded-full overflow-hidden"
+							/>
 						</div>
 						<span className="font-medium text-base">{company}</span>
 					</div>

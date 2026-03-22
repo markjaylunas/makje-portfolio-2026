@@ -99,14 +99,19 @@ export default function CreateExperienceForm() {
 						);
 
 						return (
-							<ExperienceItem
-								title={exp.title}
-								company={exp.company}
-								description={exp.description || ""}
-								period={exp.periodDisplay || ""}
-								responsibilities={exp.responsibilityList}
-								technologies={selectedTechnologyList}
-							/>
+							<FileImagePreview file={exp.logo}>
+								{(url) => (
+									<ExperienceItem
+										logo={url}
+										title={exp.title}
+										company={exp.company}
+										description={exp.description || ""}
+										period={exp.periodDisplay || ""}
+										responsibilities={exp.responsibilityList}
+										technologies={selectedTechnologyList}
+									/>
+								)}
+							</FileImagePreview>
 						);
 					}}
 				</form.Subscribe>
