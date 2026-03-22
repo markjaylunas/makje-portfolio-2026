@@ -70,5 +70,5 @@ export type ProjectWithRelations = Project & {
 };
 
 export type ContactMessageWithRelations = ContactMessage & {
-	user: User;
+	sender: User | null;
 };

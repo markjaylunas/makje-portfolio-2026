@@ -28,6 +28,7 @@ import { Route as ProtectedAdminTechnologyIndexRouteImport } from './routes/_pro
 import { Route as ProtectedAdminTagsIndexRouteImport } from './routes/_protected/admin/tags/index'
 import { Route as ProtectedAdminProjectIndexRouteImport } from './routes/_protected/admin/project/index'
 import { Route as ProtectedAdminExperienceIndexRouteImport } from './routes/_protected/admin/experience/index'
+import { Route as ProtectedAdminContactMessageIndexRouteImport } from './routes/_protected/admin/contact-message/index'
 import { Route as ProtectedAdminTechnologyCreateRouteImport } from './routes/_protected/admin/technology/create'
 import { Route as ProtectedAdminProjectCreateRouteImport } from './routes/_protected/admin/project/create'
 import { Route as ProtectedAdminExperienceCreateRouteImport } from './routes/_protected/admin/experience/create'
@@ -133,6 +134,12 @@ const ProtectedAdminExperienceIndexRoute =
     path: '/experience/',
     getParentRoute: () => ProtectedAdminRouteRoute,
   } as any)
+const ProtectedAdminContactMessageIndexRoute =
+  ProtectedAdminContactMessageIndexRouteImport.update({
+    id: '/contact-message/',
+    path: '/contact-message/',
+    getParentRoute: () => ProtectedAdminRouteRoute,
+  } as any)
 const ProtectedAdminTechnologyCreateRoute =
   ProtectedAdminTechnologyCreateRouteImport.update({
     id: '/technology/create',
@@ -204,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
   '/admin/project/create': typeof ProtectedAdminProjectCreateRoute
   '/admin/technology/create': typeof ProtectedAdminTechnologyCreateRoute
+  '/admin/contact-message/': typeof ProtectedAdminContactMessageIndexRoute
   '/admin/experience/': typeof ProtectedAdminExperienceIndexRoute
   '/admin/project/': typeof ProtectedAdminProjectIndexRoute
   '/admin/tags/': typeof ProtectedAdminTagsIndexRoute
@@ -229,6 +237,7 @@ export interface FileRoutesByTo {
   '/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
   '/admin/project/create': typeof ProtectedAdminProjectCreateRoute
   '/admin/technology/create': typeof ProtectedAdminTechnologyCreateRoute
+  '/admin/contact-message': typeof ProtectedAdminContactMessageIndexRoute
   '/admin/experience': typeof ProtectedAdminExperienceIndexRoute
   '/admin/project': typeof ProtectedAdminProjectIndexRoute
   '/admin/tags': typeof ProtectedAdminTagsIndexRoute
@@ -260,6 +269,7 @@ export interface FileRoutesById {
   '/_protected/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
   '/_protected/admin/project/create': typeof ProtectedAdminProjectCreateRoute
   '/_protected/admin/technology/create': typeof ProtectedAdminTechnologyCreateRoute
+  '/_protected/admin/contact-message/': typeof ProtectedAdminContactMessageIndexRoute
   '/_protected/admin/experience/': typeof ProtectedAdminExperienceIndexRoute
   '/_protected/admin/project/': typeof ProtectedAdminProjectIndexRoute
   '/_protected/admin/tags/': typeof ProtectedAdminTagsIndexRoute
@@ -289,6 +299,7 @@ export interface FileRouteTypes {
     | '/admin/experience/create'
     | '/admin/project/create'
     | '/admin/technology/create'
+    | '/admin/contact-message/'
     | '/admin/experience/'
     | '/admin/project/'
     | '/admin/tags/'
@@ -314,6 +325,7 @@ export interface FileRouteTypes {
     | '/admin/experience/create'
     | '/admin/project/create'
     | '/admin/technology/create'
+    | '/admin/contact-message'
     | '/admin/experience'
     | '/admin/project'
     | '/admin/tags'
@@ -344,6 +356,7 @@ export interface FileRouteTypes {
     | '/_protected/admin/experience/create'
     | '/_protected/admin/project/create'
     | '/_protected/admin/technology/create'
+    | '/_protected/admin/contact-message/'
     | '/_protected/admin/experience/'
     | '/_protected/admin/project/'
     | '/_protected/admin/tags/'
@@ -501,6 +514,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminExperienceIndexRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
     }
+    '/_protected/admin/contact-message/': {
+      id: '/_protected/admin/contact-message/'
+      path: '/contact-message'
+      fullPath: '/admin/contact-message/'
+      preLoaderRoute: typeof ProtectedAdminContactMessageIndexRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
+    }
     '/_protected/admin/technology/create': {
       id: '/_protected/admin/technology/create'
       path: '/technology/create'
@@ -612,6 +632,7 @@ interface ProtectedAdminRouteRouteChildren {
   ProtectedAdminExperienceCreateRoute: typeof ProtectedAdminExperienceCreateRoute
   ProtectedAdminProjectCreateRoute: typeof ProtectedAdminProjectCreateRoute
   ProtectedAdminTechnologyCreateRoute: typeof ProtectedAdminTechnologyCreateRoute
+  ProtectedAdminContactMessageIndexRoute: typeof ProtectedAdminContactMessageIndexRoute
   ProtectedAdminExperienceIndexRoute: typeof ProtectedAdminExperienceIndexRoute
   ProtectedAdminProjectIndexRoute: typeof ProtectedAdminProjectIndexRoute
   ProtectedAdminTagsIndexRoute: typeof ProtectedAdminTagsIndexRoute
@@ -630,6 +651,8 @@ const ProtectedAdminRouteRouteChildren: ProtectedAdminRouteRouteChildren = {
   ProtectedAdminExperienceCreateRoute: ProtectedAdminExperienceCreateRoute,
   ProtectedAdminProjectCreateRoute: ProtectedAdminProjectCreateRoute,
   ProtectedAdminTechnologyCreateRoute: ProtectedAdminTechnologyCreateRoute,
+  ProtectedAdminContactMessageIndexRoute:
+    ProtectedAdminContactMessageIndexRoute,
   ProtectedAdminExperienceIndexRoute: ProtectedAdminExperienceIndexRoute,
   ProtectedAdminProjectIndexRoute: ProtectedAdminProjectIndexRoute,
   ProtectedAdminTagsIndexRoute: ProtectedAdminTagsIndexRoute,

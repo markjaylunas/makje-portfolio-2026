@@ -1,19 +1,14 @@
 import { queryOptions } from "@tanstack/react-query";
-import type {
-	GetContactMessageFnSchema,
-	GetContactMessageListFnSchema,
-} from "@/form-validators/contact";
+import type { GetContactMessageFnSchema } from "@/form-validators/contact";
 import { queryKey } from "@/lib/query-key";
 import {
 	getContactMessageFn,
 	getContactMessageListFn,
 } from "../server/contact-message.server";
 
-export const getContactMessageListOptions = (
-	params: GetContactMessageListFnSchema,
-) =>
+export const getContactMessageListOptions = () =>
 	queryOptions({
-		queryKey: queryKey.contactMessage.list(params),
+		queryKey: queryKey.contactMessage.list(),
 		queryFn: () => getContactMessageListFn(),
 	});
 

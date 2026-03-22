@@ -8,6 +8,7 @@ import { rateLimit } from "@/lib/rate-limit.server";
 import { emailConfig, resend } from "@/lib/resend";
 import ContactMessageEmailTemplate from "@/lib/templates/contact-message";
 import {
+	deleteContactMessage,
 	insertContactMessage,
 	selectContactMessage,
 	selectContactMessageList,
@@ -64,3 +65,9 @@ export const createContactMessageFn = createServerFn({ method: "POST" })
 export const getContactMessageFn = createServerFn({ method: "GET" })
 	.inputValidator(getContactMessageFnSchema)
 	.handler(async ({ data }) => await selectContactMessage(data));
+
+export const deleteContactMessageFn = createServerFn({ method: "POST" })
+	.inputValidator(getContactMessageFnSchema)
+	.handler(
+		async ({ data }) => await deleteContactMessage(data.contactMessageId),
+	);

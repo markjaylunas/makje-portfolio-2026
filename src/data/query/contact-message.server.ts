@@ -1,3 +1,4 @@
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { contactMessage } from "@/db/schema";
 import type { InsertContactMessage } from "@/db/types";
@@ -28,4 +29,12 @@ export const insertContactMessage = async (
 	newContactMessage: InsertContactMessage,
 ) => {
 	return await db.insert(contactMessage).values(newContactMessage).returning();
+};
+
+export const deleteContactMessage = async (contactMessageId: string) => {
+	const [result] = await db
+		.delete(contactMessage)
+		.where(eq(contactMessage.id, contactMessageId))
+		.returning();
+	return result;
 };
