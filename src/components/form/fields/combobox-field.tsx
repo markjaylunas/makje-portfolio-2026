@@ -34,6 +34,7 @@ export default function ComboboxField({
 	const field = useFieldContext<string[]>();
 	const anchor = useComboboxAnchor();
 
+	const value = getOrderedSelection(field.state.value, optionList, "value");
 	const isInvalid = !field.state.meta.isValid;
 	return (
 		<Field data-invalid={isInvalid}>
@@ -42,7 +43,7 @@ export default function ComboboxField({
 				multiple
 				autoHighlight
 				items={optionList}
-				value={optionList.filter((v) => field.state.value.includes(v.value))}
+				value={value}
 				itemToStringValue={(item: (typeof optionList)[number]) => item.value}
 				onValueChange={(newValues) =>
 					field.handleChange(newValues.map((v) => v.value))
@@ -91,3 +92,31 @@ export default function ComboboxField({
 		</Field>
 	);
 }
+
+/**
+ * Maps an array of IDs to their full objects while preserving the order of the IDs.
+ * @template T - The type of the objects in your source list.
+ * @template K - The type of the key being used for matching (usually string | number).
+ * * @param selectedIds - The array of IDs from your field state (e.g., field.state.value).
+ * @param optionList - The source of truth array containing the full objects.
+ * @param key - The property on the objects to match against the IDs (default: 'value').
+ */
+export const getOrderedSelection = <
+	T extends Record<string, unknown>,
+	K extends keyof T,
+>(
+	selectedIds: T[K][],
+	optionList: T[],
+	key: K,
+): T[] => {
+	if (!selectedIds.length) return [];
+
+	// 1. Create a lookup map for O(n) performance
+	// Using T[K] as the map key ensures it matches the type of your ID
+	const lookup = new Map<T[K], T>(optionList.map((opt) => [opt[key], opt]));
+
+	// 2. Map the state's order and filter out missing matches
+	return selectedIds
+		.map((id) => lookup.get(id))
+		.filter((v): v is T => v !== undefined);
+};
