@@ -9,6 +9,7 @@ import { useNavigate } from "@tanstack/react-router";
 import FileImagePreview from "@/components/common/file-image-preview";
 import ImagePreview from "@/components/common/image-preview";
 import { useAppForm } from "@/components/form/context";
+import { getOrderedSelection } from "@/components/form/fields/combobox-field";
 import { ExperienceItem } from "@/components/home/experience/item";
 import { Button } from "@/components/ui/button";
 import { FieldLabel } from "@/components/ui/field";
@@ -94,8 +95,10 @@ export default function CreateExperienceForm() {
 			<ol className="relative ml-3 border-l-2 border-muted max-w-lg w-full">
 				<form.Subscribe selector={(state) => [state.values]}>
 					{([exp]) => {
-						const selectedTechnologyList = technologyList.filter((v) =>
-							exp.technologyList.find((x) => x === v.id),
+						const selectedTechnologyList = getOrderedSelection(
+							exp.technologyList,
+							technologyList,
+							"id",
 						);
 
 						return (
