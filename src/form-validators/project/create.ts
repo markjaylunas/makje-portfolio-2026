@@ -40,7 +40,6 @@ export const projectFormSchema = z.object({
 		z.object({
 			label: z.string(),
 			value: z.string(),
-			isInsert: z.boolean().optional(),
 		}),
 	),
 });
@@ -70,7 +69,6 @@ export const createProjectFnSchema = z.object({
 		z.object({
 			label: z.string(),
 			value: z.string(),
-			isInsert: z.boolean().optional(),
 		}),
 	),
 });

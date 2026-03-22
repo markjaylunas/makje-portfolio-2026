@@ -237,7 +237,6 @@ export default function EditProjectForm({
 							optionList={tagList.map((v) => ({
 								label: v.name,
 								value: v.id,
-								isInsert: false,
 							}))}
 						/>
 					)}

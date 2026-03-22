@@ -19,7 +19,6 @@ export type ComboboxInsertOption = {
 	icon?: string;
 	label: string;
 	value: string;
-	isInsert?: boolean;
 };
 
 type ComboboxInsertFieldProps = {
@@ -37,44 +36,38 @@ export default function ComboboxInsertField({
 	const anchor = useComboboxAnchor();
 	const [inputValue, setInputValue] = React.useState("");
 
+	const selectedValues = field.state.value || [];
 	const isInvalid = !field.state.meta.isValid;
 
-	const hasExactMatch = optionList.some(
-		(v) => v.label.toLowerCase() === inputValue.toLowerCase(),
-	);
-
-	const items = [...optionList];
-
-	// Ensure already selected "New" items are included in the items list
-	// so they are visible and can be unselected from the dropdown
-	for (const sv of field.state.value || []) {
-		if (sv.isInsert && !items.some((item) => item.value === sv.value)) {
-			items.push(sv);
-		}
+	// Construct the list of items to display in the dropdown.
+	// We use a Map to ensure uniqueness by 'value' while preserving the original options.
+	const itemMap = new Map<string, ComboboxInsertOption>();
+	for (const opt of optionList) {
+		itemMap.set(opt.value, opt);
 	}
-
-	if (inputValue && !hasExactMatch) {
-		const isAlreadySelected = items.some(
-			(item) => item.label.toLowerCase() === inputValue.toLowerCase(),
-		);
-
-		if (!isAlreadySelected) {
-			items.unshift({
-				label: inputValue,
-				value: inputValue,
-				isInsert: true,
-			});
-		}
-	}
-
-	const selectedValues = field.state.value || [];
-	const value = items.filter((v) =>
-		selectedValues.some((sv) => sv.value === v.value),
-	);
-
 	for (const sv of selectedValues) {
-		if (!value.some((v) => v.value === sv.value)) {
-			value.push(sv);
+		if (!itemMap.has(sv.value)) {
+			itemMap.set(sv.value, sv);
+		}
+	}
+
+	const items = Array.from(itemMap.values());
+	const value = selectedValues
+		.map((sv) => itemMap.get(sv.value))
+		.filter((v): v is ComboboxInsertOption => !!v);
+
+	// If there's input that doesn't match any existing items, offer it as a new item at the top
+	const trimmedInput = inputValue.trim();
+	if (trimmedInput) {
+		const lowerInput = trimmedInput.toLowerCase();
+		const hasMatch = items.some(
+			(item) => item.label.toLowerCase() === lowerInput,
+		);
+		if (!hasMatch) {
+			items.unshift({
+				label: trimmedInput,
+				value: trimmedInput,
+			});
 		}
 	}
 
@@ -107,11 +100,6 @@ export default function ComboboxInsertField({
 											/>
 										)}
 										{value.label}
-										{value.isInsert && (
-											<span className="text-[10px] bg-primary/20 text-primary px-1 rounded-full ml-1">
-												New
-											</span>
-										)}
 									</ComboboxChip>
 								))}
 								<ComboboxChipsInput />
@@ -128,11 +116,6 @@ export default function ComboboxInsertField({
 									<img src={item.icon} alt={item.label} className="size-4" />
 								)}
 								{item.label}
-								{item.isInsert && (
-									<span className="text-[10px] bg-primary/20 text-primary px-1 rounded-full ml-auto">
-										New
-									</span>
-								)}
 							</ComboboxItem>
 						)}
 					</ComboboxList>

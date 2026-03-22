@@ -22,7 +22,6 @@ export const editProjectFnSchema = z.object({
 		z.object({
 			label: z.string(),
 			value: z.string(),
-			isInsert: z.boolean().optional(),
 		}),
 	),
 });

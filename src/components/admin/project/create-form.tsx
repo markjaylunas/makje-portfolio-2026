@@ -202,7 +202,6 @@ export default function CreateProjectForm() {
 							optionList={tagList.map((v) => ({
 								label: v.name,
 								value: v.id,
-								isInsert: false,
 							}))}
 						/>
 					)}
