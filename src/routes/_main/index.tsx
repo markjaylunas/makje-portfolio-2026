@@ -28,11 +28,6 @@ function App() {
 
 			<HeroSection />
 
-			<div id="experience" className="h-12 md:h-24" />
-			<ContentMotion>
-				<ExperienceTimelineSection />
-			</ContentMotion>
-
 			<div id="featured-projects" className="h-12 md:h-24" />
 			<ContentMotion>
 				<FeaturedProjectSection />
@@ -41,6 +36,11 @@ function App() {
 			<div id="tech-stack" className="h-24" />
 			<ContentMotion>
 				<TechListSection />
+			</ContentMotion>
+
+			<div id="experience" className="md:h-24" />
+			<ContentMotion>
+				<ExperienceTimelineSection />
 			</ContentMotion>
 		</main>
 	);
