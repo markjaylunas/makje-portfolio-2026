@@ -73,12 +73,15 @@ export const insertExperience = async ({
 		})
 		.returning();
 
-	await db.insert(experienceToTechnologies).values(
-		newExperienceToTechnologies.map((v) => ({
-			...v,
-			experienceId: experienceResult.id,
-		})),
-	);
+	const technologiesWithId = newExperienceToTechnologies.map((v) => ({
+		...v,
+		experienceId: experienceResult.id,
+	}));
+
+	for (let i = 0; i < technologiesWithId.length; i += 10) {
+		const batch = technologiesWithId.slice(i, i + 10);
+		await db.insert(experienceToTechnologies).values(batch);
+	}
 
 	return experienceResult;
 };
@@ -111,9 +114,10 @@ export const editExperience = async ({
 			.where(eq(experienceToTechnologies.experienceId, updatedExperience.id));
 
 		if (newExperienceToTechnologies.length > 0) {
-			await db
-				.insert(experienceToTechnologies)
-				.values(newExperienceToTechnologies);
+			for (let i = 0; i < newExperienceToTechnologies.length; i += 10) {
+				const batch = newExperienceToTechnologies.slice(i, i + 10);
+				await db.insert(experienceToTechnologies).values(batch);
+			}
 		}
 	}
 
