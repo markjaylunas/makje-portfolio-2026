@@ -35,10 +35,7 @@ export default function ContactForm() {
 				queryKey: queryKey.contactMessage.list(),
 			});
 
-			toast.success("Message sent successfully!", {
-				dismissible: true,
-				duration: 10000,
-			});
+			toast.success("Message sent successfully!");
 			form.reset();
 		},
 		onError: (error) => {

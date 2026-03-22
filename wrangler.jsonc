@@ -19,5 +19,11 @@
             "bucket_name": "makje-portfolio-2026",
             "remote": true
         }
-    ]   
+    ],
+    "kv_namespaces": [
+        {
+            "binding": "RATE_LIMITER",
+            "id": "e2e8e7e1-3e4b-4b1a-9c1a-1a2b3c4d5e6f" // This is a placeholder ID, the user might need to create it.
+        }
+    ]
 }
