@@ -50,15 +50,13 @@ export default function ProjectCard({
 					<Badge variant="secondary">{likesCount} likes</Badge>
 				</CardAction>
 				<Link to="/project/$projectId" params={{ projectId }}>
-					<CardTitle>{name}</CardTitle>
+					<CardTitle className="truncate">{name}</CardTitle>
 				</Link>
-				<CardDescription className="line-clamp-2 text-pretty">
-					{description}
-				</CardDescription>
+				<CardDescription className="truncate">{description}</CardDescription>
 			</CardHeader>
 
 			<CardContent>
-				<p className="line-clamp-5 text-pretty">{content}</p>
+				<p className="truncate">{content}</p>
 			</CardContent>
 
 			<CardFooter className="flex flex-col items-start gap-4">
