@@ -1,9 +1,12 @@
+import { render } from "@react-email/render";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeaders } from "@tanstack/react-start/server";
 import { getContactMessageFnSchema } from "@/form-validators/contact";
 import { createContactMessageFnSchema } from "@/form-validators/contact/create";
 import { getSessionFn } from "@/lib/auth.server";
 import { rateLimit } from "@/lib/rate-limit.server";
+import { emailConfig, resend } from "@/lib/resend";
+import ContactMessageEmailTemplate from "@/lib/templates/contact-message";
 import {
 	insertContactMessage,
 	selectContactMessage,
@@ -23,17 +26,39 @@ export const createContactMessageFn = createServerFn({ method: "POST" })
 
 		await rateLimit({
 			key: `contact:${clientIp}`,
-			limit: 5,
+			limit: 3,
 			windowSeconds: 60 * 60 * 24,
 		});
 
 		const user = await getSessionFn();
 		const senderId = user?.session.userId;
 
-		return await insertContactMessage({
+		const [result] = await insertContactMessage({
 			...data,
 			senderId,
 		});
+
+		if (result) {
+			const html = await render(
+				<ContactMessageEmailTemplate
+					name={data.name}
+					senderEmail={data.email}
+					senderId={senderId}
+					contactMessageId={result.id}
+					message={data.message}
+					createdAt={result.createdAt}
+				/>,
+			);
+
+			await resend.emails.send({
+				from: emailConfig.from,
+				to: emailConfig.to,
+				subject: `New Message from ${data.name}`,
+				html,
+			});
+		}
+
+		return result;
 	});
 
 export const getContactMessageFn = createServerFn({ method: "GET" })

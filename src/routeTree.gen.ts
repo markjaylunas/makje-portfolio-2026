@@ -33,6 +33,7 @@ import { Route as ProtectedAdminProjectCreateRouteImport } from './routes/_prote
 import { Route as ProtectedAdminExperienceCreateRouteImport } from './routes/_protected/admin/experience/create'
 import { Route as ProtectedAdminTechnologyTechnologyIdIndexRouteImport } from './routes/_protected/admin/technology/$technologyId/index'
 import { Route as ProtectedAdminProjectProjectIdIndexRouteImport } from './routes/_protected/admin/project/$projectId/index'
+import { Route as ProtectedAdminContactMessageContactMessageIdIndexRouteImport } from './routes/_protected/admin/contact-message/$contactMessageId/index'
 import { Route as ProtectedAdminTechnologyTechnologyIdEditRouteImport } from './routes/_protected/admin/technology/$technologyId/edit'
 import { Route as ProtectedAdminProjectProjectIdEditRouteImport } from './routes/_protected/admin/project/$projectId/edit'
 import { Route as ProtectedAdminExperienceExperienceIdEditRouteImport } from './routes/_protected/admin/experience/$experienceId/edit'
@@ -162,6 +163,12 @@ const ProtectedAdminProjectProjectIdIndexRoute =
     path: '/project/$projectId/',
     getParentRoute: () => ProtectedAdminRouteRoute,
   } as any)
+const ProtectedAdminContactMessageContactMessageIdIndexRoute =
+  ProtectedAdminContactMessageContactMessageIdIndexRouteImport.update({
+    id: '/contact-message/$contactMessageId/',
+    path: '/contact-message/$contactMessageId/',
+    getParentRoute: () => ProtectedAdminRouteRoute,
+  } as any)
 const ProtectedAdminTechnologyTechnologyIdEditRoute =
   ProtectedAdminTechnologyTechnologyIdEditRouteImport.update({
     id: '/technology/$technologyId/edit',
@@ -204,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/admin/experience/$experienceId/edit': typeof ProtectedAdminExperienceExperienceIdEditRoute
   '/admin/project/$projectId/edit': typeof ProtectedAdminProjectProjectIdEditRoute
   '/admin/technology/$technologyId/edit': typeof ProtectedAdminTechnologyTechnologyIdEditRoute
+  '/admin/contact-message/$contactMessageId/': typeof ProtectedAdminContactMessageContactMessageIdIndexRoute
   '/admin/project/$projectId/': typeof ProtectedAdminProjectProjectIdIndexRoute
   '/admin/technology/$technologyId/': typeof ProtectedAdminTechnologyTechnologyIdIndexRoute
 }
@@ -228,6 +236,7 @@ export interface FileRoutesByTo {
   '/admin/experience/$experienceId/edit': typeof ProtectedAdminExperienceExperienceIdEditRoute
   '/admin/project/$projectId/edit': typeof ProtectedAdminProjectProjectIdEditRoute
   '/admin/technology/$technologyId/edit': typeof ProtectedAdminTechnologyTechnologyIdEditRoute
+  '/admin/contact-message/$contactMessageId': typeof ProtectedAdminContactMessageContactMessageIdIndexRoute
   '/admin/project/$projectId': typeof ProtectedAdminProjectProjectIdIndexRoute
   '/admin/technology/$technologyId': typeof ProtectedAdminTechnologyTechnologyIdIndexRoute
 }
@@ -258,6 +267,7 @@ export interface FileRoutesById {
   '/_protected/admin/experience/$experienceId/edit': typeof ProtectedAdminExperienceExperienceIdEditRoute
   '/_protected/admin/project/$projectId/edit': typeof ProtectedAdminProjectProjectIdEditRoute
   '/_protected/admin/technology/$technologyId/edit': typeof ProtectedAdminTechnologyTechnologyIdEditRoute
+  '/_protected/admin/contact-message/$contactMessageId/': typeof ProtectedAdminContactMessageContactMessageIdIndexRoute
   '/_protected/admin/project/$projectId/': typeof ProtectedAdminProjectProjectIdIndexRoute
   '/_protected/admin/technology/$technologyId/': typeof ProtectedAdminTechnologyTechnologyIdIndexRoute
 }
@@ -286,6 +296,7 @@ export interface FileRouteTypes {
     | '/admin/experience/$experienceId/edit'
     | '/admin/project/$projectId/edit'
     | '/admin/technology/$technologyId/edit'
+    | '/admin/contact-message/$contactMessageId/'
     | '/admin/project/$projectId/'
     | '/admin/technology/$technologyId/'
   fileRoutesByTo: FileRoutesByTo
@@ -310,6 +321,7 @@ export interface FileRouteTypes {
     | '/admin/experience/$experienceId/edit'
     | '/admin/project/$projectId/edit'
     | '/admin/technology/$technologyId/edit'
+    | '/admin/contact-message/$contactMessageId'
     | '/admin/project/$projectId'
     | '/admin/technology/$technologyId'
   id:
@@ -339,6 +351,7 @@ export interface FileRouteTypes {
     | '/_protected/admin/experience/$experienceId/edit'
     | '/_protected/admin/project/$projectId/edit'
     | '/_protected/admin/technology/$technologyId/edit'
+    | '/_protected/admin/contact-message/$contactMessageId/'
     | '/_protected/admin/project/$projectId/'
     | '/_protected/admin/technology/$technologyId/'
   fileRoutesById: FileRoutesById
@@ -523,6 +536,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminProjectProjectIdIndexRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
     }
+    '/_protected/admin/contact-message/$contactMessageId/': {
+      id: '/_protected/admin/contact-message/$contactMessageId/'
+      path: '/contact-message/$contactMessageId'
+      fullPath: '/admin/contact-message/$contactMessageId/'
+      preLoaderRoute: typeof ProtectedAdminContactMessageContactMessageIdIndexRouteImport
+      parentRoute: typeof ProtectedAdminRouteRoute
+    }
     '/_protected/admin/technology/$technologyId/edit': {
       id: '/_protected/admin/technology/$technologyId/edit'
       path: '/technology/$technologyId/edit'
@@ -599,6 +619,7 @@ interface ProtectedAdminRouteRouteChildren {
   ProtectedAdminExperienceExperienceIdEditRoute: typeof ProtectedAdminExperienceExperienceIdEditRoute
   ProtectedAdminProjectProjectIdEditRoute: typeof ProtectedAdminProjectProjectIdEditRoute
   ProtectedAdminTechnologyTechnologyIdEditRoute: typeof ProtectedAdminTechnologyTechnologyIdEditRoute
+  ProtectedAdminContactMessageContactMessageIdIndexRoute: typeof ProtectedAdminContactMessageContactMessageIdIndexRoute
   ProtectedAdminProjectProjectIdIndexRoute: typeof ProtectedAdminProjectProjectIdIndexRoute
   ProtectedAdminTechnologyTechnologyIdIndexRoute: typeof ProtectedAdminTechnologyTechnologyIdIndexRoute
 }
@@ -619,6 +640,8 @@ const ProtectedAdminRouteRouteChildren: ProtectedAdminRouteRouteChildren = {
     ProtectedAdminProjectProjectIdEditRoute,
   ProtectedAdminTechnologyTechnologyIdEditRoute:
     ProtectedAdminTechnologyTechnologyIdEditRoute,
+  ProtectedAdminContactMessageContactMessageIdIndexRoute:
+    ProtectedAdminContactMessageContactMessageIdIndexRoute,
   ProtectedAdminProjectProjectIdIndexRoute:
     ProtectedAdminProjectProjectIdIndexRoute,
   ProtectedAdminTechnologyTechnologyIdIndexRoute:

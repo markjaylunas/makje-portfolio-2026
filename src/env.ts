@@ -14,6 +14,9 @@ export const env = createEnv({
 		CLOUDFLARE_DATABASE_TOKEN: z.string(),
 		R2_PUBLIC_URL: z.string(),
 		CRON_SECRET: z.string(),
+		RESEND_API_KEY: z.string(),
+		RESEND_TO: z.email(),
+		RESEND_FROM: z.email(),
 	},
 
 	/**
