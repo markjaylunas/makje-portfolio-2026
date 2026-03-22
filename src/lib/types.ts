@@ -1,5 +1,7 @@
 import type {
 	ContactMessage,
+	Experience,
+	ExperienceToTechnologies,
 	FeaturedProject,
 	FeaturedTechnology,
 	Media,
@@ -11,20 +13,6 @@ import type {
 	Technology,
 	User,
 } from "@/db/types";
-
-export type Experience = {
-	title: string;
-	company: string;
-	period: string;
-	description: string;
-	responsibilities: string[];
-	technologyList: {
-		name: string;
-		url?: string;
-		icon?: string;
-		colors?: string;
-	};
-};
 
 export type TechnologyWithIcon = Technology & {
 	icon: Media;
@@ -71,4 +59,13 @@ export type ProjectWithRelations = Project & {
 
 export type ContactMessageWithRelations = ContactMessage & {
 	sender: User | null;
+};
+
+export type ExperienceWithRelations = Experience & {
+	logo: Media;
+	technologies: (ExperienceToTechnologies & {
+		technology: Technology & {
+			icon: Media;
+		};
+	})[];
 };

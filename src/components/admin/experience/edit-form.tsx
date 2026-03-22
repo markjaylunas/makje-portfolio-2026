@@ -16,7 +16,6 @@ import { uploadExperienceLogo } from "@/data/client/storage";
 import { getTechnologyListOptions } from "@/data/options/technology";
 import { editExperienceFn } from "@/data/server/experience.server";
 import type {
-	ExperienceWithRelations,
 	InsertExperienceToTechnologies,
 	InsertMedia,
 	UpdateExperience,
@@ -27,6 +26,7 @@ import {
 	experienceEditFormSchema,
 } from "@/form-validators/experience/edit";
 import { queryKey } from "@/lib/query-key";
+import type { ExperienceWithRelations } from "@/lib/types";
 import { dateToMonthYear } from "@/lib/utils";
 
 export default function EditExperienceForm({
@@ -254,7 +254,7 @@ export default function EditExperienceForm({
 												return (
 													<div className="flex gap-2 relative">
 														<div className="flex-1">
-															<subField.TextField
+															<subField.TextareaField
 																label={`Responsibility ${i + 1}`}
 																placeholder="Describe responsibility"
 															/>

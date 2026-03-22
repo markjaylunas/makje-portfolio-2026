@@ -227,7 +227,7 @@ export default function CreateExperienceForm() {
 												return (
 													<div className="flex gap-2 relative">
 														<div className="flex-1">
-															<subField.TextField
+															<subField.TextareaField
 																label={`Responsibility ${i + 1}`}
 																placeholder="Describe responsibility"
 															/>
