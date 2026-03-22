@@ -1,7 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequestHeaders } from "@tanstack/react-start/server";
 import { getContactMessageFnSchema } from "@/form-validators/contact";
 import { createContactMessageFnSchema } from "@/form-validators/contact/create";
 import { getSessionFn } from "@/lib/auth.server";
+import { rateLimit } from "@/lib/rate-limit.server";
 import {
 	insertContactMessage,
 	selectContactMessage,
@@ -15,6 +17,16 @@ export const getContactMessageListFn = createServerFn({
 export const createContactMessageFn = createServerFn({ method: "POST" })
 	.inputValidator(createContactMessageFnSchema)
 	.handler(async ({ data }) => {
+		const headers = await getRequestHeaders();
+		const clientIp =
+			headers["cf-connecting-ip"] || headers["x-forwarded-for"] || "127.0.0.1";
+
+		await rateLimit({
+			key: `contact:${clientIp}`,
+			limit: 5,
+			windowSeconds: 60 * 60 * 24,
+		});
+
 		const user = await getSessionFn();
 		const senderId = user?.session.userId;
 
