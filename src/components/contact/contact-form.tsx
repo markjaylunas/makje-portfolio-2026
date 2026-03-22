@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAppForm } from "@/components/form/context";
 import {
@@ -8,19 +8,37 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { createContactMessageFn } from "@/data/server/contact-message.server";
+import type { InsertContactMessage } from "@/db/types";
 import {
 	type ContactCreateFormSchema,
 	contactCreateFormSchema,
 	defaultValues,
 } from "@/form-validators/contact/create";
+import { queryKey } from "@/lib/query-key";
 
 export default function ContactForm() {
+	const queryClient = useQueryClient();
+
 	const { mutate: sendContact, isPending } = useMutation({
 		mutationFn: async (value: ContactCreateFormSchema) => {
-			alert(JSON.stringify(value));
+			const newContactMessage: InsertContactMessage = {
+				name: value.name,
+				email: value.email,
+				message: value.message,
+			};
+			const result = await createContactMessageFn({ data: newContactMessage });
+			return result;
 		},
 		onSuccess: () => {
-			toast.success("Message sent successfully!");
+			queryClient.invalidateQueries({
+				queryKey: queryKey.contactMessage.list(),
+			});
+
+			toast.success("Message sent successfully!", {
+				dismissible: true,
+				duration: 10000,
+			});
 			form.reset();
 		},
 		onError: (error) => {

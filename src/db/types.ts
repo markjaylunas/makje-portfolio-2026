@@ -1,4 +1,3 @@
-import type { BuildQueryResult, ExtractTablesWithRelations } from "drizzle-orm";
 import type * as schema from "./schema";
 
 export type User = typeof schema.user.$inferSelect;
@@ -11,6 +10,7 @@ export type Technology = typeof schema.technology.$inferSelect;
 export type Tag = typeof schema.tag.$inferSelect;
 export type Experience = typeof schema.experience.$inferSelect;
 export type Media = typeof schema.media.$inferSelect;
+export type ContactMessage = typeof schema.contactMessage.$inferSelect;
 
 export type ProjectLike = typeof schema.projectLike.$inferSelect;
 export type FeaturedProject = typeof schema.featuredProject.$inferSelect;
@@ -31,6 +31,7 @@ export type InsertProjectLike = typeof schema.projectLike.$inferInsert;
 export type InsertMedia = typeof schema.media.$inferInsert;
 export type InsertExperience = typeof schema.experience.$inferInsert;
 export type InsertFeaturedProject = typeof schema.featuredProject.$inferInsert;
+export type InsertContactMessage = typeof schema.contactMessage.$inferInsert;
 
 export type InsertProjectToTechnologies =
 	typeof schema.projectToTechnologies.$inferInsert;
@@ -50,6 +51,8 @@ export type UpdateMedia = Partial<Media> & Pick<Media, "id">;
 export type UpdateFeaturedProject = Partial<FeaturedProject> &
 	Pick<FeaturedProject, "id">;
 export type UpdateProjectLike = Partial<ProjectLike> & Pick<ProjectLike, "id">;
+export type UpdateContactMessage = Partial<ContactMessage> &
+	Pick<ContactMessage, "id">;
 
 export type UpdateProjectToTechnologies = Partial<ProjectToTechnologies> &
 	Pick<ProjectToTechnologies, "id">;
@@ -60,72 +63,3 @@ export type UpdateExperienceToTechnologies = Partial<ExperienceToTechnologies> &
 
 export type UpdateFeaturedTechnology = Partial<FeaturedTechnology> &
 	Pick<FeaturedTechnology, "id">;
-
-// with relations
-
-type TSchema = ExtractTablesWithRelations<typeof schema>;
-
-export type ExperienceQueryConfig = {
-	with: {
-		logo: true;
-		technologies: {
-			with: {
-				technology: {
-					with: {
-						icon: true;
-					};
-				};
-			};
-		};
-	};
-};
-
-export type ExperienceWithRelations = BuildQueryResult<
-	TSchema,
-	TSchema["experience"],
-	ExperienceQueryConfig
->;
-
-export type TechnologyQueryConfig = {
-	with: {
-		icon: true;
-	};
-};
-
-export type TechnologyWithRelations = BuildQueryResult<
-	TSchema,
-	TSchema["technology"],
-	TechnologyQueryConfig
->;
-
-export type ProjectQueryConfig = {
-	with: {
-		coverImage: true;
-		tags: {
-			with: {
-				tag: true;
-			};
-		};
-		featured: true;
-		likes: {
-			with: {
-				user: true;
-			};
-		};
-		technologies: {
-			with: {
-				technology: {
-					with: {
-						icon: true;
-					};
-				};
-			};
-		};
-	};
-};
-
-export type ProjectWithRelations = BuildQueryResult<
-	TSchema,
-	TSchema["project"],
-	ProjectQueryConfig
->;

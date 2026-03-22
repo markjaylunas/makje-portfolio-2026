@@ -1,4 +1,5 @@
 import type {
+	ContactMessage,
 	FeaturedProject,
 	FeaturedTechnology,
 	Media,
@@ -66,4 +67,8 @@ export type ProjectWithRelations = Project & {
 			icon: Media;
 		};
 	})[];
+};
+
+export type ContactMessageWithRelations = ContactMessage & {
+	user: User;
 };

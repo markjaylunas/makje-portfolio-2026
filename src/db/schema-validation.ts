@@ -6,6 +6,7 @@ import {
 } from "drizzle-zod";
 import z from "zod";
 import {
+	contactMessage,
 	experience,
 	experienceToTechnologies,
 	media,
@@ -49,6 +50,11 @@ export const experienceUpdateSchema = createRequiredUpdateSchema(experience);
 export const mediaSelectSchema = createSelectSchema(media);
 export const mediaInsertSchema = createInsertSchema(media);
 export const mediaUpdateSchema = createRequiredUpdateSchema(media);
+
+export const contactMessageSelectSchema = createSelectSchema(contactMessage);
+export const contactMessageInsertSchema = createInsertSchema(contactMessage);
+export const contactMessageUpdateSchema =
+	createRequiredUpdateSchema(contactMessage);
 
 export const projectLikeSelectSchema = createSelectSchema(projectLike);
 export const projectLikeInsertSchema = createInsertSchema(projectLike);

@@ -58,4 +58,12 @@ export const queryKey = {
 		],
 		item: (id: string) => ["tag", "item", id],
 	},
+	contactMessage: {
+		list: (params?: Params) => [
+			"contact-message",
+			"list",
+			...(params ? [paramsSerializer(params)] : []),
+		],
+		item: (id: string) => ["contact-message", "item", id],
+	},
 };

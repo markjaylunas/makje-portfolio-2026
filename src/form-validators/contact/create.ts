@@ -13,3 +13,5 @@ export const defaultValues: ContactCreateFormSchema = {
 	email: "",
 	message: "",
 };
+
+export const createContactMessageFnSchema = contactCreateFormSchema;

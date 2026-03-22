@@ -2,7 +2,6 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { experience, experienceToTechnologies, media } from "@/db/schema";
 import type {
-	ExperienceWithRelations,
 	InsertExperience,
 	InsertExperienceToTechnologies,
 	InsertMedia,
@@ -11,9 +10,7 @@ import type {
 import type { EditExperienceFnSchema } from "@/form-validators/experience/edit";
 import { deleteMedia } from "./media.server";
 
-export const selectExperienceList = async (): Promise<
-	ExperienceWithRelations[]
-> => {
+export const selectExperienceList = async () => {
 	return await db.query.experience.findMany({
 		with: {
 			logo: true,
@@ -37,7 +34,7 @@ export const selectExperience = async ({
 	experienceId,
 }: {
 	experienceId: string;
-}): Promise<ExperienceWithRelations | undefined> => {
+}) => {
 	return await db.query.experience.findFirst({
 		with: {
 			logo: true,
