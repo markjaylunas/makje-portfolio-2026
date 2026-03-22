@@ -15,7 +15,6 @@ import { editProjectFn } from "@/data/server/project.server";
 import type {
 	InsertMedia,
 	InsertProjectToTechnologies,
-	ProjectWithRelations,
 	UpdateProject,
 } from "@/db/types";
 import { PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES } from "@/form-validators/project/create";
@@ -24,6 +23,7 @@ import {
 	projectEditFormSchema,
 } from "@/form-validators/project/edit";
 import { queryKey } from "@/lib/query-key";
+import type { ProjectWithRelations } from "@/lib/types";
 
 export default function EditProjectForm({
 	defaultProject,
@@ -123,6 +123,7 @@ export default function EditProjectForm({
 						{(coverImageUrl) => (
 							<div className="w-sm mx-auto">
 								<ProjectCard
+									projectId={project.id}
 									coverImage={coverImageUrl || project.coverImageUrl}
 									name={project.name}
 									description={project.description || ""}

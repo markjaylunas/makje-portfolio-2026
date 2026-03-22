@@ -41,7 +41,7 @@ const featuredProjectsLink = {
 
 const projectsLink = {
 	name: "Projects",
-	to: "/projects",
+	to: "/project",
 	hash: "",
 	description:
 		"Showcasing featured work, open-source tools, and side experiments.",

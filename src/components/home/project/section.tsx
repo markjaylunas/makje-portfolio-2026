@@ -21,6 +21,7 @@ export default function FeaturedProjectSection() {
 				{projects?.map(({ project }) => (
 					<li key={project.id} className="size-full relative">
 						<ProjectCard
+							projectId={project.id}
 							coverImage={project.coverImage?.url}
 							name={project.name}
 							description={project.description}

@@ -93,6 +93,7 @@ export default function CreateProjectForm() {
 						{(coverImageUrl) => (
 							<div className="w-sm mx-auto">
 								<ProjectCard
+									projectId=""
 									coverImage={coverImageUrl}
 									name={project.name}
 									description={project.description || ""}

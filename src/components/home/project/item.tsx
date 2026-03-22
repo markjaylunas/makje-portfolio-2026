@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/card";
 
 export default function ProjectCard({
+	projectId,
 	coverImage,
 	name,
 	description,
@@ -25,6 +26,7 @@ export default function ProjectCard({
 	technologyList,
 	tagList,
 }: {
+	projectId: string;
 	coverImage?: string;
 	name: string;
 	description: string | null;
@@ -47,7 +49,9 @@ export default function ProjectCard({
 				<CardAction>
 					<Badge variant="secondary">{likesCount} likes</Badge>
 				</CardAction>
-				<CardTitle>{name}</CardTitle>
+				<Link to="/project/$projectId" params={{ projectId }}>
+					<CardTitle>{name}</CardTitle>
+				</Link>
 				<CardDescription className="line-clamp-2 text-pretty">
 					{description}
 				</CardDescription>

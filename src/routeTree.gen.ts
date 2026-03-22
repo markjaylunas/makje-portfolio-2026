@@ -18,10 +18,11 @@ import { Route as ApiHealthRouteRouteImport } from './routes/api/health/route'
 import { Route as ProtectedAdminRouteRouteImport } from './routes/_protected/admin/route'
 import { Route as MainContactRouteRouteImport } from './routes/_main/contact/route'
 import { Route as ProtectedAdminIndexRouteImport } from './routes/_protected/admin/index'
-import { Route as MainProjectsIndexRouteImport } from './routes/_main/projects/index'
+import { Route as MainProjectIndexRouteImport } from './routes/_main/project/index'
 import { Route as MainContactIndexRouteImport } from './routes/_main/contact/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ProtectedAdminDashboardRouteImport } from './routes/_protected/admin/dashboard'
+import { Route as MainProjectProjectIdRouteImport } from './routes/_main/project/$projectId'
 import { Route as ApiStorageUploadRouteRouteImport } from './routes/api/storage/upload/route'
 import { Route as ApiStorageCleanupRouteRouteImport } from './routes/api/storage/cleanup/route'
 import { Route as ProtectedAdminTechnologyIndexRouteImport } from './routes/_protected/admin/technology/index'
@@ -81,9 +82,9 @@ const ProtectedAdminIndexRoute = ProtectedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProtectedAdminRouteRoute,
 } as any)
-const MainProjectsIndexRoute = MainProjectsIndexRouteImport.update({
-  id: '/projects/',
-  path: '/projects/',
+const MainProjectIndexRoute = MainProjectIndexRouteImport.update({
+  id: '/project/',
+  path: '/project/',
   getParentRoute: () => MainRouteRoute,
 } as any)
 const MainContactIndexRoute = MainContactIndexRouteImport.update({
@@ -100,6 +101,11 @@ const ProtectedAdminDashboardRoute = ProtectedAdminDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => ProtectedAdminRouteRoute,
+} as any)
+const MainProjectProjectIdRoute = MainProjectProjectIdRouteImport.update({
+  id: '/project/$projectId',
+  path: '/project/$projectId',
+  getParentRoute: () => MainRouteRoute,
 } as any)
 const ApiStorageUploadRouteRoute = ApiStorageUploadRouteRouteImport.update({
   id: '/api/storage/upload',
@@ -203,10 +209,11 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
+  '/project/$projectId': typeof MainProjectProjectIdRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/contact/': typeof MainContactIndexRoute
-  '/projects/': typeof MainProjectsIndexRoute
+  '/project/': typeof MainProjectIndexRoute
   '/admin/': typeof ProtectedAdminIndexRoute
   '/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
   '/admin/project/create': typeof ProtectedAdminProjectCreateRoute
@@ -229,10 +236,11 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
+  '/project/$projectId': typeof MainProjectProjectIdRoute
   '/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/contact': typeof MainContactIndexRoute
-  '/projects': typeof MainProjectsIndexRoute
+  '/project': typeof MainProjectIndexRoute
   '/admin': typeof ProtectedAdminIndexRoute
   '/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
   '/admin/project/create': typeof ProtectedAdminProjectCreateRoute
@@ -261,10 +269,11 @@ export interface FileRoutesById {
   '/_main/': typeof MainIndexRoute
   '/api/storage/cleanup': typeof ApiStorageCleanupRouteRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
+  '/_main/project/$projectId': typeof MainProjectProjectIdRoute
   '/_protected/admin/dashboard': typeof ProtectedAdminDashboardRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_main/contact/': typeof MainContactIndexRoute
-  '/_main/projects/': typeof MainProjectsIndexRoute
+  '/_main/project/': typeof MainProjectIndexRoute
   '/_protected/admin/': typeof ProtectedAdminIndexRoute
   '/_protected/admin/experience/create': typeof ProtectedAdminExperienceCreateRoute
   '/_protected/admin/project/create': typeof ProtectedAdminProjectCreateRoute
@@ -291,10 +300,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/api/storage/cleanup'
     | '/api/storage/upload'
+    | '/project/$projectId'
     | '/admin/dashboard'
     | '/api/auth/$'
     | '/contact/'
-    | '/projects/'
+    | '/project/'
     | '/admin/'
     | '/admin/experience/create'
     | '/admin/project/create'
@@ -317,10 +327,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/api/storage/cleanup'
     | '/api/storage/upload'
+    | '/project/$projectId'
     | '/admin/dashboard'
     | '/api/auth/$'
     | '/contact'
-    | '/projects'
+    | '/project'
     | '/admin'
     | '/admin/experience/create'
     | '/admin/project/create'
@@ -348,10 +359,11 @@ export interface FileRouteTypes {
     | '/_main/'
     | '/api/storage/cleanup'
     | '/api/storage/upload'
+    | '/_main/project/$projectId'
     | '/_protected/admin/dashboard'
     | '/api/auth/$'
     | '/_main/contact/'
-    | '/_main/projects/'
+    | '/_main/project/'
     | '/_protected/admin/'
     | '/_protected/admin/experience/create'
     | '/_protected/admin/project/create'
@@ -444,11 +456,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedAdminIndexRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
     }
-    '/_main/projects/': {
-      id: '/_main/projects/'
-      path: '/projects'
-      fullPath: '/projects/'
-      preLoaderRoute: typeof MainProjectsIndexRouteImport
+    '/_main/project/': {
+      id: '/_main/project/'
+      path: '/project'
+      fullPath: '/project/'
+      preLoaderRoute: typeof MainProjectIndexRouteImport
       parentRoute: typeof MainRouteRoute
     }
     '/_main/contact/': {
@@ -471,6 +483,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/dashboard'
       preLoaderRoute: typeof ProtectedAdminDashboardRouteImport
       parentRoute: typeof ProtectedAdminRouteRoute
+    }
+    '/_main/project/$projectId': {
+      id: '/_main/project/$projectId'
+      path: '/project/$projectId'
+      fullPath: '/project/$projectId'
+      preLoaderRoute: typeof MainProjectProjectIdRouteImport
+      parentRoute: typeof MainRouteRoute
     }
     '/api/storage/upload': {
       id: '/api/storage/upload'
@@ -613,13 +632,15 @@ const MainContactRouteRouteWithChildren =
 interface MainRouteRouteChildren {
   MainContactRouteRoute: typeof MainContactRouteRouteWithChildren
   MainIndexRoute: typeof MainIndexRoute
-  MainProjectsIndexRoute: typeof MainProjectsIndexRoute
+  MainProjectProjectIdRoute: typeof MainProjectProjectIdRoute
+  MainProjectIndexRoute: typeof MainProjectIndexRoute
 }
 
 const MainRouteRouteChildren: MainRouteRouteChildren = {
   MainContactRouteRoute: MainContactRouteRouteWithChildren,
   MainIndexRoute: MainIndexRoute,
-  MainProjectsIndexRoute: MainProjectsIndexRoute,
+  MainProjectProjectIdRoute: MainProjectProjectIdRoute,
+  MainProjectIndexRoute: MainProjectIndexRoute,
 }
 
 const MainRouteRouteWithChildren = MainRouteRoute._addFileChildren(

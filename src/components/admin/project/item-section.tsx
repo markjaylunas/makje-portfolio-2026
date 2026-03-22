@@ -13,6 +13,7 @@ export default function ProjectItemSection() {
 
 	return (
 		<ProjectCard
+			projectId={p.id}
 			name={p.name}
 			coverImage={p.coverImage?.url}
 			description={p.description}
