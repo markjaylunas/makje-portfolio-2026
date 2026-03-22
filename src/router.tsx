@@ -10,10 +10,13 @@ export function getRouter() {
 				defaultOptions: { queries: { staleTime: Infinity } },
 			}),
 		},
-
+		defaultViewTransition: true,
 		scrollRestoration: true,
 		defaultPreload: "intent",
 		defaultPreloadStaleTime: 0,
+		defaultPendingMs: 250,
+		defaultPendingMinMs: 500,
+		defaultPendingComponent: () => <div />,
 		defaultHashScrollIntoView: { behavior: "smooth" },
 		defaultNotFoundComponent: () => {
 			return <p>This page doesn't exist!</p>;
