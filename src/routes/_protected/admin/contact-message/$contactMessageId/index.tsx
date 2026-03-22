@@ -55,7 +55,7 @@ function RouteComponent() {
 					</div>
 				</CardHeader>
 				<CardContent className="space-y-4">
-					<div className="bg-muted p-6 rounded-md whitespace-pre-wrap min-h-[150px] text-lg leading-relaxed shadow-inner">
+					<div className="bg-muted p-6 rounded-md whitespace-pre-wrap min-h-40 text-lg leading-relaxed shadow-inner">
 						{contactMessage.message}
 					</div>
 

@@ -54,6 +54,7 @@ export const createContactMessageFn = createServerFn({ method: "POST" })
 			await resend.emails.send({
 				from: emailConfig.from,
 				to: emailConfig.to,
+				replyTo: data.email,
 				subject: `New Message from ${data.name}`,
 				html,
 			});
