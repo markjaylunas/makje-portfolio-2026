@@ -99,6 +99,7 @@ export const userRelations = relations(user, ({ many }) => ({
 	sessions: many(session),
 	accounts: many(account),
 	likes: many(projectLike),
+	contactMessages: many(contactMessage),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -194,6 +195,18 @@ export const media = sqliteTable("media", {
 	size: integer().notNull(),
 	altText: text(),
 	uploaderId: text().references(() => user.id),
+	...timestamps,
+});
+
+export const contactMessage = sqliteTable("contact_message", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	name: text().notNull(),
+	email: text().notNull(),
+	message: text().notNull(),
+	isRead: integer("isRead", { mode: "boolean" }).default(false).notNull(),
+	senderId: text().references(() => user.id),
 	...timestamps,
 });
 
@@ -314,6 +327,13 @@ export const experienceRelations = relations(experience, ({ many, one }) => ({
 	logo: one(media, {
 		fields: [experience.logoId],
 		references: [media.id],
+	}),
+}));
+
+export const contactMessageRelations = relations(contactMessage, ({ one }) => ({
+	sender: one(user, {
+		fields: [contactMessage.senderId],
+		references: [user.id],
 	}),
 }));
 
