@@ -140,6 +140,12 @@ export const project = sqliteTable("project", {
 	coverImageId: text().references(() => media.id, {
 		onDelete: "set null",
 	}),
+	desktopImageId: text().references(() => media.id, {
+		onDelete: "set null",
+	}),
+	mobileImageId: text().references(() => media.id, {
+		onDelete: "set null",
+	}),
 	repositoryUrl: text(),
 	liveUrl: text(),
 	likesCount: integer().default(0).notNull(),
