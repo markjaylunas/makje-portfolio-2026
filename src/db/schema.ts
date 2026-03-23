@@ -305,6 +305,14 @@ export const projectRelations = relations(project, ({ many, one }) => ({
 		fields: [project.coverImageId],
 		references: [media.id],
 	}),
+	desktopImage: one(media, {
+		fields: [project.desktopImageId],
+		references: [media.id],
+	}),
+	mobileImage: one(media, {
+		fields: [project.mobileImageId],
+		references: [media.id],
+	}),
 	featured: one(featuredProject, {
 		fields: [project.id],
 		references: [featuredProject.projectId],
