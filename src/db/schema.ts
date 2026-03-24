@@ -140,12 +140,6 @@ export const project = sqliteTable("project", {
 	coverImageId: text().references(() => media.id, {
 		onDelete: "set null",
 	}),
-	desktopImageId: text().references(() => media.id, {
-		onDelete: "set null",
-	}),
-	mobileImageId: text().references(() => media.id, {
-		onDelete: "set null",
-	}),
 	repositoryUrl: text(),
 	liveUrl: text(),
 	likesCount: integer().default(0).notNull(),
@@ -257,6 +251,19 @@ export const projectToTags = sqliteTable("project_to_tags", {
 	order: integer().notNull().default(0),
 });
 
+export const projectToMedia = sqliteTable("project_to_media", {
+	id: text()
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	projectId: text()
+		.notNull()
+		.references(() => project.id, { onDelete: "cascade" }),
+	mediaId: text()
+		.notNull()
+		.references(() => media.id, { onDelete: "cascade" }),
+	order: integer().notNull().default(0),
+});
+
 export const experienceToTechnologies = sqliteTable(
 	"experience_to_technologies",
 	{
@@ -301,16 +308,9 @@ export const projectRelations = relations(project, ({ many, one }) => ({
 	likes: many(projectLike),
 	technologies: many(projectToTechnologies),
 	tags: many(projectToTags),
+	photos: many(projectToMedia),
 	coverImage: one(media, {
 		fields: [project.coverImageId],
-		references: [media.id],
-	}),
-	desktopImage: one(media, {
-		fields: [project.desktopImageId],
-		references: [media.id],
-	}),
-	mobileImage: one(media, {
-		fields: [project.mobileImageId],
 		references: [media.id],
 	}),
 	featured: one(featuredProject, {
@@ -382,6 +382,17 @@ export const projectToTagsRelations = relations(projectToTags, ({ one }) => ({
 		references: [project.id],
 	}),
 	tag: one(tag, { fields: [projectToTags.tagId], references: [tag.id] }),
+}));
+
+export const projectToMediaRelations = relations(projectToMedia, ({ one }) => ({
+	project: one(project, {
+		fields: [projectToMedia.projectId],
+		references: [project.id],
+	}),
+	media: one(media, {
+		fields: [projectToMedia.mediaId],
+		references: [media.id],
+	}),
 }));
 
 export const experienceToTechnologiesRelations = relations(
