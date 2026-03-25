@@ -121,6 +121,10 @@ export const editExperience = async ({
 		}
 	}
 
+	if (newMedia && updatedExperience.logoId) {
+		await deleteMedia({ mediaId: updatedExperience.logoId });
+	}
+
 	return experienceResult;
 };
 

@@ -62,7 +62,7 @@ export type ContactMessageWithRelations = ContactMessage & {
 };
 
 export type ExperienceWithRelations = Experience & {
-	logo: Media;
+	logo: Media | null;
 	technologies: (ExperienceToTechnologies & {
 		technology: Technology & {
 			icon: Media;

@@ -30,16 +30,7 @@ export const experienceFormSchema = z.object({
 	responsibilityList: z
 		.array(z.string().trim().min(1, "Responsibility cannot be empty"))
 		.min(1, "Please add at least one responsibility"),
-	logo: z
-		.instanceof(File)
-		.refine(
-			(file) => file.size <= COMPANY_LOGO_MAX_FILE_SIZE,
-			`Max file size is 5MB.`,
-		)
-		.refine(
-			(file) => COMPANY_LOGO_ACCEPTED_MIME_TYPES.includes(file.type),
-			"Only PNG, JPG, JPEG, WEBP, and SVG formats are supported.",
-		),
+	logo: mediaInsertSchema,
 	technologyList: z.array(z.string()),
 });
 

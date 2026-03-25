@@ -6,6 +6,7 @@ import {
 import { createTechnologyFnSchema } from "@/form-validators/technology/create";
 import { deleteTechnologyFnSchema } from "@/form-validators/technology/delete";
 import { editTechnologyFnSchema } from "@/form-validators/technology/edit";
+import { BUCKET_DIRECTORIES } from "@/lib/bucket-directories";
 import { ensureAdminFnMiddleware } from "../middleware/auth";
 import {
 	deleteTechnology,
@@ -14,20 +15,29 @@ import {
 	selectTechnologyList,
 	updateTechnology,
 } from "../query/technology.server";
+import { moveR2File } from "./storage.server";
 
 export const createTechnologyFn = createServerFn({ method: "POST" })
 	.middleware([ensureAdminFnMiddleware])
 	.inputValidator(createTechnologyFnSchema)
 	.handler(async ({ data }) => {
-		return await insertTechnology(data.newTechnology, data.newMedia);
+		const movedMedia = await moveR2File(
+			data.newMedia,
+			BUCKET_DIRECTORIES.TECHNOLOGY.ICON,
+		);
+		return await insertTechnology(data.newTechnology, movedMedia);
 	});
 
 export const editTechnologyFn = createServerFn({ method: "POST" })
 	.middleware([ensureAdminFnMiddleware])
 	.inputValidator(editTechnologyFnSchema)
 	.handler(async ({ data }) => {
+		let newMedia = data.newMedia;
+		if (newMedia) {
+			newMedia = await moveR2File(newMedia, BUCKET_DIRECTORIES.TECHNOLOGY.ICON);
+		}
 		return await updateTechnology({
-			data: { updateTechnology: data.editTechnology, newMedia: data.newMedia },
+			data: { updateTechnology: data.editTechnology, newMedia },
 		});
 	});
 

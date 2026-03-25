@@ -179,6 +179,10 @@ export const updateProject = async ({
 		}
 	}
 
+	if (newMedia && updatedProject.coverImageId) {
+		await deleteMedia({ mediaId: updatedProject.coverImageId });
+	}
+
 	return projectResult;
 };
 

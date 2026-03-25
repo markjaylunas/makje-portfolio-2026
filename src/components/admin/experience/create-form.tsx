@@ -6,7 +6,6 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import FileImagePreview from "@/components/common/file-image-preview";
 import ImagePreview from "@/components/common/image-preview";
 import { useAppForm } from "@/components/form/context";
 import { getOrderedSelection } from "@/components/form/fields/combobox-field";
@@ -39,8 +38,6 @@ export default function CreateExperienceForm() {
 
 	const { mutate: createExperienceMutation, isPending } = useMutation({
 		mutationFn: async (values: ExperienceCreateFormSchema) => {
-			const newMedia = await uploadExperienceLogo(values.logo);
-
 			const newExperienceToTechnologies: InsertExperienceToTechnologies[] =
 				values.technologyList.map((v, index) => ({
 					technologyId: v,
@@ -62,7 +59,7 @@ export default function CreateExperienceForm() {
 				data: {
 					newExperience,
 					newExperienceToTechnologies,
-					newMedia,
+					newMedia: values.logo,
 				},
 			});
 		},
@@ -102,19 +99,15 @@ export default function CreateExperienceForm() {
 						);
 
 						return (
-							<FileImagePreview file={exp.logo}>
-								{(url) => (
-									<ExperienceItem
-										logo={url}
-										title={exp.title}
-										company={exp.company}
-										description={exp.description || ""}
-										period={exp.periodDisplay || ""}
-										responsibilities={exp.responsibilityList}
-										technologies={selectedTechnologyList}
-									/>
-								)}
-							</FileImagePreview>
+							<ExperienceItem
+								logo={exp.logo?.url}
+								title={exp.title}
+								company={exp.company}
+								description={exp.description || ""}
+								period={exp.periodDisplay || ""}
+								responsibilities={exp.responsibilityList}
+								technologies={selectedTechnologyList}
+							/>
 						);
 					}}
 				</form.Subscribe>
@@ -148,16 +141,13 @@ export default function CreateExperienceForm() {
 						<field.FileField
 							label="Company Logo"
 							accept={COMPANY_LOGO_ACCEPTED_MIME_TYPES.join(",")}
+							onUpload={uploadExperienceLogo}
 						/>
 					)}
 				</form.AppField>
 
 				<form.Subscribe selector={(state) => state.values.logo}>
-					{(logo) => (
-						<FileImagePreview file={logo}>
-							{(url) => <ImagePreview url={url} alt="Logo" />}
-						</FileImagePreview>
-					)}
+					{(logo) => (logo ? <ImagePreview url={logo.url} alt="Logo" /> : null)}
 				</form.Subscribe>
 
 				<form.AppField name="startDate">

@@ -8,4 +8,5 @@ export const BUCKET_DIRECTORIES = {
 	PROJECT: {
 		COVER_IMAGE: "project/cover_image",
 	},
+	TEMP: "temp",
 } as const;

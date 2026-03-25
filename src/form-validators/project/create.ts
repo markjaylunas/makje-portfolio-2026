@@ -22,16 +22,7 @@ export const projectFormSchema = z.object({
 		.max(2000, "Description is too long")
 		.optional(),
 	content: z.string().trim().max(2000, "Content is too long").optional(),
-	coverImage: z
-		.instanceof(File)
-		.refine(
-			(file) => file.size <= PROJECT_COVER_IMAGE_MAX_FILE_SIZE,
-			`Max file size is 5MB.`,
-		)
-		.refine(
-			(file) => PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.includes(file.type),
-			"Only PNG, JPG, JPEG, WEBP, and SVG formats are supported.",
-		),
+	coverImage: mediaInsertSchema,
 	repositoryUrl: z.string().trim().optional(),
 	liveUrl: z.string().trim().optional(),
 	likesCount: z.number().optional(),

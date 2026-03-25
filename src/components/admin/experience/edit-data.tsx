@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { notFound, useParams } from "@tanstack/react-router";
 import { getExperienceOptions } from "@/data/options/experience";
-import type { ExperienceWithRelations } from "@/db/types";
+import type { ExperienceWithRelations } from "@/lib/types";
 
 export default function EditExperienceData({
 	children,

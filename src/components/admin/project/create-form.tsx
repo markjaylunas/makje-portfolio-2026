@@ -4,7 +4,6 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import FileImagePreview from "@/components/common/file-image-preview";
 import ImagePreview from "@/components/common/image-preview";
 import { useAppForm } from "@/components/form/context";
 import ProjectCard from "@/components/home/project/item";
@@ -33,10 +32,6 @@ export default function CreateProjectForm() {
 
 	const { mutate: createProjectMutation, isPending } = useMutation({
 		mutationFn: async (values: ProjectCreateFormSchema) => {
-			const newCoverImageMedia = await uploadProjectCoverImage(
-				values.coverImage,
-			);
-
 			const newProjectToTechnologies: InsertProjectToTechnologies[] =
 				values.technologyList.map((v, index) => ({
 					technologyId: v,
@@ -51,7 +46,7 @@ export default function CreateProjectForm() {
 				repositoryUrl: values.repositoryUrl,
 				liveUrl: values.liveUrl,
 				likesCount: values.likesCount,
-				coverImageId: newCoverImageMedia.id,
+				coverImageId: "",
 			};
 
 			return await createProjectFn({
@@ -59,7 +54,7 @@ export default function CreateProjectForm() {
 					newProject,
 					newProjectToTechnologies,
 					newTags: values.tags,
-					newMedia: newCoverImageMedia,
+					newMedia: values.coverImage,
 				},
 			});
 		},
@@ -89,32 +84,28 @@ export default function CreateProjectForm() {
 		<div className="flex flex-col md:flex-row-reverse gap-4 md:gap-16 justify-between relative">
 			<form.Subscribe selector={(state) => state.values}>
 				{(project) => (
-					<FileImagePreview file={project.coverImage}>
-						{(coverImageUrl) => (
-							<div className="w-sm mx-auto">
-								<ProjectCard
-									projectId=""
-									coverImage={coverImageUrl}
-									name={project.name}
-									description={project.description || ""}
-									content={project.content || ""}
-									repositoryUrl={project.repositoryUrl || ""}
-									liveUrl={project.liveUrl || ""}
-									likesCount={project.likesCount || 0}
-									technologyList={technologyList
-										.filter((t) => project.technologyList.includes(t.id))
-										.map((t) => ({
-											name: t.name,
-											icon: t.icon.url,
-										}))}
-									tagList={project.tags.map((t) => ({
-										name: t.label,
-										slug: t.label,
-									}))}
-								/>
-							</div>
-						)}
-					</FileImagePreview>
+					<div className="w-sm mx-auto">
+						<ProjectCard
+							projectId=""
+							coverImage={project.coverImage?.url ?? undefined}
+							name={project.name}
+							description={project.description || ""}
+							content={project.content || ""}
+							repositoryUrl={project.repositoryUrl || ""}
+							liveUrl={project.liveUrl || ""}
+							likesCount={project.likesCount || 0}
+							technologyList={technologyList
+								.filter((t) => project.technologyList.includes(t.id))
+								.map((t) => ({
+									name: t.name,
+									icon: t.icon.url,
+								}))}
+							tagList={project.tags.map((t) => ({
+								name: t.label,
+								slug: t.label,
+							}))}
+						/>
+					</div>
 				)}
 			</form.Subscribe>
 
@@ -170,16 +161,17 @@ export default function CreateProjectForm() {
 						<field.FileField
 							label="Cover Image"
 							accept={PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.join(",")}
+							onUpload={uploadProjectCoverImage}
 						/>
 					)}
 				</form.AppField>
 
 				<form.Subscribe selector={(state) => state.values.coverImage}>
-					{(coverImage) => (
-						<FileImagePreview file={coverImage}>
-							{(url) => <ImagePreview url={url} alt="Cover" />}
-						</FileImagePreview>
-					)}
+					{(coverImage) =>
+						coverImage ? (
+							<ImagePreview url={coverImage.url} alt="Cover" />
+						) : null
+					}
 				</form.Subscribe>
 
 				<form.AppField name="technologyList">

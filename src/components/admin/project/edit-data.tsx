@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { notFound, useParams } from "@tanstack/react-router";
 import { getProjectOptions } from "@/data/options/project";
-import type { ProjectWithRelations } from "@/db/types";
+import type { ProjectWithRelations } from "@/lib/types";
 
 export default function EditProjectData({
 	children,

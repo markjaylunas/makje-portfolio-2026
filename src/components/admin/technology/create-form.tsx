@@ -4,7 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
-import FileImagePreview from "@/components/common/file-image-preview";
 import ImagePreview from "@/components/common/image-preview";
 import { useAppForm } from "@/components/form/context";
 import FieldError from "@/components/form/fields/error";
@@ -29,8 +28,6 @@ export default function CreateTechnologyForm() {
 
 	const { mutate: createMutation, isPending } = useMutation({
 		mutationFn: async (value: TechnologyCreateFormSchema) => {
-			const newMedia = await uploadTechnologyIcon(value.icon);
-
 			const newTechnology: InsertTechnology = {
 				name: value.name,
 				url: value.url,
@@ -39,7 +36,7 @@ export default function CreateTechnologyForm() {
 			};
 
 			const result = await createTechnologyFn({
-				data: { newTechnology, newMedia },
+				data: { newTechnology, newMedia: value.icon },
 			});
 
 			return result;
@@ -69,16 +66,12 @@ export default function CreateTechnologyForm() {
 			<div className="mx-auto max-w-48">
 				<form.Subscribe selector={(state) => state.values}>
 					{(values) => (
-						<FileImagePreview file={values.icon}>
-							{(url) => (
-								<TechCard
-									icon={url}
-									colors={values.brandColors.join(", ")}
-									name={values.name}
-									url={values.url}
-								/>
-							)}
-						</FileImagePreview>
+						<TechCard
+							icon={values.icon?.url ?? undefined}
+							colors={values.brandColors.join(", ")}
+							name={values.name}
+							url={values.url}
+						/>
 					)}
 				</form.Subscribe>
 			</div>
@@ -109,12 +102,7 @@ export default function CreateTechnologyForm() {
 						<field.FileField
 							label="Icon"
 							accept={TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES.join(",")}
-							onChangeExt={(file) => {
-								if (!file) {
-									form.resetField("brandColors");
-									return;
-								}
-							}}
+							onUpload={uploadTechnologyIcon}
 							placeholder="Click to add icon"
 						/>
 					)}
@@ -125,11 +113,9 @@ export default function CreateTechnologyForm() {
 						icon: state.values.icon,
 					})}
 				>
-					{({ icon }) => (
-						<FileImagePreview file={icon}>
-							{(url) => <ImagePreview url={url} alt="Icon" />}
-						</FileImagePreview>
-					)}
+					{({ icon }) =>
+						icon ? <ImagePreview url={icon.url} alt="Icon" /> : null
+					}
 				</form.Subscribe>
 
 				<form.Subscribe

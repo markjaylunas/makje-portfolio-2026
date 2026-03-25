@@ -6,6 +6,7 @@ import {
 import { createProjectFnSchema } from "@/form-validators/project/create";
 import { deleteProjectFnSchema } from "@/form-validators/project/delete";
 import { editProjectFnSchema } from "@/form-validators/project/edit";
+import { BUCKET_DIRECTORIES } from "@/lib/bucket-directories";
 import { ensureAdminFnMiddleware } from "../middleware/auth";
 import {
 	deleteProject,
@@ -14,11 +15,18 @@ import {
 	selectProjectList,
 	updateProject,
 } from "../query/project.server";
+import { moveR2File } from "./storage.server";
 
 export const editProjectFn = createServerFn({ method: "POST" })
 	.middleware([ensureAdminFnMiddleware])
 	.inputValidator(editProjectFnSchema)
 	.handler(async ({ data }) => {
+		if (data.newMedia) {
+			data.newMedia = await moveR2File(
+				data.newMedia,
+				BUCKET_DIRECTORIES.PROJECT.COVER_IMAGE,
+			);
+		}
 		return await updateProject(data);
 	});
 
@@ -26,6 +34,10 @@ export const createProjectFn = createServerFn({ method: "POST" })
 	.middleware([ensureAdminFnMiddleware])
 	.inputValidator(createProjectFnSchema)
 	.handler(async ({ data }) => {
+		data.newMedia = await moveR2File(
+			data.newMedia,
+			BUCKET_DIRECTORIES.PROJECT.COVER_IMAGE,
+		);
 		return await insertProject(data);
 	});
 

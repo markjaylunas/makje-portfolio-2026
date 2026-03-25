@@ -1,23 +1,20 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import FileImagePreview from "@/components/common/file-image-preview";
+import { toast } from "sonner";
 import ImagePreview from "@/components/common/image-preview";
 import { useAppForm } from "@/components/form/context";
 import FieldError from "@/components/form/fields/error";
 import TechCard from "@/components/home/technology/card";
 import { uploadTechnologyIcon } from "@/data/client/storage";
 import { editTechnologyFn } from "@/data/server/technology.server";
-import type {
-	InsertMedia,
-	TechnologyWithRelations,
-	UpdateTechnology,
-} from "@/db/types";
+import type { InsertMedia, UpdateTechnology } from "@/db/types";
 import { TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES } from "@/form-validators/technology/create";
 import {
 	type TechnologyEditFormSchema,
 	technologyEditFormSchema,
 } from "@/form-validators/technology/edit";
 import { queryKey } from "@/lib/query-key";
+import type { TechnologyWithRelations } from "@/lib/types";
 import { IconColorField } from "./create-form";
 
 export default function EditTechnologyForm({
@@ -46,10 +43,9 @@ export default function EditTechnologyForm({
 
 	const { mutate: createMutation, isPending } = useMutation({
 		mutationFn: async (value: TechnologyEditFormSchema) => {
-			let insertMedia: InsertMedia | undefined;
-			if (value.icon) {
-				insertMedia = await uploadTechnologyIcon(value.icon);
-			}
+			const insertMedia: InsertMedia | undefined = value.icon
+				? value.icon
+				: undefined;
 
 			const editTechnology: UpdateTechnology = {
 				id: defaultTechnology.id,
@@ -80,6 +76,9 @@ export default function EditTechnologyForm({
 			form.reset();
 			navigate({ to: "/admin/technology" });
 		},
+		onError: (error) => {
+			toast.error(error.message);
+		},
 	});
 
 	return (
@@ -87,16 +86,14 @@ export default function EditTechnologyForm({
 			<div className="mx-auto max-w-48">
 				<form.Subscribe selector={(state) => state.values}>
 					{(values) => (
-						<FileImagePreview file={values.icon || values.iconUrl}>
-							{(url) => (
-								<TechCard
-									icon={url}
-									colors={values.brandColors.join(", ")}
-									name={values.name}
-									url={values.url}
-								/>
-							)}
-						</FileImagePreview>
+						<TechCard
+							icon={
+								values.icon ? values.icon.url : (values.iconUrl ?? undefined)
+							}
+							colors={values.brandColors.join(", ")}
+							name={values.name}
+							url={values.url}
+						/>
 					)}
 				</form.Subscribe>
 			</div>
@@ -127,12 +124,7 @@ export default function EditTechnologyForm({
 						<field.FileField
 							label="Icon"
 							accept={TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES.join(",")}
-							onChangeExt={(file) => {
-								if (!file) {
-									form.resetField("brandColors");
-									return;
-								}
-							}}
+							onUpload={uploadTechnologyIcon}
 							placeholder="Click to add icon"
 						/>
 					)}
@@ -146,11 +138,7 @@ export default function EditTechnologyForm({
 				>
 					{({ icon, iconUrl }) => {
 						if (icon) {
-							return (
-								<FileImagePreview file={icon}>
-									{(url) => <ImagePreview url={url} alt="Icon" />}
-								</FileImagePreview>
-							);
+							return <ImagePreview url={icon.url} alt="Icon" />;
 						}
 
 						return <ImagePreview url={iconUrl || undefined} alt="Icon" />;

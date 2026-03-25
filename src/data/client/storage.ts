@@ -57,7 +57,7 @@ export const uploadTechnologyIcon = async (file: File) => {
 		);
 	}
 
-	const keyDirectory = BUCKET_DIRECTORIES.TECHNOLOGY.ICON;
+	const keyDirectory = BUCKET_DIRECTORIES.TEMP;
 	return await uploadFileToR2(keyDirectory, file);
 };
 
@@ -68,7 +68,7 @@ export const uploadExperienceLogo = async (file: File) => {
 		);
 	}
 
-	const keyDirectory = BUCKET_DIRECTORIES.EXPERIENCE.COMPANY_LOGO;
+	const keyDirectory = BUCKET_DIRECTORIES.TEMP;
 	return await uploadFileToR2(keyDirectory, file);
 };
 
@@ -79,6 +79,6 @@ export const uploadProjectCoverImage = async (file: File) => {
 		);
 	}
 
-	const keyDirectory = BUCKET_DIRECTORIES.PROJECT.COVER_IMAGE;
+	const keyDirectory = BUCKET_DIRECTORIES.TEMP;
 	return await uploadFileToR2(keyDirectory, file);
 };

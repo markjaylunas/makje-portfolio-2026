@@ -34,10 +34,6 @@ export const updateTechnology = async ({
 }) => {
 	let mediaResult: Media | undefined;
 	if (newMedia) {
-		if (updateTechnology.iconId) {
-			await db.delete(media).where(eq(media.id, updateTechnology.iconId));
-		}
-
 		const [newMediaResult] = await db
 			.insert(media)
 			.values(newMedia)
@@ -52,6 +48,10 @@ export const updateTechnology = async ({
 		})
 		.where(eq(technology.id, updateTechnology.id))
 		.returning();
+
+	if (newMedia && updateTechnology.iconId) {
+		await deleteMedia({ mediaId: updateTechnology.iconId });
+	}
 
 	return { ...technologyResult, icon: mediaResult };
 };
