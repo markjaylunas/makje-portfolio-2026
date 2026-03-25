@@ -1,14 +1,23 @@
+import type { ReactNode } from "react";
 import { Field, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import {
+	InputGroup,
+	InputGroupAddon,
+	InputGroupInput,
+} from "@/components/ui/input-group";
 import { useFieldContext } from "../context";
 import FieldError from "./error";
 
 export default function TextField({
 	label,
 	placeholder,
+	left,
+	right,
 }: {
 	label: string;
 	placeholder?: string;
+	left?: ReactNode;
+	right?: ReactNode;
 }) {
 	const field = useFieldContext<string>();
 
@@ -16,15 +25,19 @@ export default function TextField({
 	return (
 		<Field data-invalid={isInvalid}>
 			<FieldLabel htmlFor={field.name}>{label}</FieldLabel>
-			<Input
-				id={field.name}
-				name={field.name}
-				value={field.state.value}
-				onBlur={field.handleBlur}
-				onChange={(e) => field.handleChange(e.target.value)}
-				placeholder={placeholder}
-				aria-invalid={isInvalid}
-			/>
+			<InputGroup>
+				<InputGroupInput
+					id={field.name}
+					name={field.name}
+					value={field.state.value}
+					onBlur={field.handleBlur}
+					onChange={(e) => field.handleChange(e.target.value)}
+					placeholder={placeholder}
+					aria-invalid={isInvalid}
+				/>
+				{left && <InputGroupAddon align="inline-start">{left}</InputGroupAddon>}
+				{right && <InputGroupAddon align="inline-end">{right}</InputGroupAddon>}
+			</InputGroup>
 
 			<FieldError
 				errors={field.state.meta.errors.map((v) => v.message)}

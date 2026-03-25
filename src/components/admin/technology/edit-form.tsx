@@ -1,9 +1,12 @@
+import { Close, PlusSignIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useAppForm } from "@/components/form/context";
-import FieldError from "@/components/form/fields/error";
 import TechCard from "@/components/home/technology/card";
+import { Button } from "@/components/ui/button";
+import { FieldLabel } from "@/components/ui/field";
 import { uploadTechnologyIcon } from "@/data/client/storage";
 import { editTechnologyFn } from "@/data/server/technology.server";
 import type { InsertMedia, UpdateTechnology } from "@/db/types";
@@ -14,7 +17,6 @@ import {
 } from "@/form-validators/technology/edit";
 import { queryKey } from "@/lib/query-key";
 import type { TechnologyWithRelations } from "@/lib/types";
-import { IconColorField } from "./create-form";
 
 export default function EditTechnologyForm({
 	defaultTechnology,
@@ -130,43 +132,68 @@ export default function EditTechnologyForm({
 					)}
 				</form.AppField>
 
-				<form.Subscribe
-					selector={(state) => ({
-						brandColors: state.values.brandColors,
-						isInvalid:
-							state.fieldMeta.brandColors?.errorMap.onSubmit?.length > 0,
-					})}
-				>
-					{({ brandColors, isInvalid }) => (
-						<IconColorField
-							name="brandColors"
-							isInvalid={isInvalid}
-							onBrandColorsChange={(colors) =>
-								form.setFieldValue("brandColors", colors)
-							}
-							brandColors={brandColors}
-						/>
+				<form.AppField name="brandColors">
+					{(field) => (
+						<div className="space-y-4">
+							<FieldLabel>Brand Colors</FieldLabel>
+
+							<div className="space-y-3">
+								{field.state.value.map((_, i) => {
+									const key = `brandColors-${i}`;
+									return (
+										<form.AppField key={key} name={`brandColors[${i}]`}>
+											{(subField) => {
+												return (
+													<subField.TextField
+														label={`Brand Color ${i + 1}`}
+														placeholder="#hex"
+														left={
+															<div
+																className="size-4.5 rounded-full border border-gray-300"
+																style={{
+																	backgroundColor: subField.state.value,
+																}}
+															/>
+														}
+														right={
+															<Button
+																type="button"
+																variant="destructive"
+																size="icon-xs"
+																onClick={() => field.removeValue(i)}
+															>
+																<HugeiconsIcon icon={Close} />
+															</Button>
+														}
+													/>
+												);
+											}}
+										</form.AppField>
+									);
+								})}
+
+								{field.state.value.length === 0 && (
+									<div className="flex flex-col items-center justify-center py-8 border-2 border-dashed rounded-lg bg-muted/30">
+										<p className="text-sm text-muted-foreground italic">
+											No brand colors added yet.
+										</p>
+									</div>
+								)}
+
+								<Button
+									type="button"
+									variant="outline"
+									size="sm"
+									onClick={() => field.pushValue("")}
+									className="gap-2"
+								>
+									<HugeiconsIcon icon={PlusSignIcon} className="size-4" />
+									Add Brand Color
+								</Button>
+							</div>
+						</div>
 					)}
-				</form.Subscribe>
-
-				<form.Subscribe
-					selector={(state) => ({
-						brandColorsErrors: state.fieldMeta.brandColors?.errors,
-					})}
-				>
-					{({ brandColorsErrors }) => {
-						const errors = [...(brandColorsErrors ?? [])];
-
-						if (!errors.length) return null;
-
-						return (
-							<FieldError
-								errors={errors.map((v) => v.message)}
-								isInvalid={true}
-							/>
-						);
-					}}
-				</form.Subscribe>
+				</form.AppField>
 
 				<form.AppForm>
 					<div className="flex gap-2 w-full">

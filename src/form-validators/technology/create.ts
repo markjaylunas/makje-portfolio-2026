@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import z from "zod";
 import {
 	mediaInsertSchema,
@@ -16,7 +17,9 @@ export const technologyCreateFormSchema = z.object({
 	name: z.string().min(1, "Name is required"),
 	url: z.url(),
 	icon: mediaInsertSchema,
-	brandColors: z.array(z.string()).min(1, "Brand color is required"),
+	brandColors: z
+		.array(z.string().min(3, "Brand color is required"))
+		.min(1, "Brand color is required"),
 });
 
 export type TechnologyCreateFormSchema = z.infer<
@@ -26,9 +29,8 @@ export type TechnologyCreateFormSchema = z.infer<
 export const defaultValues: TechnologyCreateFormSchema = {
 	name: "",
 	url: "",
-	// biome-ignore lint/suspicious/noExplicitAny: <ignore>
 	icon: null as any,
-	brandColors: [],
+	brandColors: ["#ffffff"],
 };
 
 export const createTechnologyFnSchema = z.object({
