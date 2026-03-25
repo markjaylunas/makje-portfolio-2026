@@ -4,7 +4,7 @@ import { lazy } from "react";
 const TextField = lazy(() => import("./fields/text-field"));
 const TextareaField = lazy(() => import("./fields/textarea-field"));
 const DatePickerField = lazy(() => import("./fields/date-picker-field"));
-const FileField = lazy(() => import("./fields/file-field"));
+const ImageFileField = lazy(() => import("./fields/image-file-field"));
 const ComboboxField = lazy(() => import("./fields/combobox-field"));
 const ComboboxInsertField = lazy(
 	() => import("./fields/combobox-insert-field"),
@@ -22,7 +22,7 @@ export const { useAppForm } = createFormHook({
 		TextField,
 		TextareaField,
 		DatePickerField,
-		FileField,
+		ImageFileField,
 		ComboboxField,
 		ComboboxInsertField,
 	},

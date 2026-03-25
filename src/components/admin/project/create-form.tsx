@@ -4,7 +4,6 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import ImagePreview from "@/components/common/image-preview";
 import { useAppForm } from "@/components/form/context";
 import ProjectCard from "@/components/home/project/item";
 import { uploadProjectCoverImage } from "@/data/client/storage";
@@ -158,21 +157,13 @@ export default function CreateProjectForm() {
 
 				<form.AppField name="coverImage">
 					{(field) => (
-						<field.FileField
+						<field.ImageFileField
 							label="Cover Image"
 							accept={PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.join(",")}
 							onUpload={uploadProjectCoverImage}
 						/>
 					)}
 				</form.AppField>
-
-				<form.Subscribe selector={(state) => state.values.coverImage}>
-					{(coverImage) =>
-						coverImage ? (
-							<ImagePreview url={coverImage.url} alt="Cover" />
-						) : null
-					}
-				</form.Subscribe>
 
 				<form.AppField name="technologyList">
 					{(field) => (

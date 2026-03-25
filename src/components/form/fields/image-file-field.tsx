@@ -3,28 +3,31 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import type z from "zod";
+import ImagePreview from "@/components/common/image-preview";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import type { mediaInsertSchema } from "@/db/schema-validation";
 import { useFieldContext } from "../context";
 import FieldError from "./error";
 
-type FileFieldType = z.infer<typeof mediaInsertSchema>;
+type MediaFileFieldType = z.infer<typeof mediaInsertSchema>;
 
-export default function FileField({
+export default function ImageFileField({
 	label,
 	placeholder,
 	accept,
 	onChangeExt,
 	onUpload,
+	previewUrl,
 }: {
 	label: string;
 	placeholder?: string;
 	accept: string;
 	onChangeExt?: (file: File | undefined) => void;
-	onUpload?: (file: File) => Promise<FileFieldType>;
+	onUpload?: (file: File) => Promise<MediaFileFieldType>;
+	previewUrl?: string | null;
 }) {
-	const field = useFieldContext<FileFieldType | File>();
+	const field = useFieldContext<MediaFileFieldType>();
 	const [isUploading, setIsUploading] = useState(false);
 
 	const isInvalid = !field.state.meta.isValid;
@@ -48,11 +51,10 @@ export default function FileField({
 			} finally {
 				setIsUploading(false);
 			}
-		} else {
-			field.handleChange(file);
-			field.validate("blur");
 		}
 	};
+
+	const preview = field.state.value?.url ?? previewUrl;
 
 	return (
 		<Field data-invalid={isInvalid}>
@@ -74,6 +76,8 @@ export default function FileField({
 				aria-invalid={isInvalid}
 				disabled={isUploading}
 			/>
+
+			<ImagePreview url={preview ?? undefined} alt={label} />
 
 			<FieldError
 				errors={field.state.meta.errors.map((v) => v.message)}

@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import ImagePreview from "@/components/common/image-preview";
 import { useAppForm } from "@/components/form/context";
 import FieldError from "@/components/form/fields/error";
 import TechCard from "@/components/home/technology/card";
@@ -121,29 +120,15 @@ export default function EditTechnologyForm({
 				{/* Icon Field */}
 				<form.AppField name="icon">
 					{(field) => (
-						<field.FileField
+						<field.ImageFileField
 							label="Icon"
 							accept={TECHNOLOGY_ICON_ACCEPTED_MIME_TYPES.join(",")}
 							onUpload={uploadTechnologyIcon}
 							placeholder="Click to add icon"
+							previewUrl={defaultValues.iconUrl}
 						/>
 					)}
 				</form.AppField>
-
-				<form.Subscribe
-					selector={(state) => ({
-						icon: state.values.icon,
-						iconUrl: state.values.iconUrl,
-					})}
-				>
-					{({ icon, iconUrl }) => {
-						if (icon) {
-							return <ImagePreview url={icon.url} alt="Icon" />;
-						}
-
-						return <ImagePreview url={iconUrl || undefined} alt="Icon" />;
-					}}
-				</form.Subscribe>
 
 				<form.Subscribe
 					selector={(state) => ({

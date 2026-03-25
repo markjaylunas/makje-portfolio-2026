@@ -7,7 +7,6 @@ import {
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
-import ImagePreview from "@/components/common/image-preview";
 import { useAppForm } from "@/components/form/context";
 import { ExperienceItem } from "@/components/home/experience/item";
 import { Button } from "@/components/ui/button";
@@ -165,27 +164,14 @@ export default function EditExperienceForm({
 
 				<form.AppField name="logo">
 					{(field) => (
-						<field.FileField
+						<field.ImageFileField
 							label="Company Logo"
 							accept={COMPANY_LOGO_ACCEPTED_MIME_TYPES.join(",")}
 							onUpload={uploadExperienceLogo}
+							previewUrl={defaultValues.logoUrl || undefined}
 						/>
 					)}
 				</form.AppField>
-
-				<form.Subscribe selector={(state) => state.values.logo}>
-					{(logo) => {
-						if (logo) {
-							return <ImagePreview url={logo.url} alt="Logo" />;
-						}
-						return (
-							<ImagePreview
-								url={defaultValues.logoUrl || undefined}
-								alt="Logo"
-							/>
-						);
-					}}
-				</form.Subscribe>
 
 				<form.AppField name="startDate">
 					{(field) => (

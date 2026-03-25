@@ -6,7 +6,6 @@ import {
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import ImagePreview from "@/components/common/image-preview";
 import { useAppForm } from "@/components/form/context";
 import { getOrderedSelection } from "@/components/form/fields/combobox-field";
 import { ExperienceItem } from "@/components/home/experience/item";
@@ -100,7 +99,7 @@ export default function CreateExperienceForm() {
 
 						return (
 							<ExperienceItem
-								logo={exp.logo?.url}
+								logo={exp.logo?.url ? exp.logo?.url : undefined}
 								title={exp.title}
 								company={exp.company}
 								description={exp.description || ""}
@@ -138,17 +137,13 @@ export default function CreateExperienceForm() {
 
 				<form.AppField name="logo">
 					{(field) => (
-						<field.FileField
+						<field.ImageFileField
 							label="Company Logo"
 							accept={COMPANY_LOGO_ACCEPTED_MIME_TYPES.join(",")}
 							onUpload={uploadExperienceLogo}
 						/>
 					)}
 				</form.AppField>
-
-				<form.Subscribe selector={(state) => state.values.logo}>
-					{(logo) => (logo ? <ImagePreview url={logo.url} alt="Logo" /> : null)}
-				</form.Subscribe>
 
 				<form.AppField name="startDate">
 					{(field) => (
