@@ -21,11 +21,26 @@ export const editProjectFn = createServerFn({ method: "POST" })
 	.middleware([ensureAdminFnMiddleware])
 	.inputValidator(editProjectFnSchema)
 	.handler(async ({ data }) => {
-		if (data.newMedia) {
-			data.newMedia = await moveR2File(
-				data.newMedia,
+		if (data.newCoverMedia) {
+			if (data.newCoverMedia.keyDirectory !== BUCKET_DIRECTORIES.TEMP) {
+				return data.newCoverMedia;
+			}
+			data.newCoverMedia = await moveR2File(
+				data.newCoverMedia,
 				BUCKET_DIRECTORIES.PROJECT.COVER_IMAGE,
 			);
+		}
+		if (data.newPhotosMedia) {
+			const photosMedia = data.newPhotosMedia.filter((media) => media !== null);
+			const newPhotosMedia = await Promise.all(
+				photosMedia.map((newMedia) => {
+					if (newMedia.keyDirectory === BUCKET_DIRECTORIES.TEMP) {
+						return moveR2File(newMedia, BUCKET_DIRECTORIES.PROJECT.PHOTO_IMAGE);
+					}
+					return newMedia;
+				}),
+			);
+			data.newPhotosMedia = newPhotosMedia;
 		}
 		return await updateProject(data);
 	});
@@ -34,11 +49,24 @@ export const createProjectFn = createServerFn({ method: "POST" })
 	.middleware([ensureAdminFnMiddleware])
 	.inputValidator(createProjectFnSchema)
 	.handler(async ({ data }) => {
-		data.newMedia = await moveR2File(
-			data.newMedia,
+		const photosMedia = (data.newPhotosMedia ?? []).filter(
+			(media) => media !== null,
+		);
+		const newCoverMedia = await moveR2File(
+			data.newCoverMedia,
 			BUCKET_DIRECTORIES.PROJECT.COVER_IMAGE,
 		);
-		return await insertProject(data);
+		const newPhotosMedia = await Promise.all(
+			photosMedia.map((newMedia) =>
+				moveR2File(newMedia, BUCKET_DIRECTORIES.PROJECT.PHOTO_IMAGE),
+			),
+		);
+
+		return await insertProject({
+			...data,
+			newCoverMedia,
+			newPhotosMedia,
+		});
 	});
 
 export const getProjectListFn = createServerFn({ method: "GET" })

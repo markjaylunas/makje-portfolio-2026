@@ -23,6 +23,7 @@ export default function FeaturedProjectSection() {
 						<ProjectCard
 							projectId={project.id}
 							coverImage={project.coverImage?.url}
+							photos={project.photos.map((p) => p.media.url)}
 							name={project.name}
 							description={project.description}
 							content={project.content}

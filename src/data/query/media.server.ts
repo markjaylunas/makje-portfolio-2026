@@ -1,21 +1,37 @@
 import { env as cfEnv } from "cloudflare:workers";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
 import { media } from "@/db/schema";
 
-export const deleteMedia = async ({ mediaId }: { mediaId: string }) => {
+const isArray = (value: unknown): value is unknown[] => {
+	return Array.isArray(value);
+};
+
+export const deleteMedia = async ({
+	mediaId,
+}: {
+	mediaId: string | string[];
+}) => {
+	if (!mediaId || mediaId.length === 0) {
+		return [];
+	}
+
 	const bucket = cfEnv.BUCKET;
 
 	if (!bucket) {
 		throw new Error("R2 Bucket binding not found");
 	}
 
-	const [deletedMedia] = await db
+	const isMediaIdArray = isArray(mediaId);
+
+	const deletedMedia = await db
 		.delete(media)
-		.where(eq(media.id, mediaId))
+		.where(isMediaIdArray ? inArray(media.id, mediaId) : eq(media.id, mediaId))
 		.returning();
 
-	await bucket.delete(deletedMedia.keyPath);
+	const toDeleteMediaIds = deletedMedia.map((v) => v.id);
+
+	await bucket.delete(toDeleteMediaIds);
 
 	return deletedMedia;
 };

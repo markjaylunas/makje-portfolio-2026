@@ -16,6 +16,7 @@ export default function ProjectList() {
 							projectId={project.id}
 							name={project.name}
 							coverImage={project.coverImage?.url}
+							photos={project.photos.map((p) => p.media.url)}
 							description={project.description}
 							content={project.content}
 							repositoryUrl={project.repositoryUrl}

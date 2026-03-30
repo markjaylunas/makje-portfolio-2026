@@ -1,8 +1,9 @@
-import { eq } from "drizzle-orm";
+import { and, eq, notInArray } from "drizzle-orm";
 import { db } from "@/db";
 import {
 	media,
 	project,
+	projectToMedia,
 	projectToTags,
 	projectToTechnologies,
 } from "@/db/schema";
@@ -20,6 +21,12 @@ export const selectProjectList = async (params: GetProjectListFnSchema) => {
 				orderBy: (pt, { asc }) => asc(pt.order),
 				with: {
 					tag: true,
+				},
+			},
+			photos: {
+				orderBy: (pt, { asc }) => asc(pt.order),
+				with: {
+					media: true,
 				},
 			},
 			featured: true,
@@ -56,6 +63,12 @@ export const selectProject = async ({ projectId }: { projectId: string }) => {
 					tag: true,
 				},
 			},
+			photos: {
+				orderBy: (pt, { asc }) => asc(pt.order),
+				with: {
+					media: true,
+				},
+			},
 			featured: true,
 			likes: {
 				with: {
@@ -80,10 +93,22 @@ export const selectProject = async ({ projectId }: { projectId: string }) => {
 export const insertProject = async ({
 	newProject,
 	newProjectToTechnologies,
-	newMedia,
+	newCoverMedia,
+	newPhotosMedia,
 	newTags,
 }: CreateProjectFnSchema) => {
-	const [mediaResult] = await db.insert(media).values(newMedia).returning();
+	const [mediaResult] = await db
+		.insert(media)
+		.values(newCoverMedia)
+		.returning();
+
+	let photosMediaResults: (typeof media.$inferSelect)[] = [];
+	if (newPhotosMedia && newPhotosMedia.length > 0) {
+		photosMediaResults = await db
+			.insert(media)
+			.values(newPhotosMedia)
+			.returning();
+	}
 
 	const [insertedProject] = await db
 		.insert(project)
@@ -93,27 +118,43 @@ export const insertProject = async ({
 		})
 		.returning();
 
-	await db.insert(projectToTechnologies).values(
-		newProjectToTechnologies.map((v) => ({
-			...v,
+	if (photosMediaResults.length > 0) {
+		const values = photosMediaResults.map((v, index) => ({
 			projectId: insertedProject.id,
-		})),
-	);
+			mediaId: v.id,
+			order: index + 1,
+		}));
+		await db.insert(projectToMedia).values(values);
+	}
 
-	const tagNames = newTags.map((t) => t.label);
-	const tagList = await insertTags({ newTags: tagNames });
-
-	const orderedTagList = tagNames
-		.map((name) => tagList.find((t) => t.name === name))
-		.filter((t): t is Exclude<typeof t, undefined> => !!t);
-
-	const tagToProjects = orderedTagList.map((t, index) => ({
+	const newProjectToTechnologiesValues = newProjectToTechnologies.map((v) => ({
+		...v,
 		projectId: insertedProject.id,
-		tagId: t.id,
-		order: index + 1,
 	}));
 
-	await db.insert(projectToTags).values(tagToProjects);
+	if (newProjectToTechnologiesValues.length > 0) {
+		await db
+			.insert(projectToTechnologies)
+			.values(newProjectToTechnologiesValues);
+	}
+
+	if (newTags.length > 0) {
+		const tagList = await insertTags({ newTags });
+
+		const orderedTagList = newTags
+			.map((name) => tagList.find((t) => t.name === name))
+			.filter((t): t is Exclude<typeof t, undefined> => !!t);
+
+		const tagToProjects = orderedTagList.map((t, index) => ({
+			projectId: insertedProject.id,
+			tagId: t.id,
+			order: index + 1,
+		}));
+
+		if (tagToProjects.length > 0) {
+			await db.insert(projectToTags).values(tagToProjects);
+		}
+	}
 
 	return { insertedProject };
 };
@@ -121,27 +162,74 @@ export const insertProject = async ({
 export const updateProject = async ({
 	updatedProject,
 	newProjectToTechnologies,
-	newMedia,
+	newCoverMedia,
+	newPhotosMedia,
 	newTags,
 }: EditProjectFnSchema) => {
-	let newMediaResult: typeof media.$inferSelect | undefined;
+	let newCoverMediaResult: typeof media.$inferSelect | undefined;
 
-	if (newMedia) {
-		const [mediaResult] = await db.insert(media).values(newMedia).returning();
-		newMediaResult = mediaResult;
+	if (newCoverMedia) {
+		const [mediaResult] = await db
+			.insert(media)
+			.values(newCoverMedia)
+			.returning();
+		newCoverMediaResult = mediaResult;
+	}
+
+	let newPhotosMediaResults: (typeof media.$inferSelect)[] = [];
+	if (newPhotosMedia && newPhotosMedia.length > 0) {
+		const newPhotosMediaValues = newPhotosMedia.filter(
+			(v) => v.id === undefined,
+		);
+		newPhotosMediaResults = await db
+			.insert(media)
+			.values(newPhotosMediaValues)
+			.onConflictDoNothing()
+			.returning();
 	}
 
 	const [projectResult] = await db
 		.update(project)
 		.set({
 			...updatedProject,
-			coverImageId: newMediaResult?.id ?? updatedProject.coverImageId,
+			coverImageId: newCoverMediaResult?.id ?? updatedProject.coverImageId,
 			updatedAt: new Date(),
 		})
 		.where(eq(project.id, updatedProject.id))
 		.returning();
 
-	if (newProjectToTechnologies) {
+	if (newPhotosMediaResults.length > 0 && newPhotosMedia) {
+		const existingPhotosMedia = newPhotosMedia
+			.map((v) => v.id)
+			.filter((v) => v !== undefined && v !== null);
+
+		const deletedProjectToMedia = await db
+			.delete(projectToMedia)
+			.where(
+				and(
+					eq(projectToMedia.projectId, updatedProject.id),
+					notInArray(projectToMedia.mediaId, existingPhotosMedia),
+				),
+			)
+			.returning();
+
+		const deletedProjectToMediaMediaIds = deletedProjectToMedia.map(
+			(v) => v.mediaId,
+		);
+
+		if (deletedProjectToMediaMediaIds.length > 0) {
+			await deleteMedia({ mediaId: deletedProjectToMediaMediaIds });
+		}
+
+		const values = newPhotosMediaResults.map((v, index) => ({
+			projectId: updatedProject.id,
+			mediaId: v.id,
+			order: index + 1,
+		}));
+		await db.insert(projectToMedia).values(values);
+	}
+
+	if (newProjectToTechnologies.length > 0) {
 		await db
 			.delete(projectToTechnologies)
 			.where(eq(projectToTechnologies.projectId, updatedProject.id));
@@ -156,15 +244,14 @@ export const updateProject = async ({
 		}
 	}
 
-	if (newTags) {
+	if (newTags.length > 0) {
 		await db
 			.delete(projectToTags)
 			.where(eq(projectToTags.projectId, updatedProject.id));
 
-		const tagNames = newTags.map((t) => t.label);
-		const tagList = await insertTags({ newTags: tagNames });
+		const tagList = await insertTags({ newTags });
 
-		const orderedTagList = tagNames
+		const orderedTagList = newTags
 			.map((name) => tagList.find((t) => t.name === name))
 			.filter((t): t is Exclude<typeof t, undefined> => !!t);
 
@@ -179,7 +266,7 @@ export const updateProject = async ({
 		}
 	}
 
-	if (newMedia && updatedProject.coverImageId) {
+	if (newCoverMedia && updatedProject.coverImageId) {
 		await deleteMedia({ mediaId: updatedProject.coverImageId });
 	}
 

@@ -22,7 +22,9 @@ export default function FeaturedProjectList({
 				return (
 					<li key={featuredProject.id}>
 						<ProjectCard
+							projectId={p.id}
 							coverImage={p.coverImage?.url}
+							photos={p.photos.map((p) => p.media.url)}
 							name={p.name}
 							description={p.description}
 							content={p.content}

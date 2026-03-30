@@ -1,12 +1,20 @@
+import { Close, PlusSignIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import {
 	useMutation,
 	useQueryClient,
 	useSuspenseQuery,
 } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
+import { toast } from "sonner";
 import { useAppForm } from "@/components/form/context";
 import ProjectCard from "@/components/home/project/item";
-import { uploadProjectCoverImage } from "@/data/client/storage";
+import { Button } from "@/components/ui/button";
+import { FieldLabel } from "@/components/ui/field";
+import {
+	uploadProjectCoverImage,
+	uploadProjectPhotoImage,
+} from "@/data/client/storage";
 import { getTagListOptions } from "@/data/options/tag";
 import { getTechnologyListOptions } from "@/data/options/technology";
 import { createProjectFn } from "@/data/server/project.server";
@@ -31,6 +39,10 @@ export default function CreateProjectForm() {
 
 	const { mutate: createProjectMutation, isPending } = useMutation({
 		mutationFn: async (values: ProjectCreateFormSchema) => {
+			if (!values.coverImage) {
+				throw new Error("Cover image is required");
+			}
+
 			const newProjectToTechnologies: InsertProjectToTechnologies[] =
 				values.technologyList.map((v, index) => ({
 					technologyId: v,
@@ -48,12 +60,20 @@ export default function CreateProjectForm() {
 				coverImageId: "",
 			};
 
+			const newPhotosMedia =
+				values.photos?.filter(
+					(media) => media !== null && media !== undefined,
+				) ?? undefined;
+
+			const newTags = values.tags.map((t) => t.label);
+
 			return await createProjectFn({
 				data: {
 					newProject,
 					newProjectToTechnologies,
-					newTags: values.tags,
-					newMedia: values.coverImage,
+					newTags,
+					newCoverMedia: values.coverImage,
+					newPhotosMedia,
 				},
 			});
 		},
@@ -68,6 +88,10 @@ export default function CreateProjectForm() {
 			]);
 			form.reset();
 			navigate({ to: "/admin/project" });
+		},
+		onError: (error) => {
+			console.error(error);
+			toast.error("Failed to create project", { description: error.message });
 		},
 	});
 
@@ -87,6 +111,7 @@ export default function CreateProjectForm() {
 						<ProjectCard
 							projectId=""
 							coverImage={project.coverImage?.url ?? undefined}
+							photos={project.photos.map((img) => img?.url || "")}
 							name={project.name}
 							description={project.description || ""}
 							content={project.content || ""}
@@ -162,6 +187,66 @@ export default function CreateProjectForm() {
 							accept={PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.join(",")}
 							onUpload={uploadProjectCoverImage}
 						/>
+					)}
+				</form.AppField>
+
+				<form.AppField name="photos">
+					{(field) => (
+						<div className="space-y-4">
+							<FieldLabel>Photos</FieldLabel>
+
+							<div className="space-y-3">
+								{field.state.value.map((_, i) => {
+									const key = `photos-${i}`;
+									return (
+										<form.AppField key={key} name={`photos[${i}]`}>
+											{(subField) => {
+												return (
+													<div className="relative">
+														<subField.ImageFileField
+															label={`Photo ${i + 1}`}
+															placeholder=""
+															accept={PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.join(
+																",",
+															)}
+															onUpload={uploadProjectPhotoImage}
+														/>
+														<Button
+															type="button"
+															variant="destructive"
+															size="icon-xs"
+															className="absolute top-0 right-0"
+															onClick={() => field.removeValue(i)}
+														>
+															<HugeiconsIcon icon={Close} />
+														</Button>
+													</div>
+												);
+											}}
+										</form.AppField>
+									);
+								})}
+
+								{field.state.value.length === 0 && (
+									<div className="flex flex-col items-center justify-center py-8 border-2 border-dashed rounded-lg bg-muted/30">
+										<p className="text-sm text-muted-foreground italic">
+											No photos added yet.
+										</p>
+									</div>
+								)}
+
+								<Button
+									type="button"
+									variant="outline"
+									size="sm"
+									onClick={() => field.pushValue(undefined)}
+									className="gap-2"
+								>
+									<HugeiconsIcon icon={PlusSignIcon} className="size-4" />
+									Add Photo
+								</Button>
+							</div>
+						</div>
 					)}
 				</form.AppField>
 

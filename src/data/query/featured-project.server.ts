@@ -53,6 +53,11 @@ export const selectFeaturedProjectList = async () => {
 			project: {
 				with: {
 					coverImage: true,
+					photos: {
+						with: {
+							media: true,
+						},
+					},
 					tags: {
 						with: {
 							tag: true,

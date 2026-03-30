@@ -22,7 +22,8 @@ export const projectFormSchema = z.object({
 		.max(2000, "Description is too long")
 		.optional(),
 	content: z.string().trim().max(2000, "Content is too long").optional(),
-	coverImage: mediaInsertSchema,
+	coverImage: mediaInsertSchema.nullable(),
+	photos: mediaInsertSchema.optional().nullable().array(),
 	repositoryUrl: z.string().trim().optional(),
 	liveUrl: z.string().trim().optional(),
 	likesCount: z.number().optional(),
@@ -50,18 +51,15 @@ export const defaultValues: ProjectCreateFormSchema = {
 	tags: [],
 	// biome-ignore lint/suspicious/noExplicitAny: <ignore>
 	coverImage: null as any,
+	photos: [],
 };
 
 export const createProjectFnSchema = z.object({
 	newProject: projectInsertSchema,
-	newMedia: mediaInsertSchema,
+	newCoverMedia: mediaInsertSchema,
+	newPhotosMedia: mediaInsertSchema.array().optional(),
 	newProjectToTechnologies: projectToTechnologiesInsertSchema.array(),
-	newTags: z.array(
-		z.object({
-			label: z.string(),
-			value: z.string(),
-		}),
-	),
+	newTags: z.array(z.string()),
 });
 
 export type CreateProjectFnSchema = z.infer<typeof createProjectFnSchema>;

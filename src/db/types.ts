@@ -18,6 +18,7 @@ export type FeaturedProject = typeof schema.featuredProject.$inferSelect;
 export type ProjectToTechnologies =
 	typeof schema.projectToTechnologies.$inferSelect;
 export type ProjectToTags = typeof schema.projectToTags.$inferSelect;
+export type ProjectToMedia = typeof schema.projectToMedia.$inferSelect;
 export type ExperienceToTechnologies =
 	typeof schema.experienceToTechnologies.$inferSelect;
 export type FeaturedTechnology = typeof schema.featuredTechnology.$inferSelect;

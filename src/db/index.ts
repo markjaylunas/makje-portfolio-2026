@@ -5,4 +5,5 @@ import * as schema from "./schema.ts";
 export const db = drizzle(env.DB, {
 	schema,
 	casing: "snake_case",
+	logger: true,
 });

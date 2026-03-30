@@ -7,6 +7,7 @@ import type {
 	Media,
 	Project,
 	ProjectLike,
+	ProjectToMedia,
 	ProjectToTags,
 	ProjectToTechnologies,
 	Tag,
@@ -31,6 +32,9 @@ export type FeaturedTechnologyWithTechnology = FeaturedTechnology & {
 export type FeaturedProjectWithRelations = FeaturedProject & {
 	project: Project & {
 		coverImage: Media | null;
+		photos: (ProjectToMedia & {
+			media: Media;
+		})[];
 		tags: (ProjectToTags & { tag: Tag })[];
 		likes: (ProjectLike & {
 			user: User;
@@ -54,6 +58,9 @@ export type ProjectWithRelations = Project & {
 		technology: Technology & {
 			icon: Media;
 		};
+	})[];
+	photos: (ProjectToMedia & {
+		media: Media;
 	})[];
 };
 

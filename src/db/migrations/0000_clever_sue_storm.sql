@@ -16,12 +16,26 @@ CREATE TABLE `account` (
 );
 --> statement-breakpoint
 CREATE INDEX `account_userId_idx` ON `account` (`userId`);--> statement-breakpoint
+CREATE TABLE `contact_message` (
+	`id` text PRIMARY KEY NOT NULL,
+	`name` text NOT NULL,
+	`email` text NOT NULL,
+	`message` text NOT NULL,
+	`isRead` integer DEFAULT false NOT NULL,
+	`sender_id` text,
+	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
+	`updated_at` integer DEFAULT (unixepoch()) NOT NULL,
+	FOREIGN KEY (`sender_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `experience` (
 	`id` text PRIMARY KEY NOT NULL,
 	`title` text NOT NULL,
 	`company` text NOT NULL,
 	`logo_id` text,
-	`period` text NOT NULL,
+	`start_date` integer NOT NULL,
+	`end_date` integer,
+	`period_display` text,
 	`description` text,
 	`responsibilities` text DEFAULT '[]' NOT NULL,
 	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
@@ -36,6 +50,15 @@ CREATE TABLE `experience_to_technologies` (
 	`order` integer DEFAULT 0 NOT NULL,
 	FOREIGN KEY (`experience_id`) REFERENCES `experience`(`id`) ON UPDATE no action ON DELETE cascade,
 	FOREIGN KEY (`technology_id`) REFERENCES `technology`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
+CREATE TABLE `featured_project` (
+	`id` text PRIMARY KEY NOT NULL,
+	`project_id` text NOT NULL,
+	`order` integer DEFAULT 0 NOT NULL,
+	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
+	`updated_at` integer DEFAULT (unixepoch()) NOT NULL,
+	FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
 CREATE TABLE `featured_technology` (
@@ -85,6 +108,15 @@ CREATE TABLE `project_like` (
 	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
+CREATE TABLE `project_to_media` (
+	`id` text PRIMARY KEY NOT NULL,
+	`project_id` text NOT NULL,
+	`media_id` text NOT NULL,
+	`order` integer DEFAULT 0 NOT NULL,
+	FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON UPDATE no action ON DELETE cascade,
+	FOREIGN KEY (`media_id`) REFERENCES `media`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
 CREATE TABLE `project_to_tags` (
 	`id` text PRIMARY KEY NOT NULL,
 	`project_id` text NOT NULL,
@@ -121,7 +153,7 @@ CREATE INDEX `session_userId_idx` ON `session` (`userId`);--> statement-breakpoi
 CREATE TABLE `tag` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
-	`slug` text,
+	`slug` text NOT NULL,
 	`created_at` integer DEFAULT (unixepoch()) NOT NULL
 );
 --> statement-breakpoint

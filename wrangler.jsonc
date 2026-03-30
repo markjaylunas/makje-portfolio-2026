@@ -8,7 +8,7 @@
         {
             "binding": "DB",
             "database_name": "makje-portfolio-2026",
-            "database_id": "12553026-4418-4bce-a1bc-d35d6c824dcc",
+            "database_id": "7834a7bd-a2a1-4138-a3f9-03950593c4b1",
             "migrations_dir": "src/db/migrations",
             "remote": true
         }

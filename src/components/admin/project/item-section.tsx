@@ -16,6 +16,7 @@ export default function ProjectItemSection() {
 			projectId={p.id}
 			name={p.name}
 			coverImage={p.coverImage?.url}
+			photos={p.photos.map((p) => p.media.url)}
 			description={p.description}
 			content={p.content}
 			repositoryUrl={p.repositoryUrl}

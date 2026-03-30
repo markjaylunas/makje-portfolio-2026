@@ -17,6 +17,7 @@ import {
 export default function ProjectCard({
 	projectId,
 	coverImage,
+	photos,
 	name,
 	description,
 	content,
@@ -28,6 +29,7 @@ export default function ProjectCard({
 }: {
 	projectId: string;
 	coverImage?: string;
+	photos?: string[];
 	name: string;
 	description: string | null;
 	content: string | null;
@@ -40,11 +42,24 @@ export default function ProjectCard({
 	return (
 		<Card className="relative mx-auto w-full pt-0">
 			<div className="absolute inset-0 z-30 aspect-video bg-black/35" />
-			<img
-				src={coverImage}
-				alt="Event cover"
-				className="relative z-20 aspect-video w-full object-cover"
-			/>
+			<div className="relative z-20 aspect-video w-full object-cover">
+				<img
+					src={coverImage}
+					alt="Event cover"
+					className="relative z-20 aspect-video w-full object-cover"
+				/>
+				<div className="absolute bottom-0 left-0 z-20 flex gap-2 flex-wrap">
+					{photos?.map((photo) => (
+						<img
+							key={photo}
+							src={photo}
+							alt="Event cover"
+							className="relative z-20 aspect-video w-24 object-cover"
+						/>
+					))}
+				</div>
+			</div>
+
 			<CardHeader>
 				<CardAction>
 					<Badge variant="secondary">{likesCount} likes</Badge>

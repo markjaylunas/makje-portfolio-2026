@@ -31,7 +31,7 @@ const uploadFileToR2 = async (keyDirectory: string, file: File) => {
 	});
 
 	if (!response.ok) {
-		throw new Error("Failed to upload file");
+		throw new Error(`Failed to upload file: ${response}`);
 	}
 
 	const result = await response.json();
@@ -73,6 +73,17 @@ export const uploadExperienceLogo = async (file: File) => {
 };
 
 export const uploadProjectCoverImage = async (file: File) => {
+	if (!PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.includes(file.type)) {
+		throw new Error(
+			`File must be of type ${PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.join(", ")}`,
+		);
+	}
+
+	const keyDirectory = BUCKET_DIRECTORIES.TEMP;
+	return await uploadFileToR2(keyDirectory, file);
+};
+
+export const uploadProjectPhotoImage = async (file: File) => {
 	if (!PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.includes(file.type)) {
 		throw new Error(
 			`File must be of type ${PROJECT_COVER_IMAGE_ACCEPTED_MIME_TYPES.join(", ")}`,
