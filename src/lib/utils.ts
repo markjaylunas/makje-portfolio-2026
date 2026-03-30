@@ -72,3 +72,10 @@ export const slugify = (text: string): string => {
 		.replace(/[^a-z0-9]+/g, "-")
 		.replace(/^-|-$/g, "");
 };
+
+export const formatCompactCount = (count: number): string => {
+	return new Intl.NumberFormat("en-US", {
+		notation: "compact",
+		maximumFractionDigits: 1,
+	}).format(count);
+};

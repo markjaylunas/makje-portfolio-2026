@@ -2,6 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useId } from "react";
 import GradientText from "@/components/common/gradient-text";
 import H2 from "@/components/common/H2";
+import { ItemGroup } from "@/components/ui/item";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
 import ProjectCard from "./item";
 
@@ -17,31 +18,29 @@ export default function FeaturedProjectSection() {
 			<H2 id={sectionHeadingId} className="flex justify-start mb-12">
 				<GradientText>Projects</GradientText>
 			</H2>
-			<ul className="flex flex-col gap-12">
+			<ItemGroup className="grid grid-cols-3 gap-4">
 				{projects?.map(({ project }) => (
-					<li key={project.id} className="size-full relative">
-						<ProjectCard
-							projectId={project.id}
-							coverImage={project.coverImage?.url}
-							photos={project.photos.map((p) => p.media.url)}
-							name={project.name}
-							description={project.description}
-							content={project.content}
-							repositoryUrl={project.repositoryUrl}
-							liveUrl={project.liveUrl}
-							likesCount={project.likes.length}
-							technologyList={project.technologies.map((t) => ({
-								name: t.technology.name,
-								icon: t.technology.icon?.url,
-							}))}
-							tagList={project.tags.map((t) => ({
-								name: t.tag.name,
-								slug: t.tag.slug,
-							}))}
-						/>
-					</li>
+					<ProjectCard
+						key={project.id}
+						projectId={project.id}
+						coverImage={project.coverImage?.url}
+						photos={project.photos.map((p) => p.media.url)}
+						name={project.name}
+						description={project.description}
+						repositoryUrl={project.repositoryUrl}
+						liveUrl={project.liveUrl}
+						likesCount={project.likes.length}
+						technologyList={project.technologies.map((t) => ({
+							name: t.technology.name,
+							icon: t.technology.icon?.url,
+						}))}
+						tagList={project.tags.map((t) => ({
+							name: t.tag.name,
+							slug: t.tag.slug,
+						}))}
+					/>
 				))}
-			</ul>
+			</ItemGroup>
 		</section>
 	);
 }

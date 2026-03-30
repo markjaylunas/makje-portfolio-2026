@@ -114,7 +114,6 @@ export default function CreateProjectForm() {
 							photos={project.photos.map((img) => img?.url || "")}
 							name={project.name}
 							description={project.description || ""}
-							content={project.content || ""}
 							repositoryUrl={project.repositoryUrl || ""}
 							liveUrl={project.liveUrl || ""}
 							likesCount={project.likesCount || 0}

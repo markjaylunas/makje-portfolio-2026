@@ -1,80 +1,80 @@
-import { ArrowUpRight, Github } from "@hugeicons/core-free-icons";
+import { ArrowUpRight, Github, Like } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
-	Card,
-	CardAction,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+	Item,
+	ItemContent,
+	ItemDescription,
+	ItemFooter,
+	ItemTitle,
+} from "@/components/ui/item";
+import { formatCompactCount } from "@/lib/utils";
+import ProjectCardImage from "./item-image";
 
-export default function ProjectCard({
-	projectId,
-	coverImage,
-	photos,
-	name,
-	description,
-	content,
-	repositoryUrl,
-	liveUrl,
-	likesCount,
-	technologyList,
-	tagList,
-}: {
+type ProjectCardProps = {
 	projectId: string;
 	coverImage?: string;
 	photos?: string[];
 	name: string;
 	description: string | null;
-	content: string | null;
 	repositoryUrl: string | null;
 	liveUrl: string | null;
 	likesCount: number;
 	technologyList: { name: string; icon: string }[];
-	tagList: { name: string; slug: string | null }[];
-}) {
+	tagList?: { name: string; slug: string }[];
+};
+
+export default function ProjectCard({
+	projectId,
+	coverImage,
+	photos = [],
+	name,
+	description,
+	repositoryUrl,
+	liveUrl,
+	likesCount,
+	technologyList,
+	tagList = [],
+}: ProjectCardProps) {
+	const allPhotos = [coverImage, ...photos].filter(
+		(v) => v !== null && v !== undefined,
+	);
+
 	return (
-		<Card className="relative mx-auto w-full pt-0">
-			<div className="absolute inset-0 z-30 aspect-video bg-black/35" />
-			<div className="relative z-20 aspect-video w-full object-cover">
-				<img
-					src={coverImage}
-					alt="Event cover"
-					className="relative z-20 aspect-video w-full object-cover"
-				/>
-				<div className="absolute bottom-0 left-0 z-20 flex gap-2 flex-wrap">
-					{photos?.map((photo) => (
-						<img
-							key={photo}
-							src={photo}
-							alt="Event cover"
-							className="relative z-20 aspect-video w-24 object-cover"
-						/>
-					))}
-				</div>
-			</div>
+		<Item variant="outline">
+			<ProjectCardImage projectId={projectId} allPhotos={allPhotos} />
 
-			<CardHeader>
-				<CardAction>
-					<Badge variant="secondary">{likesCount} likes</Badge>
-				</CardAction>
+			<ItemContent>
+				{tagList.length > 0 && (
+					<div className="flex flex-wrap gap-2">
+						{tagList.map((tag) => (
+							<Link
+								key={tag.slug}
+								to="/project/$projectId"
+								params={{ projectId }}
+								search={{ tag: tag.slug }} //TODO: Add tag search in project list loader
+							>
+								<Badge
+									variant="ghost"
+									className="text-xs text-muted-foreground"
+								>
+									#{tag.name}
+								</Badge>
+							</Link>
+						))}
+					</div>
+				)}
+
 				<Link to="/project/$projectId" params={{ projectId }}>
-					<CardTitle className="truncate">{name}</CardTitle>
+					<ItemTitle className="truncate">{name}</ItemTitle>
 				</Link>
-				<CardDescription className="truncate">{description}</CardDescription>
-			</CardHeader>
+				<ItemDescription className="truncate">{description}</ItemDescription>
+			</ItemContent>
 
-			<CardContent>
-				<p className="truncate">{content}</p>
-			</CardContent>
-
-			<CardFooter className="flex flex-col items-start gap-4">
+			<ItemFooter className="flex flex-col items-start gap-4">
 				<div className="flex flex-wrap gap-2">
 					{technologyList.map((tech) => (
 						<Badge variant="secondary" key={tech.name}>
@@ -84,37 +84,40 @@ export default function ProjectCard({
 					))}
 				</div>
 
-				<ButtonGroup>
-					{liveUrl && (
-						<Link
-							to={liveUrl}
-							target="_blank"
-							className={buttonVariants({ variant: "default", size: "sm" })}
-						>
-							<HugeiconsIcon icon={ArrowUpRight} />
-							Live
-						</Link>
-					)}
-					{repositoryUrl && (
-						<Link
-							to={repositoryUrl}
-							target="_blank"
-							className={buttonVariants({ variant: "outline", size: "sm" })}
-						>
-							<HugeiconsIcon icon={Github} />
-							Repository
-						</Link>
-					)}
-				</ButtonGroup>
+				<div className="flex items-center justify-between gap-2 w-full">
+					<Button variant="ghost" size="sm" className="text-sm font-normal">
+						<HugeiconsIcon icon={Like} />
+						{formatCompactCount(likesCount)}
+					</Button>
 
-				<div className="flex flex-wrap gap-2">
-					{tagList.map((t) => (
-						<Badge variant="secondary" key={t.slug}>
-							{t.name}
-						</Badge>
-					))}
+					<ButtonGroup>
+						{liveUrl && (
+							<Button
+								variant="default"
+								size="sm"
+								render={
+									<Link to={liveUrl} target="_blank">
+										<HugeiconsIcon icon={ArrowUpRight} />
+										Live
+									</Link>
+								}
+							/>
+						)}
+						{repositoryUrl && (
+							<Button
+								variant="secondary"
+								size="sm"
+								render={
+									<Link to={repositoryUrl} target="_blank">
+										<HugeiconsIcon icon={Github} />
+										Repository
+									</Link>
+								}
+							/>
+						)}
+					</ButtonGroup>
 				</div>
-			</CardFooter>
-		</Card>
+			</ItemFooter>
+		</Item>
 	);
 }

@@ -16,7 +16,6 @@ export default function ProjectDetails() {
 				coverImage={p.coverImage?.url}
 				photos={p.photos.map((p) => p.media.url)}
 				description={p.description}
-				content={p.content}
 				repositoryUrl={p.repositoryUrl}
 				liveUrl={p.liveUrl}
 				likesCount={p.likes.length}

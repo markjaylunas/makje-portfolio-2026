@@ -1,4 +1,5 @@
 import ProjectCard from "@/components/home/project/item";
+import { ItemGroup } from "@/components/ui/item";
 import type { FeaturedProjectWithRelations } from "@/lib/types";
 
 export default function FeaturedProjectList({
@@ -7,7 +8,7 @@ export default function FeaturedProjectList({
 	featuredProjectList: FeaturedProjectWithRelations[];
 }) {
 	return (
-		<ul className="flex flex-col gap-4">
+		<ItemGroup className="grid grid-cols-3 gap-4">
 			{featuredProjectList?.map((featuredProject) => {
 				const p = featuredProject.project;
 				const technologyList = p.technologies.map((t) => ({
@@ -20,23 +21,21 @@ export default function FeaturedProjectList({
 				}));
 
 				return (
-					<li key={featuredProject.id}>
-						<ProjectCard
-							projectId={p.id}
-							coverImage={p.coverImage?.url}
-							photos={p.photos.map((p) => p.media.url)}
-							name={p.name}
-							description={p.description}
-							content={p.content}
-							repositoryUrl={p.repositoryUrl}
-							liveUrl={p.liveUrl}
-							likesCount={p.likesCount}
-							technologyList={technologyList}
-							tagList={tagList}
-						/>
-					</li>
+					<ProjectCard
+						key={featuredProject.id}
+						projectId={p.id}
+						coverImage={p.coverImage?.url}
+						photos={p.photos.map((p) => p.media.url)}
+						name={p.name}
+						description={p.description}
+						repositoryUrl={p.repositoryUrl}
+						liveUrl={p.liveUrl}
+						likesCount={p.likesCount}
+						technologyList={technologyList}
+						tagList={tagList}
+					/>
 				);
 			})}
-		</ul>
+		</ItemGroup>
 	);
 }
