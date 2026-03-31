@@ -13,11 +13,13 @@ export default function TextField({
 	placeholder,
 	left,
 	right,
+	autoFocus,
 }: {
 	label: string;
 	placeholder?: string;
 	left?: ReactNode;
 	right?: ReactNode;
+	autoFocus?: boolean;
 }) {
 	const field = useFieldContext<string>();
 
@@ -34,6 +36,7 @@ export default function TextField({
 					onChange={(e) => field.handleChange(e.target.value)}
 					placeholder={placeholder}
 					aria-invalid={isInvalid}
+					autoFocus={autoFocus}
 				/>
 				{left && <InputGroupAddon align="inline-start">{left}</InputGroupAddon>}
 				{right && <InputGroupAddon align="inline-end">{right}</InputGroupAddon>}

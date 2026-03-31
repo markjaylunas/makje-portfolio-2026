@@ -85,7 +85,9 @@ export default function CreateTechnologyForm() {
 			>
 				{/* Name Field */}
 				<form.AppField name="name">
-					{(field) => <field.TextField label="Name" placeholder="e.g. React" />}
+					{(field) => (
+						<field.TextField label="Name" placeholder="e.g. React" autoFocus />
+					)}
 				</form.AppField>
 
 				{/* URL Field */}

@@ -125,6 +125,7 @@ export default function CreateExperienceForm() {
 						<field.TextField
 							label="Title"
 							placeholder="e.g. Software Engineer"
+							autoFocus
 						/>
 					)}
 				</form.AppField>

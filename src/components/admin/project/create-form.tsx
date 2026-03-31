@@ -142,7 +142,11 @@ export default function CreateProjectForm() {
 			>
 				<form.AppField name="name">
 					{(field) => (
-						<field.TextField label="Name" placeholder="e.g. My Project" />
+						<field.TextField
+							label="Name"
+							placeholder="e.g. My Project"
+							autoFocus
+						/>
 					)}
 				</form.AppField>
 
