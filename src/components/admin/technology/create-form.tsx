@@ -161,7 +161,7 @@ export default function CreateTechnologyForm() {
 									type="button"
 									variant="outline"
 									size="sm"
-									onClick={() => field.pushValue("")}
+									onClick={() => field.pushValue("#")}
 									className="gap-2"
 								>
 									<HugeiconsIcon icon={PlusSignIcon} className="size-4" />
