@@ -26,7 +26,7 @@ function RouteComponent() {
 		<main className="relative min-h-screen pt-32 sm:pt-42">
 			<PageHeaderAurora title="Project" height="h-[80dvh]" />
 
-			<div className="relative mx-auto max-w-(--breakpoint-lg) px-4 py-36">
+			<div className="relative mx-auto max-w-(--breakpoint-lg) min-h-dvh px-4 py-36">
 				<ContentMotion>
 					<ProjectDetails />
 				</ContentMotion>

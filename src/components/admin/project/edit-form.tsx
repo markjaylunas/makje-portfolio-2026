@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useAppForm } from "@/components/form/context";
-import ProjectCard from "@/components/home/project/item";
+import { ProjectDetails } from "@/components/project/details";
 import { Button } from "@/components/ui/button";
 import { FieldLabel } from "@/components/ui/field";
 import {
@@ -165,7 +165,7 @@ export default function EditProjectForm({
 				{(project) =>
 					project.coverImage ? (
 						<div className="w-sm mx-auto">
-							<ProjectCard
+							<ProjectDetails
 								projectId={project.id}
 								coverImage={project.coverImage.url}
 								photos={project.photos
@@ -179,13 +179,16 @@ export default function EditProjectForm({
 								technologyList={technologyList
 									.filter((t) => project.technologyList.includes(t.id))
 									.map((t) => ({
+										id: t.id,
 										name: t.name,
 										icon: t.icon.url,
 									}))}
 								tagList={project.tags.map((t) => ({
+									id: t.value,
 									name: t.label,
-									slug: t.label,
 								}))}
+								content={project.content || ""}
+								createdAt={new Date()}
 							/>
 						</div>
 					) : null
