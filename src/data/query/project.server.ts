@@ -294,5 +294,15 @@ export const deleteProject = async ({ projectId }: { projectId: string }) => {
 		await deleteMedia({ mediaId: deleted.coverImageId });
 	}
 
+	const projectToMedia = await db.query.projectToMedia.findMany({
+		where: (projectToMedia, { eq }) => eq(projectToMedia.projectId, projectId),
+	});
+
+	if (projectToMedia.length > 0) {
+		await deleteMedia({
+			mediaId: projectToMedia.map((v) => v.mediaId),
+		});
+	}
+
 	return deleted;
 };
