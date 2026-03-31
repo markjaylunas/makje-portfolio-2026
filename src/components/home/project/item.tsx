@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
 	Item,
+	ItemActions,
 	ItemContent,
 	ItemDescription,
 	ItemFooter,
@@ -84,8 +85,8 @@ export default function ProjectCard({
 					))}
 				</div>
 
-				<div className="flex items-center justify-between gap-2 w-full">
-					<Button variant="ghost" size="sm" className="text-sm font-normal">
+				<ItemActions className="flex items-center justify-between gap-2 w-full flex-wrap">
+					<Button variant="outline" size="xs" className="text-xs font-normal">
 						<HugeiconsIcon icon={Like} />
 						{formatCompactCount(likesCount)}
 					</Button>
@@ -98,7 +99,7 @@ export default function ProjectCard({
 								render={
 									<Link to={liveUrl} target="_blank">
 										<HugeiconsIcon icon={ArrowUpRight} />
-										Live
+										<span className="sr-only md:not-sr-only">Live</span>
 									</Link>
 								}
 							/>
@@ -110,13 +111,13 @@ export default function ProjectCard({
 								render={
 									<Link to={repositoryUrl} target="_blank">
 										<HugeiconsIcon icon={Github} />
-										Repository
+										<span className="sr-only md:not-sr-only">Repository</span>
 									</Link>
 								}
 							/>
 						)}
 					</ButtonGroup>
-				</div>
+				</ItemActions>
 			</ItemFooter>
 		</Item>
 	);
