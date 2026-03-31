@@ -8,7 +8,7 @@ export default function FeaturedProjectList({
 	featuredProjectList: FeaturedProjectWithRelations[];
 }) {
 	return (
-		<ItemGroup className="grid grid-cols-3 gap-4">
+		<ItemGroup className="flex flex-col gap-6">
 			{featuredProjectList?.map((featuredProject) => {
 				const p = featuredProject.project;
 				const technologyList = p.technologies.map((t) => ({

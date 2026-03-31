@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, m } from "motion/react";
 import { useEffect, useState } from "react";
-import { ItemHeader } from "@/components/ui/item";
+import { ItemMedia } from "@/components/ui/item";
 
 interface ProjectCardImageProps {
 	projectId: string;
@@ -30,17 +30,15 @@ export default function ProjectCardImage({
 	}, [isHovered, allPhotos.length]);
 
 	return (
-		<ItemHeader
+		<Link
+			to="/project/$projectId"
+			params={{ projectId }}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
-			className="relative aspect-square overflow-hidden bg-muted rounded-md group"
+			className="relative rounded-xs group"
 		>
-			<Link
-				to="/project/$projectId"
-				params={{ projectId }}
-				className="block w-full h-full"
-			>
-				<AnimatePresence mode="popLayout" initial={false}>
+			<AnimatePresence mode="popLayout" initial={false}>
+				<ItemMedia variant="image" className="size-48 bg-muted">
 					<m.img
 						key={allPhotos[currentIndex]}
 						src={allPhotos[currentIndex]}
@@ -52,10 +50,10 @@ export default function ProjectCardImage({
 							ease: [0.22, 1, 0.36, 1],
 							opacity: { duration: 0.3 },
 						}}
-						className="absolute inset-0 h-full w-full object-cover will-change-transform"
+						className="absolute inset-0 h-full w-full object-cover will-change-transform overflow-hidden rounded-xs"
 					/>
-				</AnimatePresence>
-			</Link>
+				</ItemMedia>
+			</AnimatePresence>
 
 			{allPhotos.length > 1 && (
 				<div
@@ -85,6 +83,6 @@ export default function ProjectCardImage({
 					})}
 				</div>
 			)}
-		</ItemHeader>
+		</Link>
 	);
 }

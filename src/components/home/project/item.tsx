@@ -9,7 +9,6 @@ import {
 	ItemActions,
 	ItemContent,
 	ItemDescription,
-	ItemFooter,
 	ItemTitle,
 } from "@/components/ui/item";
 import { formatCompactCount } from "@/lib/utils";
@@ -45,10 +44,20 @@ export default function ProjectCard({
 	);
 
 	return (
-		<Item variant="outline">
+		<Item
+			variant="default"
+			role="listitem"
+			className="p-0 rounded-none border-2"
+		>
 			<ProjectCardImage projectId={projectId} allPhotos={allPhotos} />
 
 			<ItemContent>
+				<Link to="/project/$projectId" params={{ projectId }}>
+					<ItemTitle className="line-clamp-1 text-lg">{name}</ItemTitle>
+				</Link>
+				<ItemDescription className="line-clamp-1">
+					{description}
+				</ItemDescription>
 				{tagList.length > 0 && (
 					<div className="flex flex-wrap gap-2">
 						{tagList.map((tag) => (
@@ -68,57 +77,51 @@ export default function ProjectCard({
 						))}
 					</div>
 				)}
+				<div className="flex flex-col items-start gap-4">
+					<div className="flex flex-wrap gap-2">
+						{technologyList.map((tech) => (
+							<Badge variant="secondary" key={tech.name}>
+								<img src={tech.icon} alt={tech.name} className="size-4" />
+								{tech.name}
+							</Badge>
+						))}
+					</div>
 
-				<Link to="/project/$projectId" params={{ projectId }}>
-					<ItemTitle className="truncate">{name}</ItemTitle>
-				</Link>
-				<ItemDescription className="truncate">{description}</ItemDescription>
-			</ItemContent>
+					<ItemActions className="flex items-center justify-start gap-2 w-full flex-wrap">
+						<ButtonGroup>
+							{liveUrl && (
+								<Button
+									variant="default"
+									size="sm"
+									render={
+										<Link to={liveUrl} target="_blank">
+											<HugeiconsIcon icon={ArrowUpRight} />
+											<span className="sr-only md:not-sr-only">Live</span>
+										</Link>
+									}
+								/>
+							)}
+							{repositoryUrl && (
+								<Button
+									variant="secondary"
+									size="sm"
+									render={
+										<Link to={repositoryUrl} target="_blank">
+											<HugeiconsIcon icon={Github} />
+											<span className="sr-only md:not-sr-only">Repository</span>
+										</Link>
+									}
+								/>
+							)}
+						</ButtonGroup>
 
-			<ItemFooter className="flex flex-col items-start gap-4">
-				<div className="flex flex-wrap gap-2">
-					{technologyList.map((tech) => (
-						<Badge variant="secondary" key={tech.name}>
-							<img src={tech.icon} alt={tech.name} className="size-4" />
-							{tech.name}
-						</Badge>
-					))}
+						<Button variant="outline" size="xs" className="text-xs font-normal">
+							<HugeiconsIcon icon={Like} />
+							{formatCompactCount(likesCount)}
+						</Button>
+					</ItemActions>
 				</div>
-
-				<ItemActions className="flex items-center justify-between gap-2 w-full flex-wrap">
-					<Button variant="outline" size="xs" className="text-xs font-normal">
-						<HugeiconsIcon icon={Like} />
-						{formatCompactCount(likesCount)}
-					</Button>
-
-					<ButtonGroup>
-						{liveUrl && (
-							<Button
-								variant="default"
-								size="sm"
-								render={
-									<Link to={liveUrl} target="_blank">
-										<HugeiconsIcon icon={ArrowUpRight} />
-										<span className="sr-only md:not-sr-only">Live</span>
-									</Link>
-								}
-							/>
-						)}
-						{repositoryUrl && (
-							<Button
-								variant="secondary"
-								size="sm"
-								render={
-									<Link to={repositoryUrl} target="_blank">
-										<HugeiconsIcon icon={Github} />
-										<span className="sr-only md:not-sr-only">Repository</span>
-									</Link>
-								}
-							/>
-						)}
-					</ButtonGroup>
-				</ItemActions>
-			</ItemFooter>
+			</ItemContent>
 		</Item>
 	);
 }

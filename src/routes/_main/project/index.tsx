@@ -21,7 +21,7 @@ function RouteComponent() {
 		<main className="relative min-h-screen">
 			<PageHeaderAurora title="Projects" />
 
-			<div className="relative mx-auto max-w-(--breakpoint-lg) px-4 pt-42 sm:px-6">
+			<div className="relative mx-auto max-w-(--breakpoint-lg) px-4 pt-42 sm:px-6 sm:pt-80">
 				<ContentMotion>
 					<ProjectList />
 				</ContentMotion>

@@ -18,7 +18,7 @@ export default function FeaturedProjectSection() {
 			<H2 id={sectionHeadingId} className="flex justify-start mb-12">
 				<GradientText>Projects</GradientText>
 			</H2>
-			<ItemGroup className="grid grid-cols-3 gap-4">
+			<ItemGroup>
 				{projects?.map(({ project }) => (
 					<ProjectCard
 						key={project.id}
