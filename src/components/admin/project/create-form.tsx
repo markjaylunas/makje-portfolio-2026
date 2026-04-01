@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useAppForm } from "@/components/form/context";
-import ProjectCard from "@/components/home/project/item";
+import { ProjectDetails } from "@/components/project/details";
 import { Button } from "@/components/ui/button";
 import { FieldLabel } from "@/components/ui/field";
 import {
@@ -108,7 +108,9 @@ export default function CreateProjectForm() {
 			<form.Subscribe selector={(state) => state.values}>
 				{(project) => (
 					<div className="w-sm mx-auto">
-						<ProjectCard
+						<ProjectDetails
+							content={project.content || ""}
+							createdAt={new Date()}
 							projectId=""
 							coverImage={project.coverImage?.url ?? undefined}
 							photos={project.photos.map((img) => img?.url || "")}
@@ -123,10 +125,12 @@ export default function CreateProjectForm() {
 									name: t.name,
 									icon: t.icon.url,
 									url: t.url,
+									id: t.id,
 								}))}
 							tagList={project.tags.map((t) => ({
 								name: t.label,
 								slug: t.label,
+								id: t.value,
 							}))}
 						/>
 					</div>
