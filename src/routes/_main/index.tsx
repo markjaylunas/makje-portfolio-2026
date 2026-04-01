@@ -28,20 +28,26 @@ function App() {
 
 			<HeroSection />
 
-			<div id="featured-projects" className="h-12 md:h-24" />
-			<ContentMotion>
-				<FeaturedProjectSection />
-			</ContentMotion>
+			<div id="featured-projects" className="relative">
+				<div className="h-12 md:h-24" />
+				<div className="left-masked-noise-background absolute inset-0 h-dvh z-0" />
+				<ContentMotion>
+					<FeaturedProjectSection />
+				</ContentMotion>
+			</div>
 
 			<div id="tech-stack" className="h-24 mt-16" />
 			<ContentMotion>
 				<TechListSection />
 			</ContentMotion>
 
-			<div id="experience" className="h-24 mt-16" />
-			<ContentMotion>
-				<ExperienceTimelineSection />
-			</ContentMotion>
+			<div id="experience" className="relative">
+				<div className="h-12 md:h-24" />
+				<div className="dashed-bottom-fade-grid absolute inset-0 h-dvh z-0" />
+				<ContentMotion>
+					<ExperienceTimelineSection />
+				</ContentMotion>
+			</div>
 		</main>
 	);
 }

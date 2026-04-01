@@ -189,3 +189,29 @@
 .aurora-midnight-background {
   background: radial-gradient(ellipse 80% 70% at 50% 0%, rgba(120, 180, 255, 0.25), transparent 70%), #00000000;
 }
+
+.left-masked-noise-background {
+  background-color: #00000000;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.15) 1px, transparent 0);
+  background-size: 20px 20px;
+  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 50%, transparent 20%, transparent 100%);
+  mask-image: linear-gradient(to left, #000 0%, #000 50%, transparent 20%, transparent 100%);
+}
+
+.dashed-bottom-fade-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 0;
+  -webkit-mask-image: 
+    repeating-linear-gradient(to right, black 0px, black 3px, transparent 3px, transparent 8px),
+    repeating-linear-gradient(to bottom, black 0px, black 3px, transparent 3px, transparent 8px),
+    radial-gradient(ellipse 100% 80% at 50% 100%, #000 50%, transparent 90%);
+  mask-image: 
+    repeating-linear-gradient(to right, black 0px, black 3px, transparent 3px, transparent 8px),
+    repeating-linear-gradient(to bottom, black 0px, black 3px, transparent 3px, transparent 8px),
+    radial-gradient(ellipse 100% 80% at 50% 100%, #000 50%, transparent 90%);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+}
