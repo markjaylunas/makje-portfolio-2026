@@ -55,8 +55,8 @@ function NavMenu() {
 			size="icon-lg"
 			variant="ghost"
 			className={cn(
-				"rounded-full text-foreground hover:text-chart-2 hover:border-chart-2 transition-colors duration-300 ease-in-out hover:cursor-pointer border border-foreground bg-chart-2/10",
-				menuOpen && "text-chart-2 border-chart-2",
+				"rounded-full text-foreground hover:text-chart-2/85 hover:border-chart-2/85 transition-colors duration-300 ease-in-out hover:cursor-pointer border border-foreground bg-chart-2/85/10",
+				menuOpen && "text-chart-2/85 border-chart-2/85",
 			)}
 			onClick={toggleMenu}
 		>
