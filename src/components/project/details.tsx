@@ -88,52 +88,49 @@ export function ProjectDetails({
 					<div className="flex flex-wrap items-center gap-3">
 						{tagList.map((t) => (
 							<Link key={t.id} to="/project" search={{ tag: t.slug }}>
-								<Badge
-									variant="outline"
-									className="rounded-full px-4 py-1 text-xs font-medium border-emerald-500/20 text-emerald-400 bg-emerald-500/5 hover:bg-emerald-500/10 transition-colors cursor-pointer"
-								>
-									#{t.name}
-								</Badge>
+								<Badge variant="outline">#{t.name}</Badge>
 							</Link>
 						))}
 					</div>
-					<h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-tight">
+					<h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight text-white leading-tight">
 						{name}
 					</h1>
 					{description && (
-						<p className="text-xl text-muted-foreground font-medium max-w-2xl">
+						<p className="text-base sm:text-lg md:text-xl text-muted-foreground font-medium max-w-2xl leading-relaxed">
 							{description}
 						</p>
 					)}
 				</div>
 
-				<div className="flex flex-wrap items-center justify-between gap-6 pt-4 border-t border-white/5">
+				<div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pt-6 border-t border-white/5">
 					<div className="flex items-center gap-6">
-						<div className="flex items-center gap-2 text-muted-foreground">
-							<HugeiconsIcon icon={Calendar} className="size-5" />
-							<span className="text-sm font-medium">
+						<div className="flex items-center gap-2 text-muted-foreground/80">
+							<HugeiconsIcon icon={Calendar} className="size-4 sm:size-5" />
+							<span className="text-xs sm:text-sm font-medium">
 								{dateToMonthYear(new Date(createdAt))}
 							</span>
 						</div>
-						<Button variant="ghost">
-							<HugeiconsIcon icon={Like} />
-							{formatCompactCount(likesCount)}
+						<Button variant="ghost" className="h-8 sm:h-9 px-2 sm:px-3">
+							<HugeiconsIcon icon={Like} className="size-4 sm:size-5" />
+							<span className="text-xs sm:text-sm">
+								{formatCompactCount(likesCount)}
+							</span>
 						</Button>
 					</div>
 
-					<div className="flex items-center gap-3">
-						<ButtonGroup>
+					<div className="flex items-center gap-3 w-full sm:w-auto">
+						<ButtonGroup className="w-full sm:w-auto">
 							{liveUrl && (
 								<Button
 									variant="default"
 									nativeButton={false}
-									className="rounded-full px-6 group"
+									className="flex-1 sm:flex-none rounded-full px-6 group"
 									render={
 										<Link to={liveUrl} target="_blank">
-											<span>Live</span>
+											<span className="text-sm">Live</span>
 											<HugeiconsIcon
 												icon={ArrowUpRight}
-												className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+												className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
 											/>
 										</Link>
 									}
@@ -143,11 +140,11 @@ export function ProjectDetails({
 								<Button
 									variant="secondary"
 									nativeButton={false}
-									className="rounded-full px-6"
+									className="flex-1 sm:flex-none rounded-full px-6"
 									render={
 										<Link to={repositoryUrl} target="_blank">
-											<HugeiconsIcon icon={Github} />
-											<span>Repo</span>
+											<HugeiconsIcon icon={Github} className="size-4" />
+											<span className="text-sm">Repo</span>
 										</Link>
 									}
 								/>
