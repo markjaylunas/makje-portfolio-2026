@@ -12,13 +12,13 @@ export default function FeaturedProjectSection() {
 
 	return (
 		<section
-			className="mx-auto max-w-(--breakpoint-lg) px-6"
+			className="mx-auto max-w-(--breakpoint-lg) px-4"
 			aria-labelledby={sectionHeadingId}
 		>
 			<H2 id={sectionHeadingId} className="flex justify-start mb-12">
 				<GradientText>Projects</GradientText>
 			</H2>
-			<ItemGroup>
+			<ItemGroup className="gap-12">
 				{projects?.map(({ project }) => (
 					<ProjectCard
 						key={project.id}

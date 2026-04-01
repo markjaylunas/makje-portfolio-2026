@@ -88,7 +88,7 @@ export default function ProjectCard({
 					/>
 				</ItemMedia>
 			</section>
-			<ItemContent className="flex flex-col justify-between px-4 py-1.5">
+			<ItemContent className="flex flex-col justify-between py-1.5">
 				<div className="flex flex-col">
 					<Link to="/project/$projectId" params={{ projectId }}>
 						<ItemTitle className="line-clamp-1 text-xl">{name}</ItemTitle>
