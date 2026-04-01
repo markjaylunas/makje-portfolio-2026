@@ -44,7 +44,7 @@ export default function PopOutMotion({
 			whileHover={{
 				y: -8, // The "Pop" lift effect
 				transition: { duration: 0.2, ease: "easeOut" },
-				border: "1px solid var(--muted)",
+				outline: "1px solid var(--muted)",
 			}}
 			transition={{
 				type: "spring",
