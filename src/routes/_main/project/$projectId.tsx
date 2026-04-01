@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_main/project/$projectId")({
 function RouteComponent() {
 	return (
 		<main className="relative min-h-screen pt-16 sm:pt-42">
-			<PageHeaderAurora title="Project" height="h-[80dvh]" />
+			<PageHeaderAurora title="Project" height="h-[80dvh]" as="p" />
 
 			<div className="relative mx-auto max-w-(--breakpoint-lg) min-h-dvh px-4 py-36">
 				<ContentMotion>

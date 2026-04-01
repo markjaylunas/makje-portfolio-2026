@@ -6,12 +6,14 @@ interface PageHeaderAuroraProps {
 	title: ReactNode;
 	className?: string;
 	height?: string;
+	as?: "h1" | "p" | "div";
 }
 
 export default function PageHeaderAurora({
 	title,
 	className,
 	height = "h-[90dvh]",
+	as: Component = "h1",
 }: PageHeaderAuroraProps) {
 	return (
 		<FadeDownMotion
@@ -21,9 +23,9 @@ export default function PageHeaderAurora({
 				className,
 			)}
 		>
-			<h1 className="mt-32 px-4 select-none bg-linear-to-b from-white/10 via-white/5 via-30% to-transparent to-90% bg-clip-text text-center text-5xl font-bold uppercase tracking-tight text-transparent sm:text-7xl md:text-[8rem] lg:text-[10rem]">
+			<Component className="mt-32 px-4 select-none bg-linear-to-b from-white/10 via-white/5 via-30% to-transparent to-90% bg-clip-text text-center text-5xl font-bold uppercase tracking-tight text-transparent sm:text-7xl md:text-[8rem] lg:text-[10rem]">
 				{title}
-			</h1>
+			</Component>
 		</FadeDownMotion>
 	);
 }
