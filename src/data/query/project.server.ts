@@ -1,4 +1,4 @@
-import { and, eq, notInArray } from "drizzle-orm";
+import { and, eq, exists, notInArray } from "drizzle-orm";
 import { db } from "@/db";
 import {
 	media,
@@ -6,6 +6,7 @@ import {
 	projectToMedia,
 	projectToTags,
 	projectToTechnologies,
+	tag,
 } from "@/db/schema";
 import type { GetProjectListFnSchema } from "@/form-validators/project";
 import type { CreateProjectFnSchema } from "@/form-validators/project/create";
@@ -46,9 +47,28 @@ export const selectProjectList = async (params: GetProjectListFnSchema) => {
 				},
 			},
 		},
-		where: params?.query
-			? (project, { like }) => like(project.name, `%${params.query}%`)
-			: undefined,
+		where: (project, { like, and, eq }) => {
+			const queryCondition = params?.query
+				? like(project.name, `%${params.query}%`)
+				: undefined;
+
+			const tagCondition = params?.tag
+				? exists(
+						db
+							.select()
+							.from(projectToTags)
+							.innerJoin(tag, eq(projectToTags.tagId, tag.id))
+							.where(
+								and(
+									eq(projectToTags.projectId, project.id),
+									eq(tag.slug, params.tag),
+								),
+							),
+					)
+				: undefined;
+
+			return and(queryCondition, tagCondition);
+		},
 		orderBy: (project, { desc }) => desc(project.createdAt),
 	});
 };

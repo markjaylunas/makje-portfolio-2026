@@ -8,10 +8,10 @@ import { getProjectListRouteParamsSchema } from "@/form-validators/project";
 export const Route = createFileRoute("/_main/project/")({
 	component: RouteComponent,
 	validateSearch: (search) => getProjectListRouteParamsSchema.parse(search),
-	loaderDeps: ({ search: { query } }) => ({ query }),
-	loader: async ({ context, deps: { query } }) => {
+	loaderDeps: ({ search: { query, tag } }) => ({ query, tag }),
+	loader: async ({ context, deps: { query, tag } }) => {
 		return await context.queryClient.ensureQueryData(
-			getProjectListOptions({ query }),
+			getProjectListOptions({ query, tag }),
 		);
 	},
 });

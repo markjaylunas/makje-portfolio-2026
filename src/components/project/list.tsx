@@ -5,8 +5,10 @@ import ProjectCard from "../home/project/item";
 import { ItemGroup } from "../ui/item";
 
 export default function ProjectList() {
-	const { query } = useSearch({ from: "/_main/project/" });
-	const { data: projects } = useSuspenseQuery(getProjectListOptions({ query }));
+	const { query, tag } = useSearch({ from: "/_main/project/" });
+	const { data: projects } = useSuspenseQuery(
+		getProjectListOptions({ query, tag }),
+	);
 
 	return (
 		<ItemGroup className="gap-12">

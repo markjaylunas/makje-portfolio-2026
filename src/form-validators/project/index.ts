@@ -6,6 +6,7 @@ export const searchSchema = z.object({
 
 export const getProjectListFnSchema = z.object({
 	query: z.string().optional(),
+	tag: z.string().optional(),
 });
 export type GetProjectListFnSchema = z.infer<typeof getProjectListFnSchema>;
 
