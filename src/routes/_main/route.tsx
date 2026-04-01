@@ -12,7 +12,7 @@ function LayoutComponent() {
 		<>
 			<HeaderMain />
 			<Outlet />
-			<Separator className="border border-muted mt-12" />
+			<Separator className="border border-muted mt-32" />
 			<Footer />
 		</>
 	);

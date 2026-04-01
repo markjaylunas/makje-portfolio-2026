@@ -36,12 +36,12 @@ function App() {
 				</ContentMotion>
 			</div>
 
-			<div id="tech-stack" className="h-24 mt-16" />
+			<div id="tech-stack" className="h-24 mt-32" />
 			<ContentMotion>
 				<TechListSection />
 			</ContentMotion>
 
-			<div id="experience" className="relative">
+			<div id="experience" className="relative mt-16">
 				<div className="h-12 md:h-24" />
 				<div className="dashed-bottom-fade-grid absolute inset-0 h-dvh z-0" />
 				<ContentMotion>
