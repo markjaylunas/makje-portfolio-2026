@@ -182,6 +182,7 @@ export default function EditProjectForm({
 										id: t.id,
 										name: t.name,
 										icon: t.icon.url,
+										url: t.url,
 									}))}
 								tagList={project.tags.map((t) => ({
 									id: t.value,

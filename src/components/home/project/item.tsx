@@ -98,8 +98,10 @@ export default function ProjectCard({
 									size="sm"
 									render={
 										<Link to={liveUrl} target="_blank">
+											<span className="sr-only md:not-sr-only">
+												Live Preview
+											</span>
 											<HugeiconsIcon icon={ArrowUpRight} />
-											<span className="sr-only md:not-sr-only">Live</span>
 										</Link>
 									}
 								/>

@@ -24,7 +24,7 @@ export type ProjectDetailsProps = {
 	liveUrl: string | null;
 	repositoryUrl: string | null;
 	likesCount: number;
-	technologyList: { id: string; name: string; icon: string }[];
+	technologyList: { id: string; name: string; icon: string; url: string }[];
 	tagList: { id: string; name: string }[];
 	coverImage?: string;
 	photos?: string[];
@@ -50,6 +50,7 @@ export default function ProjectDetailsData() {
 				id: t.technology.id,
 				name: t.technology.name,
 				icon: t.technology.icon.url,
+				url: t.technology.url,
 			}))}
 			tagList={p.tags.map((t) => ({
 				id: t.tag.id,
@@ -170,14 +171,21 @@ export function ProjectDetails({
 						</h3>
 						<div className="flex flex-wrap gap-2">
 							{technologyList.map((t) => (
-								<Badge
-									variant="secondary"
+								<a
 									key={t.id}
-									className="rounded-full px-3 py-1.5 flex items-center gap-2 bg-white/5 hover:bg-white/10 transition-colors border-white/5"
+									href={t.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="group block bg-background outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
 								>
-									<img src={t.icon} alt={t.name} className="size-4" />
-									<span className="text-sm">{t.name}</span>
-								</Badge>
+									<Badge
+										variant="secondary"
+										className="rounded-full px-3 py-1.5 flex items-center gap-2 bg-white/5 hover:bg-white/10 transition-colors border-white/5"
+									>
+										<img src={t.icon} alt={t.name} className="size-4" />
+										<span className="text-sm">{t.name}</span>
+									</Badge>
+								</a>
 							))}
 						</div>
 					</div>
