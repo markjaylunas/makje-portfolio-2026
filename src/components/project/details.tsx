@@ -126,6 +126,7 @@ export function ProjectDetails({
 							{liveUrl && (
 								<Button
 									variant="default"
+									nativeButton={false}
 									className="rounded-full px-6 group"
 									render={
 										<Link to={liveUrl} target="_blank">
@@ -141,6 +142,7 @@ export function ProjectDetails({
 							{repositoryUrl && (
 								<Button
 									variant="secondary"
+									nativeButton={false}
 									className="rounded-full px-6"
 									render={
 										<Link to={repositoryUrl} target="_blank">
