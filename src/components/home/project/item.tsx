@@ -90,9 +90,15 @@ export default function ProjectCard({
 			</section>
 			<ItemContent className="flex flex-col justify-between py-1.5">
 				<div className="flex flex-col">
-					<Link to="/project/$projectId" params={{ projectId }}>
-						<ItemTitle className="line-clamp-1 text-xl">{name}</ItemTitle>
-						<ItemDescription className="line-clamp-3 sm:line-clamp-1 mt-2">
+					<Link
+						to="/project/$projectId"
+						params={{ projectId }}
+						className="group/project-link block w-full"
+					>
+						<ItemTitle className="line-clamp-1 text-xl transition-all group-hover/project-link:text-primary">
+							{name}
+						</ItemTitle>
+						<ItemDescription className="line-clamp-3 sm:line-clamp-1 mt-2 transition-opacity group-hover/project-link:opacity-70">
 							{description}
 						</ItemDescription>
 					</Link>
