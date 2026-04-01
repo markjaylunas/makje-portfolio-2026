@@ -1,6 +1,5 @@
-/** biome-ignore-all lint/a11y/useSemanticElements: <ignore> */
-/** biome-ignore-all lint/a11y/useKeyWithClickEvents: <ignore> */
-
+/** biome-ignore-all lint/a11y/useSemanticElements: <default> */
+/** biome-ignore-all lint/a11y/useKeyWithClickEvents: <default> */
 import { cva, type VariantProps } from "class-variance-authority";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

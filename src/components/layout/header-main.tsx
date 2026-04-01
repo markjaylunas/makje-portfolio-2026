@@ -13,7 +13,7 @@ export default function HeaderMain() {
 		<MenuProvider>
 			<HeaderContainer>
 				<nav>
-					<div className="flex flex-row-reverse justify-between sm:grid grid-cols-3 items-center h-18 bg-primary/20 px-4 backdrop-blur-md border border-transparent rounded-full">
+					<div className="flex flex-row-reverse justify-between sm:grid grid-cols-3 items-center h-18 bg-linear-to-t to-primary/20 from-chart-2/20 px-4 backdrop-blur-md border border-transparent rounded-full">
 						<NavMenu />
 						<NavLogoLink />
 						<ConnectCTA />
@@ -55,8 +55,8 @@ function NavMenu() {
 			size="icon-lg"
 			variant="ghost"
 			className={cn(
-				"rounded-full text-foreground hover:text-primary hover:border-primary transition-colors duration-300 ease-in-out hover:cursor-pointer border border-foreground bg-primary/10",
-				menuOpen && "text-primary border-primary",
+				"rounded-full text-foreground hover:text-chart-2 hover:border-chart-2 transition-colors duration-300 ease-in-out hover:cursor-pointer border border-foreground bg-chart-2/10",
+				menuOpen && "text-chart-2 border-chart-2",
 			)}
 			onClick={toggleMenu}
 		>

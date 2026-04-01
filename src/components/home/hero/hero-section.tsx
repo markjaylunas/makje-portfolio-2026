@@ -11,7 +11,7 @@ export default function HeroSection() {
 		<section className="relative flex min-h-dvh flex-col items-center justify-center gap-2 px-4 sm:px-6 max-w-(--breakpoint-lg) mx-auto">
 			<HeroLogo />
 			<div className="relative flex flex-col items-center justify-center gap-2">
-				<div className="to-primary pointer-events-none absolute top-1/2 left-1/2 -z-10 h-dvh w-full max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-full bg-linear-to-br from-emerald-300 from-0% to-60% opacity-12 blur-[60px] md:h-100 md:opacity-20 md:blur-[90px]"></div>
+				<div className="to-chart-4 pointer-events-none absolute top-1/2 left-1/2 -z-10 h-dvh w-full max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-full bg-linear-to-br from-primary from-0% to-60% opacity-12 blur-[60px] md:h-100 md:opacity-20 md:blur-[90px]"></div>
 
 				<FadeDownMotion>
 					<h1 className="text-center text-4xl font-bold drop-shadow-2xl xs:text-5xl md:text-6xl lg:text-7xl">

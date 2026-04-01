@@ -128,10 +128,7 @@ export function ProjectDetails({
 									render={
 										<Link to={liveUrl} target="_blank">
 											<span className="text-sm">Live</span>
-											<HugeiconsIcon
-												icon={ArrowUpRight}
-												className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-											/>
+											<HugeiconsIcon icon={ArrowUpRight} className="size-4" />
 										</Link>
 									}
 								/>

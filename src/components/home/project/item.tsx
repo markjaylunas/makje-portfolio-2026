@@ -95,7 +95,7 @@ export default function ProjectCard({
 						params={{ projectId }}
 						className="group/project-link block w-full"
 					>
-						<ItemTitle className="line-clamp-1 text-xl transition-all group-hover/project-link:text-primary">
+						<ItemTitle className="line-clamp-1 text-xl transition-all group-hover/project-link:text-chart-2 duration-300 ease-in-out">
 							{name}
 						</ItemTitle>
 						<ItemDescription className="line-clamp-3 sm:line-clamp-1 mt-2 transition-opacity group-hover/project-link:opacity-70">

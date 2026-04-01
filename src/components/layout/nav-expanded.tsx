@@ -98,7 +98,7 @@ export function InternalLink(
 	return (
 		<Link
 			className={cn(
-				"flex items-center px-2 sm:px-4 py-2 sm:py-3 text-xs transition-colors text-muted-foreground data-active:text-primary hover:text-foreground hover:bg-accent rounded-lg gap-1 ease-in-out duration-300",
+				"flex items-center px-2 sm:px-4 py-2 sm:py-3 text-xs transition-colors text-muted-foreground data-active:text-chart-2 hover:text-foreground hover:bg-accent rounded-lg gap-1 ease-in-out duration-300",
 			)}
 			to={props.to}
 			hash={props.hash}
@@ -136,7 +136,7 @@ function ExternalLink({
 			target="_blank"
 			rel="noopener noreferrer"
 			onClick={onClick}
-			className="flex items-center px-2 sm:px-4 py-2 sm:py-3 text-xs  transition-colors hover:bg-accent rounded-lg gap-1 ease-in-out duration-300 text-muted-foreground data-active:text-primary hover:text-foreground"
+			className="flex items-center px-2 sm:px-4 py-2 sm:py-3 text-xs  transition-colors hover:bg-accent rounded-lg gap-1 ease-in-out duration-300 text-muted-foreground data-active:text-chart-2 hover:text-foreground"
 			href={href}
 		>
 			<HugeiconsIcon icon={icon} className="size-4 sm:size-5" />

@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/correctness/noNestedComponentDefinitions: <ignore> */
+/** biome-ignore-all lint/correctness/noNestedComponentDefinitions: <default> */
 
 import {
 	ArrowDownIcon,

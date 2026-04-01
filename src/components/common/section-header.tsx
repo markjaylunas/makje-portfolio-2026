@@ -17,7 +17,7 @@ export default function SectionHeader({
 }: SectionHeaderProps) {
 	return (
 		<div className={cn("flex flex-col gap-3 mb-16", className)}>
-			<span className="text-[10px] md:text-xs font-black tracking-[0.25em] uppercase text-primary font-mono">
+			<span className="text-[10px] md:text-xs font-black tracking-[0.25em] uppercase text-chart-2 font-mono">
 				{subtitle}
 			</span>
 			<h2
