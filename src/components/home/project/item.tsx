@@ -113,6 +113,7 @@ export default function ProjectCard({
 								<Button
 									variant="default"
 									size="sm"
+									nativeButton={false}
 									render={
 										<Link to={liveUrl} target="_blank">
 											Live
@@ -125,6 +126,7 @@ export default function ProjectCard({
 								<Button
 									variant="secondary"
 									size="sm"
+									nativeButton={false}
 									render={
 										<Link to={repositoryUrl} target="_blank">
 											<HugeiconsIcon icon={Github} />
