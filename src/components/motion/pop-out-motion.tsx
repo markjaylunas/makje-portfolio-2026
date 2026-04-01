@@ -1,8 +1,6 @@
 import {
-	domAnimation,
 	type HTMLMotionProps,
-	LazyMotion,
-	m,
+	motion,
 	useMotionValue,
 	useTransform,
 } from "motion/react";
@@ -35,29 +33,27 @@ export default function PopOutMotion({
 	}
 
 	return (
-		<LazyMotion features={domAnimation}>
-			<m.div
-				onMouseMove={handleMouseMove}
-				onMouseLeave={handleMouseLeave}
-				style={{
-					rotateX,
-					rotateY,
-					transformStyle: "preserve-3d",
-				}}
-				whileHover={{
-					y: -8, // The "Pop" lift effect
-					transition: { duration: 0.2, ease: "easeOut" },
-					border: "1px solid var(--muted)",
-				}}
-				transition={{
-					type: "spring",
-					stiffness: 300,
-					damping: 20,
-				}}
-				{...props}
-			>
-				{children}
-			</m.div>
-		</LazyMotion>
+		<motion.div
+			onMouseMove={handleMouseMove}
+			onMouseLeave={handleMouseLeave}
+			style={{
+				rotateX,
+				rotateY,
+				transformStyle: "preserve-3d",
+			}}
+			whileHover={{
+				y: -8, // The "Pop" lift effect
+				transition: { duration: 0.2, ease: "easeOut" },
+				border: "1px solid var(--muted)",
+			}}
+			transition={{
+				type: "spring",
+				stiffness: 300,
+				damping: 20,
+			}}
+			{...props}
+		>
+			{children}
+		</motion.div>
 	);
 }
