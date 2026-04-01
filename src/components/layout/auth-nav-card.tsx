@@ -39,6 +39,7 @@ export default function AuthNavCard() {
 							description="Admin Dashboard"
 							icon={UserShield01Icon}
 							onClick={() => {}}
+							activeOptions={{ exact: true }}
 						/>
 					)}
 					<div className="flex items-center gap-2">
@@ -88,6 +89,7 @@ export default function AuthNavCard() {
 					icon={LoginIcon}
 					onClick={() => {}}
 					callbackURL={pathname}
+					activeOptions={{ exact: true }}
 				/>
 			)}
 		</div>

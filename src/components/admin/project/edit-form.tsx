@@ -187,6 +187,7 @@ export default function EditProjectForm({
 								tagList={project.tags.map((t) => ({
 									id: t.value,
 									name: t.label,
+									slug: t.value,
 								}))}
 								content={project.content || ""}
 								createdAt={new Date()}

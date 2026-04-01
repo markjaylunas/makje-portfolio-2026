@@ -16,12 +16,12 @@ import {
 	technologyEditFormSchema,
 } from "@/form-validators/technology/edit";
 import { queryKey } from "@/lib/query-key";
-import type { TechnologyWithRelations } from "@/lib/types";
+import type { TechnologyWithIcon } from "@/lib/types";
 
 export default function EditTechnologyForm({
 	defaultTechnology,
 }: {
-	defaultTechnology: TechnologyWithRelations;
+	defaultTechnology: TechnologyWithIcon;
 }) {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();

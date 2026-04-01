@@ -64,7 +64,6 @@ export default function ProjectDetailsData() {
 }
 
 export function ProjectDetails({
-	projectId,
 	name,
 	description,
 	content,

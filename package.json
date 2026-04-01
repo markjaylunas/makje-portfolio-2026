@@ -10,6 +10,8 @@
     "format": "biome format",
     "lint": "biome lint",
     "check": "biome check",
+    "type-check": "tsc --noEmit",
+    "check:all": "pnpm format && pnpm lint && pnpm check && pnpm type-check",
     "deploy": "pnpm run build && wrangler deploy",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
