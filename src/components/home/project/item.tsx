@@ -114,7 +114,8 @@ export default function ProjectCard({
 									size="sm"
 									render={
 										<Link to={liveUrl} target="_blank">
-											Live Preview
+											Live{" "}
+											<span className="sr-only sm:not-sr-only">Preview</span>
 											<HugeiconsIcon icon={ArrowUpRight} />
 										</Link>
 									}
@@ -127,7 +128,7 @@ export default function ProjectCard({
 									render={
 										<Link to={repositoryUrl} target="_blank">
 											<HugeiconsIcon icon={Github} />
-											Repository
+											Repo
 										</Link>
 									}
 								/>
