@@ -9,9 +9,9 @@ export const Route = createFileRoute("/_main/contact/")({
 
 function RouteComponent() {
 	return (
-		<main className="relative mx-auto max-w-(--breakpoint-lg) px-4 pt-32 sm:px-6">
+		<main className="relative min-h-screen pt-16 sm:pt-42">
 			<ContentMotion>
-				<div className="relative z-10 mt-32 sm:mt-42 flex flex-col items-center sm:items-start justify-around gap-12 sm:flex-row mb-24">
+				<div className="relative z-10 flex flex-col items-center sm:items-start justify-around gap-12 sm:flex-row mb-24 mx-auto max-w-(--breakpoint-lg) min-h-dvh px-4 py-36">
 					<ContactDetails />
 					<ContactForm />
 				</div>

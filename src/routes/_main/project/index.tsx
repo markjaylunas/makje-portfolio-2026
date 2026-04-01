@@ -18,10 +18,10 @@ export const Route = createFileRoute("/_main/project/")({
 
 function RouteComponent() {
 	return (
-		<main className="relative min-h-screen">
+		<main className="relative min-h-screen pt-16 sm:pt-42">
 			<PageHeaderAurora title="Projects" />
 
-			<div className="relative mx-auto max-w-(--breakpoint-lg) px-4 pt-42 sm:px-6 sm:pt-80">
+			<div className="relative mx-auto max-w-(--breakpoint-lg) min-h-dvh px-4 py-36">
 				<ContentMotion>
 					<ProjectList />
 				</ContentMotion>

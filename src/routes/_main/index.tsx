@@ -23,7 +23,7 @@ export const Route = createFileRoute("/_main/")({
 
 function App() {
 	return (
-		<main>
+		<main className="relative min-h-screen">
 			<div className="grid-subtle-background absolute inset-0 opacity-30 h-dvh z-0" />
 
 			<HeroSection />
