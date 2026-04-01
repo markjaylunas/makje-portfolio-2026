@@ -24,7 +24,7 @@ export default function NavExpanded() {
 	return (
 		<ZoomMotion
 			isOpen={menuOpen}
-			className="bg-primary/20 p-1 sm:p-4  border border-transparent mt-4 rounded-xl grid grid-cols-2 gap-1 sm:gap-4 backdrop-blur-md"
+			className="bg-linear-to-tl from-primary/20 to-chart-2/20 p-1 sm:p-4  border border-transparent mt-4 rounded-xl grid grid-cols-2 gap-1 sm:gap-4 backdrop-blur-md"
 		>
 			<NavLinkGroupCard title="About">
 				<ul className="flex flex-col">

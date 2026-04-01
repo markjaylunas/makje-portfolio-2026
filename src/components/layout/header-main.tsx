@@ -13,7 +13,7 @@ export default function HeaderMain() {
 		<MenuProvider>
 			<HeaderContainer>
 				<nav>
-					<div className="flex flex-row-reverse justify-between sm:grid grid-cols-3 items-center h-18 bg-linear-to-t to-primary/20 from-chart-2/20 px-4 backdrop-blur-md border border-transparent rounded-full">
+					<div className="flex flex-row-reverse justify-between sm:grid grid-cols-3 items-center h-18 bg-linear-to-br from-primary/20 to-chart-2/20 px-4 backdrop-blur-md border border-transparent rounded-full">
 						<NavMenu />
 						<NavLogoLink />
 						<ConnectCTA />

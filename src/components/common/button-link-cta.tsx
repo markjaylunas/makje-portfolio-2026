@@ -18,7 +18,7 @@ export default function ButtonLinkCTA({
 		<Link
 			className={cn(
 				buttonVariants(),
-				"relative text-sm font-medium rounded-full h-12 p-1 ps-6 pe-14 group transition-all duration-500 hover:ps-14 hover:pe-6 w-fit overflow-hidden bg-linear-to-r from-primary to-chart-2",
+				"relative text-sm font-medium rounded-full h-12 p-1 ps-6 pe-14 group transition-all duration-500 hover:ps-14 hover:pe-6 w-fit overflow-hidden bg-linear-to-br from-primary to-chart-2",
 				className,
 			)}
 			onClick={onClick}
