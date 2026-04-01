@@ -1,7 +1,17 @@
+import { ChevronRight } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { useId } from "react";
 import SectionHeader from "@/components/common/section-header";
-import { ItemGroup } from "@/components/ui/item";
+import {
+	Item,
+	ItemActions,
+	ItemContent,
+	ItemDescription,
+	ItemGroup,
+	ItemTitle,
+} from "@/components/ui/item";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
 import ProjectCard from "./item";
 
@@ -43,6 +53,23 @@ export default function FeaturedProjectSection() {
 						}))}
 					/>
 				))}
+
+				<Item
+					variant="muted"
+					render={
+						<Link to="/project">
+							<ItemContent>
+								<ItemTitle>View all projects</ItemTitle>
+								<ItemDescription>
+									Explore the full collection of projects I've worked on.
+								</ItemDescription>
+							</ItemContent>
+							<ItemActions>
+								<HugeiconsIcon icon={ChevronRight} className="size-4" />
+							</ItemActions>
+						</Link>
+					}
+				/>
 			</ItemGroup>
 		</section>
 	);
