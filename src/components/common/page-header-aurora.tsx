@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import FadeDownMotion from "@/components/motion/fade-down-motion";
 import { cn } from "@/lib/utils";
 
 interface PageHeaderAuroraProps {
@@ -13,7 +14,7 @@ export default function PageHeaderAurora({
 	height = "h-[90dvh]",
 }: PageHeaderAuroraProps) {
 	return (
-		<div
+		<FadeDownMotion
 			className={cn(
 				"aurora-midnight-background pointer-events-none absolute inset-0 z-0 select-none",
 				height,
@@ -23,6 +24,6 @@ export default function PageHeaderAurora({
 			<h1 className="mt-32 px-4 select-none bg-linear-to-b from-white/10 via-white/5 via-30% to-transparent to-90% bg-clip-text text-center text-5xl font-bold uppercase tracking-tight text-transparent sm:text-7xl md:text-[8rem] lg:text-[10rem]">
 				{title}
 			</h1>
-		</div>
+		</FadeDownMotion>
 	);
 }
