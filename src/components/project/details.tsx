@@ -7,19 +7,12 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, useParams } from "@tanstack/react-router";
-import Autoplay from "embla-carousel-autoplay";
-import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import {
-	Carousel,
-	type CarouselApi,
-	CarouselContent,
-	CarouselItem,
-} from "@/components/ui/carousel";
 import { getProjectOptions } from "@/data/options/project";
 import { dateToMonthYear, formatCompactCount } from "@/lib/utils";
+import ImageCarousel from "../common/image-carousel";
 import { MarkdownRenderer } from "../common/md-render";
 
 export type ProjectDetailsProps = {
@@ -163,7 +156,7 @@ export function ProjectDetails({
 
 			{/* Hero Image / Carousel */}
 			<section className="relative aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-muted/20">
-				<DetailCarousel allPhotos={allPhotos} />
+				<ImageCarousel imageList={allPhotos} autoplay="auto" />
 			</section>
 
 			{/* Main Content & Sidebar Layout */}
@@ -193,69 +186,5 @@ export function ProjectDetails({
 				</aside>
 			</div>
 		</article>
-	);
-}
-
-function DetailCarousel({ allPhotos }: { allPhotos: string[] }) {
-	const [api, setApi] = useState<CarouselApi>();
-	const [currentIndex, setCurrentIndex] = useState(0);
-
-	useEffect(() => {
-		if (!api) return;
-
-		setCurrentIndex(api.selectedScrollSnap());
-
-		api.on("select", () => {
-			setCurrentIndex(api.selectedScrollSnap());
-		});
-	}, [api]);
-
-	if (allPhotos.length === 0)
-		return <div className="size-full bg-muted/20 animate-pulse" />;
-
-	return (
-		<Carousel
-			setApi={setApi}
-			opts={{
-				align: "start",
-				loop: true,
-			}}
-			plugins={[
-				Autoplay({
-					delay: 6000,
-				}),
-			]}
-			className="size-full group"
-		>
-			<CarouselContent className="size-full ml-0">
-				{allPhotos.map((photo) => (
-					<CarouselItem key={photo} className="size-full pl-0">
-						<img
-							src={photo}
-							alt=""
-							className="size-full object-cover select-none pointer-events-none"
-							draggable={false}
-						/>
-					</CarouselItem>
-				))}
-			</CarouselContent>
-
-			{allPhotos.length > 1 && (
-				<div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20 pointer-events-auto">
-					{allPhotos.map((photo, i) => (
-						<button
-							key={`dot-${photo}`}
-							type="button"
-							onClick={() => api?.scrollTo(i)}
-							className={`h-1.5 rounded-full transition-all duration-300 ${
-								i === currentIndex
-									? "w-8 bg-white shadow-xs"
-									: "w-2 bg-white/40 hover:bg-white/60 shadow-xs"
-							}`}
-						/>
-					))}
-				</div>
-			)}
-		</Carousel>
 	);
 }

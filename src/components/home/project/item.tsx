@@ -1,6 +1,7 @@
 import { ArrowUpRight, Github, Like } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
+import ImageCarousel from "@/components/common/image-carousel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -9,10 +10,10 @@ import {
 	ItemActions,
 	ItemContent,
 	ItemDescription,
+	ItemMedia,
 	ItemTitle,
 } from "@/components/ui/item";
 import { formatCompactCount } from "@/lib/utils";
-import ProjectCardImage from "./item-image";
 
 type ProjectCardProps = {
 	projectId: string;
@@ -47,46 +48,48 @@ export default function ProjectCard({
 		<Item
 			variant="default"
 			role="listitem"
-			className="p-0 rounded-none border-2"
+			className="p-0 rounded-none border-2 items-stretch"
 		>
-			<ProjectCardImage projectId={projectId} allPhotos={allPhotos} />
+			<section className="relative">
+				<ItemMedia variant="image" className="size-48 bg-muted">
+					<ImageCarousel
+						imageList={allPhotos}
+						autoplay="onHover"
+						delay={2000}
+					/>
+				</ItemMedia>
+			</section>
+			<ItemContent className="flex flex-col justify-between px-4 py-1.5">
+				<div className="flex flex-col">
+					<Link to="/project/$projectId" params={{ projectId }}>
+						<ItemTitle className="line-clamp-1 text-xl">{name}</ItemTitle>
+						<ItemDescription className="line-clamp-1 mt-2">
+							{description}
+						</ItemDescription>
+					</Link>
 
-			<ItemContent>
-				<Link to="/project/$projectId" params={{ projectId }}>
-					<ItemTitle className="line-clamp-1 text-lg">{name}</ItemTitle>
-				</Link>
-				<ItemDescription className="line-clamp-1">
-					{description}
-				</ItemDescription>
-				{tagList.length > 0 && (
-					<div className="flex flex-wrap gap-2">
-						{tagList.map((tag) => (
-							<Link
-								key={tag.slug}
-								to="/project/$projectId"
-								params={{ projectId }}
-								search={{ tag: tag.slug }} //TODO: Add tag search in project list loader
-							>
-								<Badge
-									variant="ghost"
-									className="text-xs text-muted-foreground"
+					{tagList.length > 0 && (
+						<div className="flex flex-wrap gap-2 mt-1">
+							{tagList.map((tag) => (
+								<Link
+									key={tag.slug}
+									to="/project/$projectId"
+									params={{ projectId }}
+									search={{ tag: tag.slug }} //TODO: Add tag search in project list loader
 								>
-									#{tag.name}
-								</Badge>
-							</Link>
-						))}
-					</div>
-				)}
-				<div className="flex flex-col items-start gap-4">
-					<div className="flex flex-wrap gap-2">
-						{technologyList.map((tech) => (
-							<Badge variant="secondary" key={tech.name}>
-								<img src={tech.icon} alt={tech.name} className="size-4" />
-								{tech.name}
-							</Badge>
-						))}
-					</div>
+									<Badge
+										variant="outline"
+										className="text-xs text-muted-foreground"
+									>
+										#{tag.name}
+									</Badge>
+								</Link>
+							))}
+						</div>
+					)}
+				</div>
 
+				<div className="flex flex-col items-start gap-4">
 					<ItemActions className="flex items-center justify-start gap-2 w-full flex-wrap">
 						<ButtonGroup>
 							{liveUrl && (
@@ -115,11 +118,20 @@ export default function ProjectCard({
 							)}
 						</ButtonGroup>
 
-						<Button variant="outline" size="xs" className="text-xs font-normal">
+						<Button variant="ghost">
 							<HugeiconsIcon icon={Like} />
 							{formatCompactCount(likesCount)}
 						</Button>
 					</ItemActions>
+
+					<div className="flex flex-wrap gap-2">
+						{technologyList.map((tech) => (
+							<Badge variant="secondary" key={tech.name}>
+								<img src={tech.icon} alt={tech.name} className="size-4" />
+								{tech.name}
+							</Badge>
+						))}
+					</div>
 				</div>
 			</ItemContent>
 		</Item>
