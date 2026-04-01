@@ -29,7 +29,7 @@ export default function NavExpanded() {
 			<NavLinkGroupCard title="About">
 				<ul className="flex flex-col">
 					{aboutLinks.map((link) => (
-						<li key={link.to}>
+						<li key={link.name}>
 							<InternalLink {...link} onClick={toggleMenu} />
 						</li>
 					))}
@@ -38,7 +38,7 @@ export default function NavExpanded() {
 			<NavLinkGroupCard title="Projects">
 				<ul className="flex flex-col">
 					{projectLinks.map((link) => (
-						<li key={link.to}>
+						<li key={link.name}>
 							<InternalLink {...link} onClick={toggleMenu} />
 						</li>
 					))}
@@ -47,7 +47,7 @@ export default function NavExpanded() {
 			<NavLinkGroupCard title="Socials">
 				<ul className="flex flex-col">
 					{contactLinks.map((link) => (
-						<li key={link.to}>
+						<li key={link.name}>
 							<InternalLink {...link} onClick={toggleMenu} />
 						</li>
 					))}
