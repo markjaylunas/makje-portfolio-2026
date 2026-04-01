@@ -2,6 +2,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { socialLinks } from "@/lib/constants";
 import GradientText from "../../common/gradient-text";
 import ShinyButton from "../../common/shiny-button";
+import FadeDownMotion from "../../motion/fade-down-motion";
 import FadeUpMotion from "../../motion/fade-up-motion";
 import HeroLogo from "./logo";
 
@@ -12,7 +13,7 @@ export default function HeroSection() {
 			<div className="relative flex flex-col items-center justify-center gap-2">
 				<div className="to-primary pointer-events-none absolute top-1/2 left-1/2 -z-10 h-dvh w-full max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-full bg-linear-to-br from-emerald-300 from-0% to-60% opacity-12 blur-[60px] md:h-100 md:opacity-20 md:blur-[90px]"></div>
 
-				<FadeUpMotion>
+				<FadeDownMotion>
 					<h1 className="text-center text-4xl font-bold drop-shadow-2xl xs:text-5xl md:text-6xl lg:text-7xl">
 						<GradientText>
 							Mark Jay Lunas <br />
@@ -21,7 +22,7 @@ export default function HeroSection() {
 							</span>
 						</GradientText>
 					</h1>
-				</FadeUpMotion>
+				</FadeDownMotion>
 
 				<FadeUpMotion delay={0.2}>
 					<p className="prose mt-2 md:mt-4 text-center text-muted-foreground text-pretty text-sm md:text-xl font-light">

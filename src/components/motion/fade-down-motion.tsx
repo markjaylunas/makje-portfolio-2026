@@ -2,8 +2,9 @@ import { AnimatePresence, type HTMLMotionProps, motion } from "motion/react";
 
 export default function FadeDownMotion({
 	children,
+	delay = 0,
 	...props
-}: HTMLMotionProps<"div">) {
+}: HTMLMotionProps<"div"> & { delay?: number }) {
 	return (
 		<AnimatePresence>
 			<motion.div
@@ -12,6 +13,7 @@ export default function FadeDownMotion({
 				exit={{ opacity: 0, y: -20, filter: "blur(10px)", scale: 1.05 }}
 				transition={{
 					duration: 1,
+					delay,
 					ease: [0.16, 1, 0.3, 1],
 				}}
 				{...props}
