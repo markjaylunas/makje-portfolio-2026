@@ -1,7 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useId } from "react";
-import GradientText from "@/components/common/gradient-text";
-import H2 from "@/components/common/H2";
+import SectionHeader from "@/components/common/section-header";
 import { getExperienceListOptions } from "@/data/options/experience";
 import { ExperienceItem } from "./item";
 
@@ -15,9 +14,12 @@ export default function ExperienceTimelineSection() {
 			className="mx-auto max-w-(--breakpoint-lg) px-6"
 			aria-labelledby={sectionHeadingId}
 		>
-			<H2 id={sectionHeadingId} className="flex justify-start">
-				<GradientText>Experience</GradientText>
-			</H2>
+			<SectionHeader
+				id={sectionHeadingId}
+				subtitle="Timeline"
+				title="My Professional Journey."
+				description="A history of companies and roles where I have grown as a developer."
+			/>
 
 			<ol className="relative ml-3 border-l-2 border-muted mt-16">
 				{experienceList.map((exp) => (

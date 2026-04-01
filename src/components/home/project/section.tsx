@@ -1,7 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useId } from "react";
-import GradientText from "@/components/common/gradient-text";
-import H2 from "@/components/common/H2";
+import SectionHeader from "@/components/common/section-header";
 import { ItemGroup } from "@/components/ui/item";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
 import ProjectCard from "./item";
@@ -15,9 +14,12 @@ export default function FeaturedProjectSection() {
 			className="mx-auto max-w-(--breakpoint-lg) px-4"
 			aria-labelledby={sectionHeadingId}
 		>
-			<H2 id={sectionHeadingId} className="flex justify-start mb-12">
-				<GradientText>Projects</GradientText>
-			</H2>
+			<SectionHeader
+				id={sectionHeadingId}
+				subtitle="Featured Projects"
+				title="Crafting digital experiences."
+				description="A collection of web applications, experiments, and some pieces of code that I have worked on."
+			/>
 			<ItemGroup className="gap-12">
 				{projects?.map(({ project }) => (
 					<ProjectCard

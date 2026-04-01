@@ -2,8 +2,7 @@ import { ChevronDown, ChevronUp } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import GradientText from "@/components/common/gradient-text";
-import H2 from "@/components/common/H2";
+import SectionHeader from "@/components/common/section-header";
 import PopOutMotion from "@/components/motion/pop-out-motion";
 import { Button } from "@/components/ui/button";
 import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
@@ -52,9 +51,12 @@ export default function TechListSection() {
 			className="mx-auto max-w-(--breakpoint-lg) px-6"
 			aria-labelledby={sectionHeadingId}
 		>
-			<H2 id={sectionHeadingId}>
-				<GradientText>Tech Stack</GradientText>
-			</H2>
+			<SectionHeader
+				id={sectionHeadingId}
+				subtitle="Toolbox"
+				title="Technologies I work with."
+				description="These are the languages, frameworks, and tools that I use to bring my ideas to life."
+			/>
 
 			<ul className="grid grid-cols-2 md:grid-cols-4 mt-12 gap-px bg-muted border border-muted">
 				{visibleTech.map(({ id, technology }) => (

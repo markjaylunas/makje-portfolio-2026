@@ -33,12 +33,12 @@ function App() {
 				<FeaturedProjectSection />
 			</ContentMotion>
 
-			<div id="tech-stack" className="h-24" />
+			<div id="tech-stack" className="h-24 mt-16" />
 			<ContentMotion>
 				<TechListSection />
 			</ContentMotion>
 
-			<div id="experience" className="md:h-24" />
+			<div id="experience" className="h-24 mt-16" />
 			<ContentMotion>
 				<ExperienceTimelineSection />
 			</ContentMotion>
