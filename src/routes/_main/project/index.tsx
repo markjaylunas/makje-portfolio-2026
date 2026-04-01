@@ -3,11 +3,11 @@ import PageHeaderAurora from "@/components/common/page-header-aurora";
 import ContentMotion from "@/components/motion/content-motion";
 import ProjectList from "@/components/project/list";
 import { getProjectListOptions } from "@/data/options/project";
-import { searchSchema } from "@/form-validators/project";
+import { getProjectListRouteParamsSchema } from "@/form-validators/project";
 
 export const Route = createFileRoute("/_main/project/")({
 	component: RouteComponent,
-	validateSearch: (search) => searchSchema.parse(search),
+	validateSearch: (search) => getProjectListRouteParamsSchema.parse(search),
 	loaderDeps: ({ search: { query } }) => ({ query }),
 	loader: async ({ context, deps: { query } }) => {
 		return await context.queryClient.ensureQueryData(

@@ -22,3 +22,11 @@ export const adminProjectIdRouteParamsSchema = z.object({
 export type AdminProjectIdRouteParamsSchema = z.infer<
 	typeof adminProjectIdRouteParamsSchema
 >;
+
+export const getProjectListRouteParamsSchema = z.object({
+	query: z.string().optional(),
+	tag: z.string().optional(),
+});
+export type GetProjectListRouteParamsSchema = z.infer<
+	typeof getProjectListRouteParamsSchema
+>;

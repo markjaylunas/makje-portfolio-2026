@@ -25,7 +25,7 @@ export type ProjectDetailsProps = {
 	repositoryUrl: string | null;
 	likesCount: number;
 	technologyList: { id: string; name: string; icon: string; url: string }[];
-	tagList: { id: string; name: string }[];
+	tagList: { id: string; name: string; slug: string }[];
 	coverImage?: string;
 	photos?: string[];
 };
@@ -55,6 +55,7 @@ export default function ProjectDetailsData() {
 			tagList={p.tags.map((t) => ({
 				id: t.tag.id,
 				name: t.tag.name,
+				slug: t.tag.slug,
 			}))}
 			coverImage={p.coverImage?.url}
 			photos={p.photos.map((p) => p.media.url)}
@@ -63,6 +64,7 @@ export default function ProjectDetailsData() {
 }
 
 export function ProjectDetails({
+	projectId,
 	name,
 	description,
 	content,
@@ -86,13 +88,14 @@ export function ProjectDetails({
 				<div className="flex flex-col gap-4">
 					<div className="flex flex-wrap items-center gap-3">
 						{tagList.map((t) => (
-							<Badge
-								key={t.id}
-								variant="outline"
-								className="rounded-full px-4 py-1 text-xs font-medium border-emerald-500/20 text-emerald-400 bg-emerald-500/5 hover:bg-emerald-500/10 transition-colors cursor-pointer"
-							>
-								#{t.name}
-							</Badge>
+							<Link key={t.id} to="/project" search={{ tag: t.slug }}>
+								<Badge
+									variant="outline"
+									className="rounded-full px-4 py-1 text-xs font-medium border-emerald-500/20 text-emerald-400 bg-emerald-500/5 hover:bg-emerald-500/10 transition-colors cursor-pointer"
+								>
+									#{t.name}
+								</Badge>
+							</Link>
 						))}
 					</div>
 					<h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white leading-tight">

@@ -46,12 +46,7 @@ export default function ProjectCard({
 	);
 
 	const tags = tagList.map((tag) => (
-		<Link
-			key={tag.slug}
-			to="/project/$projectId"
-			params={{ projectId }}
-			search={{ tag: tag.slug }}
-		>
+		<Link key={tag.slug} to="/project" search={{ tag: tag.slug }}>
 			<Badge
 				variant="outline"
 				className="text-xs text-muted-foreground whitespace-nowrap"
