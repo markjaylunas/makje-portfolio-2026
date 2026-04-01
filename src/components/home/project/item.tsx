@@ -114,8 +114,7 @@ export default function ProjectCard({
 									size="sm"
 									render={
 										<Link to={liveUrl} target="_blank">
-											Live{" "}
-											<span className="sr-only sm:not-sr-only">Preview</span>
+											Live
 											<HugeiconsIcon icon={ArrowUpRight} />
 										</Link>
 									}

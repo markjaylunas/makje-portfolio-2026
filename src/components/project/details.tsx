@@ -127,7 +127,7 @@ export function ProjectDetails({
 									className="rounded-full px-6 group"
 									render={
 										<Link to={liveUrl} target="_blank">
-											<span>Live Preview</span>
+											<span>Live</span>
 											<HugeiconsIcon
 												icon={ArrowUpRight}
 												className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -143,7 +143,7 @@ export function ProjectDetails({
 									render={
 										<Link to={repositoryUrl} target="_blank">
 											<HugeiconsIcon icon={Github} />
-											<span>Repository</span>
+											<span>Repo</span>
 										</Link>
 									}
 								/>
