@@ -4,7 +4,6 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import SectionHeader from "@/components/common/section-header";
 import PopOutMotion from "@/components/motion/pop-out-motion";
-import { Button } from "@/components/ui/button";
 import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
 import TechCard from "./card";
 
@@ -72,19 +71,29 @@ export default function TechListSection() {
 						</PopOutMotion>
 					</li>
 				))}
+				{featuredTechnologyList.length > 8 && (
+					<li className="col-span-2 md:col-span-4">
+						<PopOutMotion>
+							<button
+								type="button"
+								onClick={handleToggle}
+								className="group w-full h-24 md:h-20 flex items-center justify-center gap-3 bg-background transition-all duration-300 cursor-pointer relative"
+							>
+								<div className="flex items-center gap-2 font-medium text-muted-foreground group-hover:text-foreground transition-colors">
+									<HugeiconsIcon
+										icon={icon}
+										size={22}
+										className="transition-transform duration-300 group-hover:scale-110"
+									/>
+									<span className="text-sm md:text-base uppercase tracking-widest font-bold">
+										{label}
+									</span>
+								</div>
+							</button>
+						</PopOutMotion>
+					</li>
+				)}
 			</ul>
-
-			<div className="w-full flex justify-center items-center mt-8">
-				<Button
-					onClick={handleToggle}
-					variant="outline"
-					size="lg"
-					className="gap-2 rounded-full px-6 hover:cursor-pointer"
-				>
-					<HugeiconsIcon icon={icon} size={20} />
-					{label}
-				</Button>
-			</div>
 		</section>
 	);
 }
