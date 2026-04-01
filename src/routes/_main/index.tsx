@@ -25,21 +25,25 @@ function App() {
 	return (
 		<main className="relative min-h-[200vh]">
 			<div className="grid-subtle-background absolute inset-0 opacity-30 h-dvh z-0" />
+
 			<HeroSection />
+
 			<div id="featured-projects" className="relative">
 				<div className="h-12 md:h-24" />
-				<div className="left-masked-noise-background absolute inset-0 h-dvh z-0" />
+				<div className="left-masked-noise-background absolute inset-0 h-[110%] z-0" />
 				<ContentMotion>
 					<FeaturedProjectSection />
 				</ContentMotion>
 			</div>
+
 			<div id="tech-stack" className="h-24 mt-32" />
 			<ContentMotion>
 				<TechListSection />
 			</ContentMotion>
+
 			<div id="experience" className="relative mt-16">
 				<div className="h-12 md:h-24" />
-				<div className="dashed-bottom-fade-grid absolute inset-0 h-dvh z-0" />
+				<div className="dashed-bottom-fade-grid absolute inset-0 h-full z-0" />
 				<ContentMotion>
 					<ExperienceTimelineSection />
 				</ContentMotion>
