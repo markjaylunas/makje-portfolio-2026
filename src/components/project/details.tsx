@@ -112,12 +112,10 @@ export function ProjectDetails({
 								{dateToMonthYear(new Date(createdAt))}
 							</span>
 						</div>
-						<div className="flex items-center gap-2 text-muted-foreground">
-							<HugeiconsIcon icon={Like} className="size-5" />
-							<span className="text-sm font-medium">
-								{formatCompactCount(likesCount)} Likes
-							</span>
-						</div>
+						<Button variant="ghost">
+							<HugeiconsIcon icon={Like} />
+							{formatCompactCount(likesCount)}
+						</Button>
 					</div>
 
 					<div className="flex items-center gap-3">
