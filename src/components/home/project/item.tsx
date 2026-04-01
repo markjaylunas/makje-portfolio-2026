@@ -2,6 +2,7 @@ import { ArrowUpRight, Github, Like } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Link } from "@tanstack/react-router";
 import ImageCarousel from "@/components/common/image-carousel";
+import { OverflowList } from "@/components/common/overflow-list";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -24,7 +25,7 @@ type ProjectCardProps = {
 	repositoryUrl: string | null;
 	liveUrl: string | null;
 	likesCount: number;
-	technologyList: { name: string; icon: string }[];
+	technologyList: { name: string; icon: string; url: string }[];
 	tagList?: { name: string; slug: string }[];
 };
 
@@ -44,6 +45,36 @@ export default function ProjectCard({
 		(v) => v !== null && v !== undefined,
 	);
 
+	const tags = tagList.map((tag) => (
+		<Link
+			key={tag.slug}
+			to="/project/$projectId"
+			params={{ projectId }}
+			search={{ tag: tag.slug }}
+		>
+			<Badge
+				variant="outline"
+				className="text-xs text-muted-foreground whitespace-nowrap"
+			>
+				#{tag.name}
+			</Badge>
+		</Link>
+	));
+
+	const technologies = technologyList.map((tech) => (
+		<a
+			key={tech.name}
+			href={tech.url}
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			<Badge variant="secondary" className="whitespace-nowrap shrink-0">
+				<img src={tech.icon} alt={tech.name} className="size-4" />
+				{tech.name}
+			</Badge>
+		</a>
+	));
+
 	return (
 		<Item
 			variant="default"
@@ -51,7 +82,10 @@ export default function ProjectCard({
 			className="p-0 rounded-none border-2 items-stretch"
 		>
 			<section className="relative">
-				<ItemMedia variant="image" className="size-48 bg-muted">
+				<ItemMedia
+					variant="image"
+					className="h-auto w-full sm:h-48  aspect-video sm:w-auto bg-muted"
+				>
 					<ImageCarousel
 						imageList={allPhotos}
 						autoplay="onHover"
@@ -63,33 +97,15 @@ export default function ProjectCard({
 				<div className="flex flex-col">
 					<Link to="/project/$projectId" params={{ projectId }}>
 						<ItemTitle className="line-clamp-1 text-xl">{name}</ItemTitle>
-						<ItemDescription className="line-clamp-1 mt-2">
+						<ItemDescription className="line-clamp-3 sm:line-clamp-1 mt-2">
 							{description}
 						</ItemDescription>
 					</Link>
 
-					{tagList.length > 0 && (
-						<div className="flex flex-wrap gap-2 mt-1">
-							{tagList.map((tag) => (
-								<Link
-									key={tag.slug}
-									to="/project/$projectId"
-									params={{ projectId }}
-									search={{ tag: tag.slug }} //TODO: Add tag search in project list loader
-								>
-									<Badge
-										variant="outline"
-										className="text-xs text-muted-foreground"
-									>
-										#{tag.name}
-									</Badge>
-								</Link>
-							))}
-						</div>
-					)}
+					<OverflowList list={tags} initial={3} className="mt-2" />
 				</div>
 
-				<div className="flex flex-col items-start gap-4">
+				<div className="flex flex-col items-start gap-4 mt-6 sm:mt-0">
 					<ItemActions className="flex items-center justify-start gap-2 w-full flex-wrap">
 						<ButtonGroup>
 							{liveUrl && (
@@ -98,9 +114,7 @@ export default function ProjectCard({
 									size="sm"
 									render={
 										<Link to={liveUrl} target="_blank">
-											<span className="sr-only md:not-sr-only">
-												Live Preview
-											</span>
+											Live Preview
 											<HugeiconsIcon icon={ArrowUpRight} />
 										</Link>
 									}
@@ -113,7 +127,7 @@ export default function ProjectCard({
 									render={
 										<Link to={repositoryUrl} target="_blank">
 											<HugeiconsIcon icon={Github} />
-											<span className="sr-only md:not-sr-only">Repository</span>
+											Repository
 										</Link>
 									}
 								/>
@@ -126,14 +140,7 @@ export default function ProjectCard({
 						</Button>
 					</ItemActions>
 
-					<div className="flex flex-wrap gap-2">
-						{technologyList.map((tech) => (
-							<Badge variant="secondary" key={tech.name}>
-								<img src={tech.icon} alt={tech.name} className="size-4" />
-								{tech.name}
-							</Badge>
-						))}
-					</div>
+					<OverflowList list={technologies} initial={5} />
 				</div>
 			</ItemContent>
 		</Item>

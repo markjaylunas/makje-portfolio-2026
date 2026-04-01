@@ -14,6 +14,7 @@ export default function FeaturedProjectList({
 				const technologyList = p.technologies.map((t) => ({
 					name: t.technology.name,
 					icon: t.technology.icon.url,
+					url: t.technology.url,
 				}));
 				const tagList = p.tags.map((t) => ({
 					name: t.tag.name,

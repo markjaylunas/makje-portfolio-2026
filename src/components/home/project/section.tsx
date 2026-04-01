@@ -33,6 +33,7 @@ export default function FeaturedProjectSection() {
 						technologyList={project.technologies.map((t) => ({
 							name: t.technology.name,
 							icon: t.technology.icon?.url,
+							url: t.technology.url,
 						}))}
 						tagList={project.tags.map((t) => ({
 							name: t.tag.name,

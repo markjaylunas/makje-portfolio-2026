@@ -24,6 +24,7 @@ export default function ProjectItemSection() {
 			technologyList={p.technologies.map((t) => ({
 				name: t.technology.name,
 				icon: t.technology.icon.url,
+				url: t.technology.url,
 			}))}
 			tagList={p.tags.map((t) => ({
 				name: t.tag.name,

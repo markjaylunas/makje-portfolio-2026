@@ -122,6 +122,7 @@ export default function CreateProjectForm() {
 								.map((t) => ({
 									name: t.name,
 									icon: t.icon.url,
+									url: t.url,
 								}))}
 							tagList={project.tags.map((t) => ({
 								name: t.label,
