@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin, anonymous, lastLoginMethod } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
+import { updateProjectLikeUserIdForAnonymousUser } from "@/data/query/project-like.server";
 import * as schema from "@/db/schema";
 import { env } from "@/env";
 import { db } from "../db";
@@ -42,9 +43,10 @@ export const auth = betterAuth({
 				return `guest-${id}@makje.com`;
 			},
 			onLinkAccount: async ({ anonymousUser, newUser }) => {
-				console.log("onLinkAccount", { anonymousUser, newUser });
-				// TODO: move user data from anonymous user to new user
-				// TODO: delete anonymous users  weekly (cron job)
+				await updateProjectLikeUserIdForAnonymousUser({
+					anonymousUserId: anonymousUser.user.id,
+					userId: newUser.user.id,
+				});
 			},
 		}),
 		admin(),
