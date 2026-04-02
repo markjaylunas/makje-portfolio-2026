@@ -166,11 +166,12 @@ export default function ProjectCard({
 								e.preventDefault();
 								handleToggleLike();
 							}}
+							className="cursor-pointer"
 							disabled={isPending}
 						>
 							<HugeiconsIcon
 								icon={Like}
-								className={`size-4 sm:size-5 ${isLiked ? "fill-primary" : ""}`}
+								className={` size-4 ${isLiked ? "fill-primary" : ""}`}
 							/>
 							{formatCompactCount(likesCount)}
 						</Button>

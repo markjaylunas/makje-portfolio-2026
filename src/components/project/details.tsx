@@ -148,7 +148,7 @@ export function ProjectDetails({
 						<Button
 							variant={isLiked ? "default" : "outline"}
 							size="sm"
-							className="h-8 sm:h-9 px-2 sm:px-3"
+							className="cursor-pointer"
 							onClick={(e) => {
 								e.preventDefault();
 								onToggleLike?.();
