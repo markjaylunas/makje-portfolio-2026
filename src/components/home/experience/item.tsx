@@ -28,71 +28,76 @@ export function ExperienceItem({
 				aria-hidden="true"
 			/>
 
-			<article className="space-y-4">
-				<header className="space-y-3">
-					<div className="flex items-center gap-2.5">
-						<div
-							className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent"
-							aria-hidden="true"
-						>
-							<img
-								src={logo}
-								alt={company}
-								className="text-muted-foreground rounded-full overflow-hidden"
-							/>
+			<article className="flex flex-col gap-4 md:flex-row md:items-end md:gap-8">
+				<div className="flex-1 space-y-4">
+					<header className="space-y-3">
+						<div className="flex items-center gap-2.5">
+							<div
+								className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent"
+								aria-hidden="true"
+							>
+								<img
+									src={logo}
+									alt={company}
+									className="text-muted-foreground rounded-full overflow-hidden"
+								/>
+							</div>
+							<span className="font-medium text-base">{company}</span>
 						</div>
-						<span className="font-medium text-base">{company}</span>
-					</div>
 
-					<div>
-						<h3 className="font-semibold text-xl tracking-[-0.01em]">
-							{title}
-						</h3>
-						<div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-							<HugeiconsIcon icon={Calendar} size={16} aria-hidden="true" />
-							<span className="sr-only">Period:</span>
-							<time>{period}</time>
+						<div>
+							<h3 className="font-semibold text-xl tracking-[-0.01em]">
+								{title}
+							</h3>
+							<div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+								<HugeiconsIcon icon={Calendar} size={16} aria-hidden="true" />
+								<span className="sr-only">Period:</span>
+								<time>{period}</time>
+							</div>
 						</div>
-					</div>
-				</header>
+					</header>
 
-				<div className="space-y-3">
-					<p className="text-pretty font-medium text-sm sm:text-base">
-						{description}
-					</p>
-					<ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
-						{responsibilities.map((item: string) => (
-							<li key={item}>{item}</li>
-						))}
-					</ul>
+					<div className="space-y-3">
+						<p className="text-pretty font-medium text-sm sm:text-base">
+							{description}
+						</p>
+						<ul className="list-disc space-y-2 pl-4 text-sm text-muted-foreground">
+							{responsibilities.map((item: string) => (
+								<li key={item}>
+									<p className="text-left md:text-justify">{item}</p>
+								</li>
+							))}
+						</ul>
+					</div>
 				</div>
 
-				<footer className="pt-2">
+				<aside className="w-full shrink-0 pt-2 md:w-48 md:pt-0 lg:w-64">
 					<span className="sr-only">Technology used:</span>
-					<div className="flex flex-wrap gap-2">
+					<ul className="flex flex-wrap gap-2">
 						{technologies.map((tech) => (
-							<a
-								href={tech.url}
-								key={tech.id}
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label={`Learn more about ${tech.name}`}
-							>
-								<Badge
-									className="rounded-full hover:opacity-80"
-									variant="secondary"
+							<li key={tech.id}>
+								<a
+									href={tech.url}
+									target="_blank"
+									rel="noopener noreferrer"
+									aria-label={`Learn more about ${tech.name}`}
 								>
-									<img
-										src={tech.icon.url}
-										alt={tech.icon.altText || tech.name}
-										className="size-4"
-									/>
-									{tech.name}
-								</Badge>
-							</a>
+									<Badge
+										className="rounded-full hover:opacity-80"
+										variant="secondary"
+									>
+										<img
+											src={tech.icon.url}
+											alt={tech.icon.altText || tech.name}
+											className="size-4"
+										/>
+										{tech.name}
+									</Badge>
+								</a>
+							</li>
 						))}
-					</div>
-				</footer>
+					</ul>
+				</aside>
 			</article>
 		</li>
 	);
