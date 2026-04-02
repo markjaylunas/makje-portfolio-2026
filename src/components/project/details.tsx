@@ -116,7 +116,7 @@ export function ProjectDetails({
 	);
 
 	return (
-		<article className="flex flex-col gap-12 w-full max-w-4xl mx-auto">
+		<article className="flex flex-col gap-12 w-full">
 			{/* Header Section */}
 			<header className="flex flex-col gap-6">
 				<div className="flex flex-col gap-4">
