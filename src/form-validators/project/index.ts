@@ -31,3 +31,10 @@ export const getProjectListRouteParamsSchema = z.object({
 export type GetProjectListRouteParamsSchema = z.infer<
 	typeof getProjectListRouteParamsSchema
 >;
+
+export const toggleProjectLikeFnSchema = z.object({
+	projectId: z.string(),
+});
+export type ToggleProjectLikeFnSchema = z.infer<
+	typeof toggleProjectLikeFnSchema
+>;

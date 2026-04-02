@@ -22,7 +22,8 @@ export default function ProjectList() {
 					description={project.description}
 					repositoryUrl={project.repositoryUrl}
 					liveUrl={project.liveUrl}
-					likesCount={project.likes.length}
+					likesCount={project.likesCount}
+					isLiked={project.likes.length > 0}
 					technologyList={project.technologies.map((t) => ({
 						name: t.technology.name,
 						icon: t.technology.icon.url,

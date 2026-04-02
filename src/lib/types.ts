@@ -36,9 +36,7 @@ export type FeaturedProjectWithRelations = FeaturedProject & {
 			media: Media;
 		})[];
 		tags: (ProjectToTags & { tag: Tag })[];
-		likes: (ProjectLike & {
-			user: User;
-		})[];
+		likes: ProjectLike[];
 		technologies: (ProjectToTechnologies & {
 			technology: Technology & {
 				icon: Media;
@@ -51,9 +49,7 @@ export type ProjectWithRelations = Project & {
 	coverImage: Media | null;
 	tags: (ProjectToTags & { tag: Tag })[];
 	featured: FeaturedProject | null;
-	likes: (ProjectLike & {
-		user: User;
-	})[];
+	likes: ProjectLike[];
 	technologies: (ProjectToTechnologies & {
 		technology: Technology & {
 			icon: Media;

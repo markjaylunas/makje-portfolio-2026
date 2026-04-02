@@ -11,3 +11,5 @@ export const getSessionFn = createServerFn({ method: "GET" }).handler(
 		return session;
 	},
 );
+
+export type Session = Awaited<ReturnType<typeof getSessionFn>>;

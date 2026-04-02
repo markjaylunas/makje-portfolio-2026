@@ -47,7 +47,11 @@ export async function selectFeatureProjectById({
 	});
 }
 
-export const selectFeaturedProjectList = async () => {
+export const selectFeaturedProjectList = async ({
+	userId,
+}: {
+	userId?: string;
+}) => {
 	return await db.query.featuredProject.findMany({
 		with: {
 			project: {
@@ -64,9 +68,14 @@ export const selectFeaturedProjectList = async () => {
 						},
 					},
 					likes: {
-						with: {
-							user: true,
-						},
+						...(userId
+							? {
+									with: {
+										user: true,
+									},
+									where: (like, { eq }) => eq(like.userId, userId),
+								}
+							: false),
 					},
 					technologies: {
 						with: {

@@ -13,10 +13,13 @@ import {
 	ItemTitle,
 } from "@/components/ui/item";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
+import { getSessionOptions } from "@/data/options/user";
 import ProjectCard from "./item";
 
 export default function FeaturedProjectSection() {
 	const { data: projects } = useSuspenseQuery(getFeaturedProjectListOptions());
+	const { data: session } = useSuspenseQuery(getSessionOptions());
+
 	const sectionHeadingId = useId();
 
 	return (
@@ -41,7 +44,7 @@ export default function FeaturedProjectSection() {
 						description={project.description}
 						repositoryUrl={project.repositoryUrl}
 						liveUrl={project.liveUrl}
-						likesCount={project.likes.length}
+						likesCount={project.likesCount}
 						technologyList={project.technologies.map((t) => ({
 							name: t.technology.name,
 							icon: t.technology.icon?.url,
@@ -51,6 +54,8 @@ export default function FeaturedProjectSection() {
 							name: t.tag.name,
 							slug: t.tag.slug,
 						}))}
+						session={session}
+						isLiked={project.likes.length > 0}
 					/>
 				))}
 

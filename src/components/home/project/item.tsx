@@ -14,6 +14,8 @@ import {
 	ItemMedia,
 	ItemTitle,
 } from "@/components/ui/item";
+import { useToggleProjectLike } from "@/hooks/use-toggle-project-like";
+import type { Session } from "@/lib/auth.server";
 import { formatCompactCount } from "@/lib/utils";
 
 type ProjectCardProps = {
@@ -27,6 +29,8 @@ type ProjectCardProps = {
 	likesCount: number;
 	technologyList: { name: string; icon: string; url: string }[];
 	tagList?: { name: string; slug: string }[];
+	isLiked?: boolean;
+	session?: Session;
 };
 
 export default function ProjectCard({
@@ -40,9 +44,17 @@ export default function ProjectCard({
 	likesCount,
 	technologyList,
 	tagList = [],
+	isLiked = false,
+	session,
 }: ProjectCardProps) {
 	const allPhotos = [coverImage, ...photos].filter(
 		(v) => v !== null && v !== undefined,
+	);
+
+	const { mutate: toggleLike, isPending } = useToggleProjectLike(
+		projectId,
+		isLiked,
+		session,
 	);
 
 	const tags = tagList.map((tag) => (
@@ -137,8 +149,18 @@ export default function ProjectCard({
 							)}
 						</ButtonGroup>
 
-						<Button variant="ghost">
-							<HugeiconsIcon icon={Like} />
+						<Button
+							variant={isLiked ? "default" : "ghost"}
+							onClick={(e) => {
+								e.preventDefault();
+								toggleLike();
+							}}
+							disabled={isPending}
+						>
+							<HugeiconsIcon
+								icon={Like}
+								className={`size-4 sm:size-5 ${isLiked ? "fill-primary" : ""}`}
+							/>
 							{formatCompactCount(likesCount)}
 						</Button>
 					</ItemActions>

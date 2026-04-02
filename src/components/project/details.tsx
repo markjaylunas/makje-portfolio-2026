@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { getProjectOptions } from "@/data/options/project";
+import { useToggleProjectLike } from "@/hooks/use-toggle-project-like";
 import { dateToMonthYear, formatCompactCount } from "@/lib/utils";
 import ImageCarousel from "../common/image-carousel";
 import { MarkdownRenderer } from "../common/md-render";
@@ -28,11 +29,21 @@ export type ProjectDetailsProps = {
 	tagList: { id: string; name: string; slug: string }[];
 	coverImage?: string;
 	photos?: string[];
+	onToggleLike?: () => void;
+	isLikePending?: boolean;
+	isLiked?: boolean;
 };
 
 export default function ProjectDetailsData() {
 	const { projectId } = useParams({ from: "/_main/project/$projectId" });
 	const { data: p } = useSuspenseQuery(getProjectOptions({ projectId }));
+
+	const isLiked = !!p?.likes.length;
+
+	const { mutate: toggleLike, isPending } = useToggleProjectLike(
+		projectId,
+		isLiked,
+	);
 
 	if (!p) return null;
 
@@ -45,7 +56,8 @@ export default function ProjectDetailsData() {
 			createdAt={new Date(p.createdAt)}
 			liveUrl={p.liveUrl}
 			repositoryUrl={p.repositoryUrl}
-			likesCount={p.likes.length}
+			likesCount={p.likesCount}
+			isLiked={isLiked}
 			technologyList={p.technologies.map((t) => ({
 				id: t.technology.id,
 				name: t.technology.name,
@@ -59,6 +71,8 @@ export default function ProjectDetailsData() {
 			}))}
 			coverImage={p.coverImage?.url}
 			photos={p.photos.map((p) => p.media.url)}
+			onToggleLike={() => toggleLike()}
+			isLikePending={isPending}
 		/>
 	);
 }
@@ -75,6 +89,9 @@ export function ProjectDetails({
 	tagList,
 	coverImage,
 	photos = [],
+	onToggleLike,
+	isLikePending = false,
+	isLiked = false,
 }: ProjectDetailsProps) {
 	const allPhotos = [coverImage, ...photos].filter(
 		(v): v is string => v !== null && v !== undefined,
@@ -110,8 +127,19 @@ export function ProjectDetails({
 								{dateToMonthYear(new Date(createdAt))}
 							</span>
 						</div>
-						<Button variant="ghost" className="h-8 sm:h-9 px-2 sm:px-3">
-							<HugeiconsIcon icon={Like} className="size-4 sm:size-5" />
+						<Button
+							variant={isLiked ? "default" : "outline"}
+							className="h-8 sm:h-9 px-2 sm:px-3"
+							onClick={(e) => {
+								e.preventDefault();
+								onToggleLike?.();
+							}}
+							disabled={isLikePending}
+						>
+							<HugeiconsIcon
+								icon={Like}
+								className={`size-4 sm:size-5 ${isLiked ? "fill-primary" : ""}`}
+							/>
 							<span className="text-xs sm:text-sm">
 								{formatCompactCount(likesCount)}
 							</span>

@@ -3,11 +3,16 @@ import PageHeaderAurora from "@/components/common/page-header-aurora";
 import ContentMotion from "@/components/motion/content-motion";
 import ProjectDetails from "@/components/project/details";
 import { getProjectOptions } from "@/data/options/project";
+import { getSessionOptions } from "@/data/options/user";
 import { getProjectFnSchema } from "@/form-validators/project";
 
 export const Route = createFileRoute("/_main/project/$projectId")({
 	params: getProjectFnSchema,
 	loader: async ({ context, params: { projectId } }) => {
+		const sessionData = await context.queryClient.ensureQueryData(
+			getSessionOptions(),
+		);
+
 		const data = await context.queryClient.ensureQueryData(
 			getProjectOptions({ projectId }),
 		);
@@ -16,15 +21,18 @@ export const Route = createFileRoute("/_main/project/$projectId")({
 			throw notFound();
 		}
 
-		return data;
+		return {
+			project: data,
+			session: sessionData,
+		};
 	},
 	head: ({ loaderData }) => {
 		const title = loaderData
-			? `${loaderData.name} | Makje Projects`
+			? `${loaderData.project.name} | Makje Projects`
 			: "Project | Makje";
 		const description =
-			loaderData?.description ?? "Project details and overview.";
-		const image = loaderData?.coverImage?.url ?? ""; // fallback if image exists
+			loaderData?.project.description ?? "Project details and overview.";
+		const image = loaderData?.project.coverImage?.url ?? ""; // fallback if image exists
 		return {
 			meta: [
 				{ title },

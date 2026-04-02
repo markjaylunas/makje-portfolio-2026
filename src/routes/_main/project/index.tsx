@@ -3,6 +3,7 @@ import PageHeaderAurora from "@/components/common/page-header-aurora";
 import ContentMotion from "@/components/motion/content-motion";
 import ProjectList from "@/components/project/list";
 import { getProjectListOptions } from "@/data/options/project";
+import { getSessionOptions } from "@/data/options/user";
 import { getProjectListRouteParamsSchema } from "@/form-validators/project";
 
 export const Route = createFileRoute("/_main/project/")({
@@ -19,9 +20,14 @@ export const Route = createFileRoute("/_main/project/")({
 	validateSearch: (search) => getProjectListRouteParamsSchema.parse(search),
 	loaderDeps: ({ search: { query, tag } }) => ({ query, tag }),
 	loader: async ({ context, deps: { query, tag } }) => {
-		return await context.queryClient.ensureQueryData(
+		const data = context.queryClient.ensureQueryData(
 			getProjectListOptions({ query, tag }),
 		);
+		const sessionData = context.queryClient.ensureQueryData(
+			getSessionOptions(),
+		);
+
+		return await Promise.all([data, sessionData]);
 	},
 });
 

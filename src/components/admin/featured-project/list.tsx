@@ -1,11 +1,14 @@
 import ProjectCard from "@/components/home/project/item";
 import { ItemGroup } from "@/components/ui/item";
+import type { Session } from "@/lib/auth.server";
 import type { FeaturedProjectWithRelations } from "@/lib/types";
 
 export default function FeaturedProjectList({
 	featuredProjectList,
+	session,
 }: {
 	featuredProjectList: FeaturedProjectWithRelations[];
+	session?: Session;
 }) {
 	return (
 		<ItemGroup className="flex flex-col gap-6">
@@ -20,6 +23,7 @@ export default function FeaturedProjectList({
 					name: t.tag.name,
 					slug: t.tag.slug,
 				}));
+				const isLiked = p.likes.some((l) => l.userId === session?.user.id);
 
 				return (
 					<ProjectCard
@@ -34,6 +38,8 @@ export default function FeaturedProjectList({
 						likesCount={p.likesCount}
 						technologyList={technologyList}
 						tagList={tagList}
+						session={session}
+						isLiked={isLiked}
 					/>
 				);
 			})}

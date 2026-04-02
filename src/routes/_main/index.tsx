@@ -9,6 +9,7 @@ import ContentMotion from "@/components/motion/content-motion";
 import { getExperienceListOptions } from "@/data/options/experience";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
 import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
+import { getSessionOptions } from "@/data/options/user";
 
 export const Route = createFileRoute("/_main/")({
 	head: () => ({
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/_main/")({
 			context.queryClient.ensureQueryData(getFeaturedTechnologyListOptions()),
 			context.queryClient.ensureQueryData(getExperienceListOptions()),
 			context.queryClient.ensureQueryData(getFeaturedProjectListOptions()),
+			context.queryClient.ensureQueryData(getSessionOptions()),
 		]);
 	},
 });

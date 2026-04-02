@@ -1,20 +1,25 @@
-import { and, eq, exists, notInArray } from "drizzle-orm";
+import { and, eq, exists, notInArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import {
 	media,
 	project,
+	projectLike,
 	projectToMedia,
 	projectToTags,
 	projectToTechnologies,
 	tag,
 } from "@/db/schema";
-import type { GetProjectListFnSchema } from "@/form-validators/project";
 import type { CreateProjectFnSchema } from "@/form-validators/project/create";
 import type { EditProjectFnSchema } from "@/form-validators/project/edit";
 import { deleteMedia } from "./media.server";
 import { insertTags } from "./tag.server";
 
-export const selectProjectList = async (params: GetProjectListFnSchema) => {
+export const selectProjectList = async (params: {
+	userId?: string;
+	query?: string;
+	tag?: string;
+}) => {
+	const { userId, query, tag: tagSlug } = params;
 	return await db.query.project.findMany({
 		with: {
 			coverImage: true,
@@ -32,9 +37,14 @@ export const selectProjectList = async (params: GetProjectListFnSchema) => {
 			},
 			featured: true,
 			likes: {
-				with: {
-					user: true,
-				},
+				...(userId
+					? {
+							with: {
+								user: true,
+							},
+							where: (like, { eq }) => eq(like.userId, userId),
+						}
+					: false),
 			},
 			technologies: {
 				orderBy: (pt, { asc }) => asc(pt.order),
@@ -48,11 +58,11 @@ export const selectProjectList = async (params: GetProjectListFnSchema) => {
 			},
 		},
 		where: (project, { like, and, eq }) => {
-			const queryCondition = params?.query
-				? like(project.name, `%${params.query}%`)
+			const queryCondition = query
+				? like(project.name, `%${query}%`)
 				: undefined;
 
-			const tagCondition = params?.tag
+			const tagCondition = tagSlug
 				? exists(
 						db
 							.select()
@@ -61,7 +71,7 @@ export const selectProjectList = async (params: GetProjectListFnSchema) => {
 							.where(
 								and(
 									eq(projectToTags.projectId, project.id),
-									eq(tag.slug, params.tag),
+									eq(tag.slug, tagSlug),
 								),
 							),
 					)
@@ -73,7 +83,13 @@ export const selectProjectList = async (params: GetProjectListFnSchema) => {
 	});
 };
 
-export const selectProject = async ({ projectId }: { projectId: string }) => {
+export const selectProject = async ({
+	projectId,
+	userId,
+}: {
+	projectId: string;
+	userId?: string;
+}) => {
 	return await db.query.project.findFirst({
 		with: {
 			coverImage: true,
@@ -91,9 +107,14 @@ export const selectProject = async ({ projectId }: { projectId: string }) => {
 			},
 			featured: true,
 			likes: {
-				with: {
-					user: true,
-				},
+				...(userId
+					? {
+							with: {
+								user: true,
+							},
+							where: (like, { eq }) => eq(like.userId, userId),
+						}
+					: false),
 			},
 			technologies: {
 				orderBy: (pt, { asc }) => asc(pt.order),
@@ -325,4 +346,39 @@ export const deleteProject = async ({ projectId }: { projectId: string }) => {
 	}
 
 	return deleted;
+};
+
+export const toggleProjectLike = async ({
+	projectId,
+	userId,
+}: {
+	projectId: string;
+	userId: string;
+}) => {
+	const existingLike = await db.query.projectLike.findFirst({
+		where: (pl, { eq, and }) =>
+			and(eq(pl.projectId, projectId), eq(pl.userId, userId)),
+	});
+
+	if (existingLike) {
+		await db.delete(projectLike).where(eq(projectLike.id, existingLike.id));
+		const [updatedProject] = await db
+			.update(project)
+			.set({
+				likesCount: sql`${project.likesCount} - 1`,
+			})
+			.where(eq(project.id, projectId))
+			.returning();
+		return { liked: false, likesCount: updatedProject.likesCount };
+	} else {
+		await db.insert(projectLike).values({ projectId, userId });
+		const [updatedProject] = await db
+			.update(project)
+			.set({
+				likesCount: sql`${project.likesCount} + 1`,
+			})
+			.where(eq(project.id, projectId))
+			.returning();
+		return { liked: true, likesCount: updatedProject.likesCount };
+	}
 };

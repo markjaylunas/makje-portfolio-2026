@@ -66,4 +66,5 @@ export const queryKey = {
 		],
 		item: (id: string) => ["contact-message", "item", id],
 	},
+	session: ["session"],
 };

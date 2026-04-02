@@ -1,7 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createFeaturedProjectFnSchema } from "@/form-validators/featured-project/create";
 import { deleteFeaturedProjectFnSchema } from "@/form-validators/featured-project/delete";
-import { ensureAdminFnMiddleware } from "../middleware/auth";
+import {
+	ensureAdminFnMiddleware,
+	optionalAuthFnMiddleware,
+} from "../middleware/auth";
 import {
 	deleteFeaturedProject,
 	insertFeaturedProject,
@@ -24,6 +27,10 @@ export const deleteFeaturedProjectFn = createServerFn({ method: "POST" })
 
 export const getFeaturedProjectListFn = createServerFn({
 	method: "GET",
-}).handler(async () => {
-	return await selectFeaturedProjectList();
-});
+})
+	.middleware([optionalAuthFnMiddleware])
+	.handler(async ({ context }) => {
+		return await selectFeaturedProjectList({
+			userId: context.session?.user?.id,
+		});
+	});

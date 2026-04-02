@@ -2,17 +2,23 @@ import { createServerFn } from "@tanstack/react-start";
 import {
 	getProjectFnSchema,
 	getProjectListFnSchema,
+	toggleProjectLikeFnSchema,
 } from "@/form-validators/project";
 import { createProjectFnSchema } from "@/form-validators/project/create";
 import { deleteProjectFnSchema } from "@/form-validators/project/delete";
 import { editProjectFnSchema } from "@/form-validators/project/edit";
 import { BUCKET_DIRECTORIES } from "@/lib/bucket-directories";
-import { ensureAdminFnMiddleware } from "../middleware/auth";
+import {
+	authFnMiddleware,
+	ensureAdminFnMiddleware,
+	optionalAuthFnMiddleware,
+} from "../middleware/auth";
 import {
 	deleteProject,
 	insertProject,
 	selectProject,
 	selectProjectList,
+	toggleProjectLike,
 	updateProject,
 } from "../query/project.server";
 import { moveR2File } from "./storage.server";
@@ -76,9 +82,11 @@ export const getProjectListFn = createServerFn({ method: "GET" })
 	});
 
 export const getProjectFn = createServerFn({ method: "GET" })
+	.middleware([optionalAuthFnMiddleware])
 	.inputValidator(getProjectFnSchema)
-	.handler(async ({ data }) => {
-		return await selectProject(data);
+	.handler(async ({ data, context }) => {
+		const userId = context.session?.user.id;
+		return await selectProject({ ...data, userId });
 	});
 
 export const deleteProjectFn = createServerFn({ method: "POST" })
@@ -86,4 +94,14 @@ export const deleteProjectFn = createServerFn({ method: "POST" })
 	.inputValidator(deleteProjectFnSchema)
 	.handler(async ({ data: { projectId } }) => {
 		return await deleteProject({ projectId });
+	});
+
+export const toggleProjectLikeFn = createServerFn({ method: "POST" })
+	.middleware([authFnMiddleware])
+	.inputValidator(toggleProjectLikeFnSchema)
+	.handler(async ({ data: { projectId }, context }) => {
+		return await toggleProjectLike({
+			projectId,
+			userId: context.session?.user.id,
+		});
 	});

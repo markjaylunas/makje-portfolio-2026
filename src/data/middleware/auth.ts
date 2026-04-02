@@ -58,3 +58,12 @@ export const ensureAdminFnMiddleware = createMiddleware({
 
 	return next({ context: { session } });
 });
+
+export const optionalAuthFnMiddleware = createMiddleware({
+	type: "function",
+}).server(async ({ next }) => {
+	const headers = await getRequestHeaders();
+	const session = await auth.api.getSession({ headers });
+
+	return next({ context: { session: session ?? null } });
+});
