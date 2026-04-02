@@ -11,7 +11,7 @@ export default function HeroSection() {
 			<div className="relative flex flex-col items-center justify-center gap-2">
 				<div className="to-chart-4 pointer-events-none absolute top-1/2 left-1/2 -z-10 h-dvh w-full max-w-7xl -translate-x-1/2 -translate-y-1/2 rounded-full bg-linear-to-br from-primary from-0% to-60% opacity-12 blur-[60px] md:h-100 md:opacity-20 md:blur-[90px]"></div>
 
-				<h1 className="text-center text-4xl font-bold drop-shadow-2xl xs:text-5xl md:text-6xl lg:text-7xl">
+				<h1 className="text-center text-4xl font-bold drop-shadow-2xl xs:text-5xl md:text-6xl lg:text-7xl animate-fade-in-up delay-150 fill-mode-both">
 					<GradientText>
 						Mark Jay Lunas <br />
 						<span className="font-medium uppercase tracking-wider text-2xl xs:text-4xl md:text-5xl lg:text-6xl">
@@ -20,13 +20,13 @@ export default function HeroSection() {
 					</GradientText>
 				</h1>
 
-				<p className="prose mt-2 md:mt-4 text-center text-muted-foreground text-pretty text-sm md:text-xl font-light">
+				<p className="prose mt-2 md:mt-4 text-center text-muted-foreground text-pretty text-sm md:text-xl font-light animate-fade-in-up delay-300 fill-mode-both">
 					Next-gen web development <br className="block md:hidden" /> for
 					ambitious goals
 				</p>
 			</div>
 
-			<div className="mt-12 md:mt-20 grid w-full max-w-lg grid-cols-1 gap-4 md:gap-8 md:grid-cols-3">
+			<div className="mt-12 md:mt-20 grid w-full max-w-lg grid-cols-1 gap-4 md:gap-8 md:grid-cols-3 animate-fade-in-up delay-500 fill-mode-both">
 				{socialLinks.map((social) => (
 					<a
 						key={social.name}
