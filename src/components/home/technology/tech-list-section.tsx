@@ -82,10 +82,9 @@ export default function TechListSection() {
 								<div className="flex items-center gap-2 font-medium text-muted-foreground group-hover:text-foreground transition-colors">
 									<HugeiconsIcon
 										icon={icon}
-										size={22}
-										className="transition-transform duration-300 group-hover:scale-110"
+										className="size-6 transition-transform duration-300 group-hover:scale-110"
 									/>
-									<span className="text-sm md:text-base uppercase tracking-widest font-bold">
+									<span className="text-sm md:text-base uppercase tracking-widest font-light">
 										{label}
 									</span>
 								</div>
