@@ -43,7 +43,7 @@ function App() {
 
 			<div id="experience" className="relative mt-16 pb-32">
 				<div className="h-12 md:h-24" />
-				<div className="dashed-bottom-fade-grid absolute inset-0 h-full z-0" />
+				<div className="dashed-top-right-fade-grid absolute inset-0 h-full z-0" />
 				<ContentMotion>
 					<ExperienceTimelineSection />
 				</ContentMotion>
