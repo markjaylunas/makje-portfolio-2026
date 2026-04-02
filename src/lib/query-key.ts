@@ -17,6 +17,7 @@ export const queryKey = {
 			...(params ? [paramsSerializer(params)] : []),
 		],
 		item: (id: string) => ["project", "item", id],
+		root: ["project"],
 	},
 	experience: {
 		list: (params?: Params) => [
@@ -25,6 +26,7 @@ export const queryKey = {
 			...(params ? [paramsSerializer(params)] : []),
 		],
 		item: (id: string) => ["experience", "item", id],
+		root: ["experience"],
 	},
 	technology: {
 		list: (params?: Params) => [
@@ -33,6 +35,7 @@ export const queryKey = {
 			...(params ? [paramsSerializer(params)] : []),
 		],
 		item: (id: string) => ["technology", "item", id],
+		root: ["technology"],
 	},
 	featuredTechnology: {
 		list: (params?: Params) => [
@@ -41,6 +44,7 @@ export const queryKey = {
 			...(params ? [paramsSerializer(params)] : []),
 		],
 		item: (id: string) => ["featured-technology", "item", id],
+		root: ["featured-technology"],
 	},
 	featuredProject: {
 		list: (params?: Params) => [
@@ -49,6 +53,7 @@ export const queryKey = {
 			...(params ? [paramsSerializer(params)] : []),
 		],
 		item: (id: string) => ["featured-project", "item", id],
+		root: ["featured-project"],
 	},
 	tag: {
 		list: (params?: Params) => [
@@ -57,6 +62,7 @@ export const queryKey = {
 			...(params ? [paramsSerializer(params)] : []),
 		],
 		item: (id: string) => ["tag", "item", id],
+		root: ["tag"],
 	},
 	contactMessage: {
 		list: (params?: Params) => [
@@ -65,6 +71,7 @@ export const queryKey = {
 			...(params ? [paramsSerializer(params)] : []),
 		],
 		item: (id: string) => ["contact-message", "item", id],
+		root: ["contact-message"],
 	},
 	session: ["session"],
 };

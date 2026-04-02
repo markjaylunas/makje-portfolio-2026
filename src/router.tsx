@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
+import { STALE_TIME } from "./lib/constants";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
@@ -7,7 +8,7 @@ export function getRouter() {
 		routeTree,
 		context: {
 			queryClient: new QueryClient({
-				defaultOptions: { queries: { staleTime: Infinity } },
+				defaultOptions: { queries: { staleTime: STALE_TIME } },
 			}),
 		},
 		defaultViewTransition: true,

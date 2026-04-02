@@ -8,6 +8,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
 	Link,
+	notFound,
 	useLocation,
 	useNavigate,
 	useParams,
@@ -50,14 +51,16 @@ export default function ProjectDetailsData() {
 	const { data: p } = useSuspenseQuery(getProjectOptions({ projectId }));
 	const { data: session } = useSuspenseQuery(getSessionOptions());
 
-	const isLiked = !!p?.likes.length;
+	const isLiked = p
+		? p.likes.filter((v) => v.userId === session?.user.id).length > 0
+		: false;
 
 	const { mutate: toggleLike, isPending } = useToggleProjectLike(
 		projectId,
 		isLiked,
 	);
 
-	if (!p) return null;
+	if (!p) return notFound();
 
 	const handleToggleLike = () => {
 		if (!session)

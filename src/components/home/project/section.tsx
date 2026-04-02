@@ -55,7 +55,10 @@ export default function FeaturedProjectSection() {
 							slug: t.tag.slug,
 						}))}
 						session={session}
-						isLiked={project.likes.length > 0}
+						isLiked={
+							project.likes.filter((v) => v.userId === session?.user.id)
+								.length > 0
+						}
 					/>
 				))}
 

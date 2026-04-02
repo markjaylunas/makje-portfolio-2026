@@ -5,14 +5,17 @@ import {
 	UserSwitchIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { Link, useLocation } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth-client";
+import { queryKey } from "@/lib/query-key";
 import { cn, getInitials } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button, buttonVariants } from "../ui/button";
 import { InternalLink } from "./nav-expanded";
 
 export default function AuthNavCard() {
+	const queryClient = useQueryClient();
 	const { data: session } = authClient.useSession();
 	const user = session?.user;
 	const isAnonymous = session?.user.isAnonymous;
@@ -22,9 +25,23 @@ export default function AuthNavCard() {
 		select: (location) => location.pathname,
 	});
 
-	const handleLogout = () => {
-		if (isAnonymous) return;
+	const invalidate = async () => {
+		await Promise.all([
+			queryClient.invalidateQueries({
+				queryKey: queryKey.featuredProject.root,
+				exact: false,
+			}),
+			queryClient.invalidateQueries({
+				queryKey: queryKey.project.root,
+				exact: false,
+			}),
+			queryClient.invalidateQueries({ queryKey: queryKey.session }),
+		]);
+	};
 
+	const handleLogout = async () => {
+		if (isAnonymous) return;
+		invalidate();
 		authClient.signOut();
 	};
 	return (
@@ -87,7 +104,7 @@ export default function AuthNavCard() {
 					hash=""
 					description="Login to your account"
 					icon={LoginIcon}
-					onClick={() => {}}
+					onClick={() => invalidate()}
 					callbackURL={pathname}
 					activeOptions={{ exact: true }}
 				/>

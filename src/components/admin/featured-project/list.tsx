@@ -23,7 +23,9 @@ export default function FeaturedProjectList({
 					name: t.tag.name,
 					slug: t.tag.slug,
 				}));
-				const isLiked = p.likes.some((l) => l.userId === session?.user.id);
+
+				const isLiked =
+					p.likes.filter((v) => v.userId === session?.user.id).length > 0;
 
 				return (
 					<ProjectCard

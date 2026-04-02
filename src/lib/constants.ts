@@ -24,3 +24,5 @@ export const socialLinks = [
 		icon: Email,
 	},
 ];
+
+export const STALE_TIME = 60 * 60 * 1000; // 1 hour

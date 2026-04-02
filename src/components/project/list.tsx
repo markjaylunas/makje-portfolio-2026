@@ -1,6 +1,7 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useSearch } from "@tanstack/react-router";
 import { getProjectListOptions } from "@/data/options/project";
+import { getSessionOptions } from "@/data/options/user";
 import ProjectCard from "../home/project/item";
 import { ItemGroup } from "../ui/item";
 
@@ -9,6 +10,7 @@ export default function ProjectList() {
 	const { data: projects } = useSuspenseQuery(
 		getProjectListOptions({ query, tag }),
 	);
+	const { data: session } = useSuspenseQuery(getSessionOptions());
 
 	return (
 		<ItemGroup className="gap-12">
@@ -23,7 +25,10 @@ export default function ProjectList() {
 					repositoryUrl={project.repositoryUrl}
 					liveUrl={project.liveUrl}
 					likesCount={project.likesCount}
-					isLiked={project.likes.length > 0}
+					isLiked={
+						project.likes.filter((v) => v.userId === session?.user.id).length >
+						0
+					}
 					technologyList={project.technologies.map((t) => ({
 						name: t.technology.name,
 						icon: t.technology.icon.url,
@@ -33,6 +38,7 @@ export default function ProjectList() {
 						name: t.tag.name,
 						slug: t.tag.slug,
 					}))}
+					session={session}
 				/>
 			))}
 		</ItemGroup>
