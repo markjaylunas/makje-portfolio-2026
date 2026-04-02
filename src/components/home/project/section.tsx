@@ -56,6 +56,7 @@ export default function FeaturedProjectSection() {
 
 				<Item
 					variant="muted"
+					className="transition-all duration-300 ease-in-out"
 					render={
 						<Link to="/project">
 							<ItemContent>
