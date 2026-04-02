@@ -6,12 +6,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {
-	Link,
-	useLocation,
-	useNavigate,
-	useParams,
-} from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -40,13 +35,16 @@ export type ProjectDetailsProps = {
 	isLiked?: boolean;
 };
 
-export default function ProjectDetailsData() {
+export default function ProjectDetailsData({
+	projectId,
+}: {
+	projectId: string;
+}) {
 	const navigate = useNavigate();
 	const pathname = useLocation({
 		select: (location) => location.pathname,
 	});
 
-	const { projectId } = useParams({ from: "/_main/project/$projectId" });
 	const { data: p } = useSuspenseQuery(getProjectOptions({ projectId }));
 	const { data: session } = useSuspenseQuery(getSessionOptions());
 

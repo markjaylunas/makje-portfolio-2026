@@ -59,6 +59,7 @@ export const Route = createFileRoute("/_main/project/$projectId")({
 });
 
 function RouteComponent() {
+	const { projectId } = Route.useParams();
 	return (
 		<main className="relative min-h-screen pt-16 sm:pt-42">
 			<PageHeaderAurora title="Project" height="h-[80dvh]" as="p" />
@@ -78,7 +79,7 @@ function RouteComponent() {
 				</div>
 
 				<ContentMotion>
-					<ProjectDetailsData />
+					<ProjectDetailsData projectId={projectId} />
 				</ContentMotion>
 			</div>
 		</main>
