@@ -8,7 +8,6 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
 	Link,
-	notFound,
 	useLocation,
 	useNavigate,
 	useParams,
@@ -60,7 +59,7 @@ export default function ProjectDetailsData() {
 		isLiked,
 	);
 
-	if (!p) return notFound();
+	if (!p) return null;
 
 	const handleToggleLike = () => {
 		if (!session)

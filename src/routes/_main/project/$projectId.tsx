@@ -4,7 +4,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import PageHeaderAurora from "@/components/common/page-header-aurora";
 import ContentMotion from "@/components/motion/content-motion";
 import FadeDownMotion from "@/components/motion/fade-down-motion";
-import ProjectDetails from "@/components/project/details";
+import ProjectDetailsData from "@/components/project/details";
 import { Button } from "@/components/ui/button";
 import { getProjectOptions } from "@/data/options/project";
 import { getSessionOptions } from "@/data/options/user";
@@ -78,7 +78,7 @@ function RouteComponent() {
 				</div>
 
 				<ContentMotion>
-					<ProjectDetails />
+					<ProjectDetailsData />
 				</ContentMotion>
 			</div>
 		</main>
