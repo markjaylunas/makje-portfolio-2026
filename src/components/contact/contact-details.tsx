@@ -40,11 +40,11 @@ export default function ContactDetails() {
 								<HugeiconsIcon
 									icon={social.icon}
 									size={20}
-									className="group-hover:text-primary transition-all duration-300 ease-in-out"
+									className="group-hover:text-chart-2 transition-all duration-300 ease-in-out"
 								/>
 							</ItemMedia>
 							<ItemContent>
-								<ItemTitle className="group-hover:text-primary transition-all duration-300 ease-in-out">
+								<ItemTitle className="group-hover:text-chart-2 transition-all duration-300 ease-in-out">
 									{social.name}
 								</ItemTitle>
 								<ItemDescription>{social.description}</ItemDescription>
@@ -54,7 +54,7 @@ export default function ContactDetails() {
 								<HugeiconsIcon
 									icon={ArrowUpRight}
 									size={20}
-									className="group-hover:text-primary transition-all duration-300 ease-in-out"
+									className="group-hover:text-chart-2 transition-all duration-300 ease-in-out"
 								/>
 							</ItemActions>
 						</Item>
