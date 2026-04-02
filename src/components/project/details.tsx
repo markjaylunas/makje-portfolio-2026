@@ -147,6 +147,7 @@ export function ProjectDetails({
 						</div>
 						<Button
 							variant={isLiked ? "default" : "outline"}
+							size="sm"
 							className="h-8 sm:h-9 px-2 sm:px-3"
 							onClick={(e) => {
 								e.preventDefault();
@@ -156,7 +157,7 @@ export function ProjectDetails({
 						>
 							<HugeiconsIcon
 								icon={Like}
-								className={`size-4 sm:size-5 ${isLiked ? "fill-primary" : ""}`}
+								className={isLiked ? "fill-primary" : ""}
 							/>
 							<span className="text-xs sm:text-sm">
 								{formatCompactCount(likesCount)}

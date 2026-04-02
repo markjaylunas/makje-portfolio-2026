@@ -161,6 +161,7 @@ export default function ProjectCard({
 
 						<Button
 							variant={isLiked ? "default" : "ghost"}
+							size="sm"
 							onClick={(e) => {
 								e.preventDefault();
 								handleToggleLike();
