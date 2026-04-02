@@ -5,7 +5,7 @@ import PageHeaderAurora from "@/components/common/page-header-aurora";
 import ContentMotion from "@/components/motion/content-motion";
 import FadeDownMotion from "@/components/motion/fade-down-motion";
 import ProjectDetailsData from "@/components/project/details";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { getProjectOptions } from "@/data/options/project";
 import { getSessionOptions } from "@/data/options/user";
 import { getProjectFnSchema } from "@/form-validators/project";
@@ -67,14 +67,15 @@ function RouteComponent() {
 			<div className="relative mx-auto max-w-(--breakpoint-lg) min-h-dvh px-4 py-36">
 				<div className="flex justify-end">
 					<FadeDownMotion>
-						<Button
-							variant="outline"
-							render={
-								<Link to="/project">
-									<HugeiconsIcon icon={ArrowLeft} /> Back to Projects
-								</Link>
-							}
-						/>
+						<Link
+							to="/project"
+							className={buttonVariants({
+								variant: "outline",
+								size: "sm",
+							})}
+						>
+							<HugeiconsIcon icon={ArrowLeft} /> Back to Projects
+						</Link>
 					</FadeDownMotion>
 				</div>
 
