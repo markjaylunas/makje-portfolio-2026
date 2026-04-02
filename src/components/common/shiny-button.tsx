@@ -22,7 +22,7 @@ export default function ShinyButton<T extends React.ElementType = "button">({
 			className={cn(
 				"border-chart-2 relative inline-flex items-center justify-center rounded-full border px-5 py-2.5",
 				"text-chart-2 tracking-widest uppercase text-sm",
-				"overflow-hidden bg-transparent transition-all duration-200 ease-in",
+				"overflow-hidden bg-transparent transition-all duration-500 ease-in-out",
 				"cursor-pointer shadow-[0_0_0_0_transparent]",
 				"hover:bg-chart-2 hover:text-white hover:shadow-[0_0_30px_5px_rgba(0,166,244,0.815)] hover:ease-out",
 				"before:absolute before:block before:h-[86%] before:w-0 before:content-['']",
