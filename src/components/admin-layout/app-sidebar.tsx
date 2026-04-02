@@ -51,7 +51,7 @@ function SidebarLink({ item }: { item: AdminNavigationLink }) {
 							toggleSidebar();
 						}
 					}}
-					className="w-full flex items-center gap-2 text-lg font-light px-4 data-active:text-muted-foreground  rounded-none hover:text-primary transition-all ease-in-out duration-300 "
+					className="w-full flex items-center gap-2 text-lg font-light px-4 data-active:text-muted-foreground  rounded-none hover:text-muted-foreground transition-all ease-in-out duration-300 "
 				>
 					<HugeiconsIcon icon={item.icon} />
 					{item.title}
