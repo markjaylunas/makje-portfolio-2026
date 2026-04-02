@@ -6,11 +6,17 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Link, useParams } from "@tanstack/react-router";
+import {
+	Link,
+	useLocation,
+	useNavigate,
+	useParams,
+} from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { getProjectOptions } from "@/data/options/project";
+import { getSessionOptions } from "@/data/options/user";
 import { useToggleProjectLike } from "@/hooks/use-toggle-project-like";
 import { dateToMonthYear, formatCompactCount } from "@/lib/utils";
 import ImageCarousel from "../common/image-carousel";
@@ -35,8 +41,14 @@ export type ProjectDetailsProps = {
 };
 
 export default function ProjectDetailsData() {
+	const navigate = useNavigate();
+	const pathname = useLocation({
+		select: (location) => location.pathname,
+	});
+
 	const { projectId } = useParams({ from: "/_main/project/$projectId" });
 	const { data: p } = useSuspenseQuery(getProjectOptions({ projectId }));
+	const { data: session } = useSuspenseQuery(getSessionOptions());
 
 	const isLiked = !!p?.likes.length;
 
@@ -46,6 +58,12 @@ export default function ProjectDetailsData() {
 	);
 
 	if (!p) return null;
+
+	const handleToggleLike = () => {
+		if (!session)
+			return navigate({ to: "/login", search: { callbackURL: pathname } });
+		toggleLike();
+	};
 
 	return (
 		<ProjectDetails

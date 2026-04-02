@@ -1,6 +1,6 @@
 import { ArrowUpRight, Github, Like } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import ImageCarousel from "@/components/common/image-carousel";
 import { OverflowList } from "@/components/common/overflow-list";
 import { Badge } from "@/components/ui/badge";
@@ -47,6 +47,10 @@ export default function ProjectCard({
 	isLiked = false,
 	session,
 }: ProjectCardProps) {
+	const navigate = useNavigate();
+	const pathname = useLocation({
+		select: (location) => location.pathname,
+	});
 	const allPhotos = [coverImage, ...photos].filter(
 		(v) => v !== null && v !== undefined,
 	);
@@ -56,6 +60,12 @@ export default function ProjectCard({
 		isLiked,
 		session,
 	);
+
+	const handleToggleLike = () => {
+		if (!session)
+			return navigate({ to: "/login", search: { callbackURL: pathname } });
+		toggleLike();
+	};
 
 	const tags = tagList.map((tag) => (
 		<Link key={tag.slug} to="/project" search={{ tag: tag.slug }}>
@@ -153,7 +163,7 @@ export default function ProjectCard({
 							variant={isLiked ? "default" : "ghost"}
 							onClick={(e) => {
 								e.preventDefault();
-								toggleLike();
+								handleToggleLike();
 							}}
 							disabled={isPending}
 						>
