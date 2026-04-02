@@ -42,7 +42,13 @@ export function NavLogoLink() {
 export function NavLogo() {
 	return (
 		<div className="flex items-center gap-2">
-			<img src={makjeLogoDark} alt="Makje Logo" className="size-10" />
+			<img
+				src={makjeLogoDark}
+				alt="Makje Logo"
+				className="size-10"
+				width={40}
+				height={40}
+			/>
 			<span className="text-2xl font-medium tracking-tighter">MakJe</span>
 		</div>
 	);
