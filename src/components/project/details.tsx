@@ -89,7 +89,7 @@ export default function ProjectDetailsData() {
 			}))}
 			coverImage={p.coverImage?.url}
 			photos={p.photos.map((p) => p.media.url)}
-			onToggleLike={() => toggleLike()}
+			onToggleLike={handleToggleLike}
 			isLikePending={isPending}
 		/>
 	);
