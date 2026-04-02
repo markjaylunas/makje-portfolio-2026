@@ -37,10 +37,7 @@ export function OverflowList({
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger className="cursor-pointer">
-							<Badge
-								variant="outline"
-								className="px-1.5 h-6 flex items-center justify-center text-muted-foreground"
-							>
+							<Badge variant="outline">
 								<HugeiconsIcon icon={MoreHorizontal} />
 							</Badge>
 						</TooltipTrigger>
