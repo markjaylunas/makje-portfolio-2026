@@ -4,6 +4,16 @@ import ContactForm from "@/components/contact/contact-form";
 import ContentMotion from "@/components/motion/content-motion";
 
 export const Route = createFileRoute("/_main/contact/")({
+	head: () => ({
+		meta: [
+			{ title: "Contact | Makje" },
+			{
+				name: "description",
+				content:
+					"Get in touch with Mark Jay Lunas. Feel free to send a message.",
+			},
+		],
+	}),
 	component: RouteComponent,
 });
 

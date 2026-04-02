@@ -20,6 +20,16 @@ const searchSchema = z.object({
 });
 
 export const Route = createFileRoute("/_auth/login")({
+	head: () => ({
+		meta: [
+			{ title: "Login | Makje" },
+			{
+				name: "description",
+				content:
+					"Login to enhance your experience and unlock interactive features.",
+			},
+		],
+	}),
 	component: RouteComponent,
 	validateSearch: searchSchema,
 });

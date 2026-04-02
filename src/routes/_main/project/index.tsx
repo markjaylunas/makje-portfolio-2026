@@ -6,6 +6,15 @@ import { getProjectListOptions } from "@/data/options/project";
 import { getProjectListRouteParamsSchema } from "@/form-validators/project";
 
 export const Route = createFileRoute("/_main/project/")({
+	head: () => ({
+		meta: [
+			{ title: "Projects | Makje" },
+			{
+				name: "description",
+				content: "Explore my collection of projects and works.",
+			},
+		],
+	}),
 	component: RouteComponent,
 	validateSearch: (search) => getProjectListRouteParamsSchema.parse(search),
 	loaderDeps: ({ search: { query, tag } }) => ({ query, tag }),

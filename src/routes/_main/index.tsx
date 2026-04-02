@@ -11,6 +11,16 @@ import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
 import { getFeaturedTechnologyListOptions } from "@/data/options/featured-technology";
 
 export const Route = createFileRoute("/_main/")({
+	head: () => ({
+		meta: [
+			{ title: "Home | Makje" },
+			{
+				name: "description",
+				content:
+					"Welcome to Makje. I am Mark Jay Lunas, a web developer. Check out my featured projects and experience.",
+			},
+		],
+	}),
 	component: App,
 	loader: async ({ context }) => {
 		return await Promise.all([

@@ -2,6 +2,12 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { getSessionFn } from "@/lib/auth.server";
 
 export const Route = createFileRoute("/_protected")({
+	head: () => ({
+		meta: [
+			{ title: "Admin Portal | Makje" },
+			{ name: "robots", content: "noindex, nofollow" },
+		],
+	}),
 	component: () => <Outlet />,
 	beforeLoad: async ({ location }) => {
 		const session = await getSessionFn();

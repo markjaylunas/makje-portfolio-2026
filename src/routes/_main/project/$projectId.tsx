@@ -18,6 +18,31 @@ export const Route = createFileRoute("/_main/project/$projectId")({
 
 		return data;
 	},
+	head: ({ loaderData }) => {
+		const title = loaderData
+			? `${loaderData.name} | Makje Projects`
+			: "Project | Makje";
+		const description =
+			loaderData?.description ?? "Project details and overview.";
+		const image = loaderData?.coverImage?.url ?? ""; // fallback if image exists
+		return {
+			meta: [
+				{ title },
+				{ name: "description", content: description },
+				{ property: "og:title", content: title },
+				{ property: "og:description", content: description },
+				...(image ? [{ property: "og:image", content: image }] : []),
+				{ property: "og:type", content: "article" },
+				{
+					name: "twitter:card",
+					content: image ? "summary_large_image" : "summary",
+				},
+				{ name: "twitter:title", content: title },
+				{ name: "twitter:description", content: description },
+				...(image ? [{ name: "twitter:image", content: image }] : []),
+			],
+		};
+	},
 	component: RouteComponent,
 });
 
