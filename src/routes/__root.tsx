@@ -36,6 +36,30 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content:
 					"Web Developer, Full Stack, Mark Jay Lunas, Makje, TypeScript, React, Next.js, TanStack Start, TanStack Query, Drizzle ORM, Tailwind CSS, PostgreSQL, Supabase, Cloudflare Workers, Cloudflare R2, Google Gemini AI integration, Software Engineer Philippines, Web Developer Lipa City, Enterprise Web Solutions, Scalable Architecture",
 			},
+			// Open Graph
+			{ property: "og:title", content: "Makje | Mark Jay Lunas" },
+			{
+				property: "og:description",
+				content:
+					"Portfolio of Mark Jay Lunas, a web developer. Next-gen web development for ambitious goals.",
+			},
+			{
+				property: "og:image",
+				content: `${process.env.SERVER_URL}/og-image.png`,
+			},
+			{ property: "og:type", content: "website" },
+			// Twitter Card
+			{ name: "twitter:card", content: "summary_large_image" },
+			{ name: "twitter:title", content: "Makje | Mark Jay Lunas" },
+			{
+				name: "twitter:description",
+				content:
+					"Portfolio of Mark Jay Lunas, a web developer. Next-gen web development for ambitious goals.",
+			},
+			{
+				name: "twitter:image",
+				content: `${process.env.SERVER_URL}/og-image.png`,
+			},
 		],
 		links: [
 			{

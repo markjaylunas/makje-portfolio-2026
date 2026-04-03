@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as MainRouteRouteImport } from './routes/_main/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
@@ -39,6 +40,11 @@ import { Route as ProtectedAdminTechnologyTechnologyIdEditRouteImport } from './
 import { Route as ProtectedAdminProjectProjectIdEditRouteImport } from './routes/_protected/admin/project/$projectId/edit'
 import { Route as ProtectedAdminExperienceExperienceIdEditRouteImport } from './routes/_protected/admin/experience/$experienceId/edit'
 
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProtectedRoute = ProtectedRouteImport.update({
   id: '/_protected',
   getParentRoute: () => rootRouteImport,
@@ -197,6 +203,7 @@ const ProtectedAdminExperienceExperienceIdEditRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/contact': typeof MainContactRouteRouteWithChildren
   '/admin': typeof ProtectedAdminRouteRouteWithChildren
   '/api/health': typeof ApiHealthRouteRoute
@@ -225,6 +232,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
+  '/robots.txt': typeof RobotsDottxtRoute
   '/api/health': typeof ApiHealthRouteRoute
   '/login': typeof AuthLoginRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
@@ -254,6 +262,7 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_main': typeof MainRouteRouteWithChildren
   '/_protected': typeof ProtectedRouteWithChildren
+  '/robots.txt': typeof RobotsDottxtRoute
   '/_main/contact': typeof MainContactRouteRouteWithChildren
   '/_protected/admin': typeof ProtectedAdminRouteRouteWithChildren
   '/api/health': typeof ApiHealthRouteRoute
@@ -285,6 +294,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/robots.txt'
     | '/contact'
     | '/admin'
     | '/api/health'
@@ -313,6 +323,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/robots.txt'
     | '/api/health'
     | '/login'
     | '/api/storage/upload'
@@ -341,6 +352,7 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_main'
     | '/_protected'
+    | '/robots.txt'
     | '/_main/contact'
     | '/_protected/admin'
     | '/api/health'
@@ -373,6 +385,7 @@ export interface RootRouteChildren {
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   MainRouteRoute: typeof MainRouteRouteWithChildren
   ProtectedRoute: typeof ProtectedRouteWithChildren
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
   ApiHealthRouteRoute: typeof ApiHealthRouteRoute
   ApiStorageUploadRouteRoute: typeof ApiStorageUploadRouteRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
@@ -380,6 +393,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_protected': {
       id: '/_protected'
       path: ''
@@ -691,6 +711,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRouteRoute: AuthRouteRouteWithChildren,
   MainRouteRoute: MainRouteRouteWithChildren,
   ProtectedRoute: ProtectedRouteWithChildren,
+  RobotsDottxtRoute: RobotsDottxtRoute,
   ApiHealthRouteRoute: ApiHealthRouteRoute,
   ApiStorageUploadRouteRoute: ApiStorageUploadRouteRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
