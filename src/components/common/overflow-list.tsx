@@ -1,57 +1,58 @@
-import { MoreHorizontal } from "@hugeicons/core-free-icons";
+import { ChevronDown, ChevronUp } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import type { ReactNode } from "react";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 interface OverflowListProps {
 	list: ReactNode[];
 	initial?: number;
+	listName: string;
 	className?: string;
-	tooltipClassName?: string;
 }
 
 export function OverflowList({
 	list,
 	initial = 3,
 	className,
-	tooltipClassName,
+	listName,
 }: OverflowListProps) {
+	const [isOpen, setIsOpen] = useState(false);
+
 	if (list.length === 0) return null;
 
-	const visibleItems = list.slice(0, initial);
-	const remainingItems = list;
-
+	// Determine which items to show based on state
+	const displayedItems = isOpen ? list : list.slice(0, initial);
 	const hasRemaining = list.length > initial;
 
 	return (
-		<div className={cn("flex flex-wrap items-center gap-2", className)}>
-			{visibleItems}
+		<div
+			className={cn(
+				"flex flex-wrap items-start justify-start gap-2",
+				className,
+			)}
+		>
+			{/* Map only the items currently "active" */}
+			{displayedItems.map((item, index) => {
+				const key = `${listName}-${index}`;
+				return (
+					<div key={key} className="animate-in fade-in zoom-in-95 duration-200">
+						{item}
+					</div>
+				);
+			})}
+
+			{/* The Trigger: Always at the end of the items */}
 			{hasRemaining && (
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger className="cursor-pointer">
-							<Badge variant="outline">
-								<HugeiconsIcon icon={MoreHorizontal} />
-							</Badge>
-						</TooltipTrigger>
-						<TooltipContent
-							side="top"
-							className={cn(
-								"flex flex-wrap gap-2 max-w-72 bg-popover/90 backdrop-blur-md border-foreground/10 p-3",
-								tooltipClassName,
-							)}
-						>
-							{remainingItems}
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
+				<Badge
+					variant="secondary"
+					onClick={() => setIsOpen(!isOpen)}
+					className="cursor-pointer"
+				>
+					<HugeiconsIcon icon={isOpen ? ChevronUp : ChevronDown} />
+					{isOpen ? "Show Less" : "Show More"}
+				</Badge>
 			)}
 		</div>
 	);

@@ -67,38 +67,13 @@ export default function ProjectCard({
 		toggleLike();
 	};
 
-	const tags = tagList.map((tag) => (
-		<Link key={tag.slug} to="/project" search={{ tag: tag.slug }}>
-			<Badge
-				variant="outline"
-				className="text-xs text-muted-foreground whitespace-nowrap"
-			>
-				#{tag.name}
-			</Badge>
-		</Link>
-	));
-
-	const technologies = technologyList.map((tech) => (
-		<a
-			key={tech.name}
-			href={tech.url}
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			<Badge variant="secondary" className="whitespace-nowrap shrink-0">
-				<img src={tech.icon} alt={tech.name} className="size-4" />
-				{tech.name}
-			</Badge>
-		</a>
-	));
-
 	return (
 		<Item
 			variant="default"
 			role="listitem"
-			className="p-0 rounded-none border-2 items-stretch"
+			className="p-0 rounded-none border-2 items-stretch gap-6"
 		>
-			<section className="relative">
+			<div className="relative">
 				<ItemMedia
 					variant="image"
 					className="h-auto w-full sm:h-48  aspect-video sm:w-auto bg-muted"
@@ -109,75 +84,98 @@ export default function ProjectCard({
 						delay={2000}
 					/>
 				</ItemMedia>
-			</section>
-			<ItemContent className="flex flex-col justify-between py-1.5">
-				<div className="flex flex-col">
-					<Link
-						to="/project/$projectId"
-						params={{ projectId }}
-						className="group/project-link block w-full"
-					>
-						<ItemTitle className="line-clamp-1 text-xl transition-all group-hover/project-link:text-chart-2 duration-300 ease-in-out">
-							{name}
-						</ItemTitle>
-						<ItemDescription className="line-clamp-3 sm:line-clamp-1 mt-2 transition-opacity group-hover/project-link:opacity-70">
-							{description}
-						</ItemDescription>
-					</Link>
+			</div>
+			<ItemContent className="flex flex-col gap-6 py-1.5">
+				<Link
+					to="/project/$projectId"
+					params={{ projectId }}
+					className="group/project-link"
+				>
+					<ItemTitle className="line-clamp-2 text-xl transition-all group-hover/project-link:text-chart-2 duration-300 ease-in-out">
+						{name}
+					</ItemTitle>
+					<ItemDescription className="line-clamp-2 sm:line-clamp-3 mt-2 transition-opacity group-hover/project-link:opacity-70">
+						{description}
+					</ItemDescription>
+				</Link>
 
-					<OverflowList list={tags} initial={3} className="mt-2" />
-				</div>
-
-				<div className="flex flex-col items-start gap-4 mt-6 sm:mt-0">
-					<ItemActions className="flex items-center justify-start gap-2 w-full flex-wrap">
-						<ButtonGroup>
-							{liveUrl && (
-								<Button
-									variant="default"
-									size="sm"
-									nativeButton={false}
-									render={
-										<Link to={liveUrl} target="_blank">
-											Live
-											<HugeiconsIcon icon={ArrowUpRight} />
-										</Link>
-									}
-								/>
-							)}
-							{repositoryUrl && (
-								<Button
-									variant="secondary"
-									size="sm"
-									nativeButton={false}
-									render={
-										<Link to={repositoryUrl} target="_blank">
-											<HugeiconsIcon icon={Github} />
-											Repo
-										</Link>
-									}
-								/>
-							)}
-						</ButtonGroup>
-
-						<Button
-							variant={isLiked ? "default" : "ghost"}
-							size="sm"
-							onClick={(e) => {
-								e.preventDefault();
-								handleToggleLike();
-							}}
-							className="cursor-pointer"
-							disabled={isPending}
-						>
-							<HugeiconsIcon
-								icon={Like}
-								className={` size-4 ${isLiked ? "fill-primary" : ""}`}
+				<ItemActions className="flex items-center justify-start gap-2 w-full flex-wrap">
+					<ButtonGroup>
+						{liveUrl && (
+							<Button
+								variant="default"
+								size="sm"
+								nativeButton={false}
+								render={
+									<Link to={liveUrl} target="_blank">
+										View Site
+										<HugeiconsIcon icon={ArrowUpRight} />
+									</Link>
+								}
 							/>
-							{formatCompactCount(likesCount)}
-						</Button>
-					</ItemActions>
+						)}
+						{repositoryUrl && (
+							<Button
+								variant="secondary"
+								size="sm"
+								nativeButton={false}
+								render={
+									<Link to={repositoryUrl} target="_blank">
+										<HugeiconsIcon icon={Github} />
+										Repo
+									</Link>
+								}
+							/>
+						)}
+					</ButtonGroup>
 
-					<OverflowList list={technologies} initial={5} />
+					<Button
+						variant={isLiked ? "default" : "ghost"}
+						size="sm"
+						onClick={(e) => {
+							e.preventDefault();
+							handleToggleLike();
+						}}
+						className="cursor-pointer"
+						disabled={isPending}
+					>
+						<HugeiconsIcon
+							icon={Like}
+							className={` size-4 ${isLiked ? "fill-primary" : ""}`}
+						/>
+						{formatCompactCount(likesCount)}
+					</Button>
+				</ItemActions>
+
+				<OverflowList
+					listName="technology"
+					initial={3}
+					list={technologyList.map((tech) => (
+						<a
+							key={tech.name}
+							href={tech.url}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<Badge variant="secondary" className="whitespace-nowrap">
+								<img src={tech.icon} alt={tech.name} className="size-4" />
+								{tech.name}
+							</Badge>
+						</a>
+					))}
+				/>
+
+				<div className="flex flex-wrap gap-2 sr-only">
+					{tagList.map((tag) => (
+						<Link key={tag.slug} to="/project" search={{ tag: tag.slug }}>
+							<Badge
+								variant="outline"
+								className="text-xs text-muted-foreground whitespace-nowrap"
+							>
+								#{tag.name}
+							</Badge>
+						</Link>
+					))}
 				</div>
 			</ItemContent>
 		</Item>
