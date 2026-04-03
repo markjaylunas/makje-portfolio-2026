@@ -21,7 +21,7 @@ export const projectFormSchema = z.object({
 		.trim()
 		.max(2000, "Description is too long")
 		.optional(),
-	content: z.string().trim().max(2000, "Content is too long").optional(),
+	content: z.string().optional(),
 	coverImage: mediaInsertSchema.nullable(),
 	photos: mediaInsertSchema.optional().nullable().array(),
 	repositoryUrl: z.string().trim().optional(),
