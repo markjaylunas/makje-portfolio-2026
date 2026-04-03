@@ -21,19 +21,22 @@ const config = defineConfig({
 		}),
 		tailwindcss(),
 		tanstackStart({
-			prerender: {
-				filter: (route) => {
-					return (
-						route.path !== "/_protected/*" &&
-						route.path !== "/_auth/*" &&
-						route.path !== "/admin/*" &&
-						route.path !== "/login" &&
-						route.path !== "/api/*"
-					);
-				},
-				enabled: true,
-				crawlLinks: true,
-			},
+			// TODO: Enable prerender when build error is fixed
+			// Error: Invalid environment variables
+			// Tried: build env vars
+			// prerender: {
+			// 	filter: (route) => {
+			// 		return (
+			// 			route.path !== "/_protected/*" &&
+			// 			route.path !== "/_auth/*" &&
+			// 			route.path !== "/admin/*" &&
+			// 			route.path !== "/login" &&
+			// 			route.path !== "/api/*"
+			// 		);
+			// 	},
+			// 	enabled: true,
+			// 	crawlLinks: true,
+			// },
 			sitemap: {
 				enabled: true,
 				host: process.env.SERVER_URL,
