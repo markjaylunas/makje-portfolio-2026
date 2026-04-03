@@ -45,7 +45,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			},
 			{
 				property: "og:image",
-				content: `${process.env.SERVER_URL}/og.webp`,
+				content: `${process.env.SERVER_URL}/og-image.png`,
 			},
 			{ property: "og:type", content: "website" },
 			// Twitter Card
@@ -58,7 +58,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			},
 			{
 				name: "twitter:image",
-				content: `${process.env.SERVER_URL}/og.webp`,
+				content: `${process.env.SERVER_URL}/twitter-image.png`,
 			},
 		],
 		links: [
