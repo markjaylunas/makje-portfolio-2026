@@ -78,11 +78,3 @@ You can verify the build locally with:
 ```bash
 pnpm start
 ```
-
-## Contact
-
-**Mark Jay Lunas**  
-Web Developer  
-Email: [markjay.lunas@gmail.com](mailto:markjay.lunas@gmail.com)  
-LinkedIn: [linkedin.com/in/markjaylunas](https://linkedin.com/in/markjaylunas)  
-GitHub: [github.com/markjaylunas](https://github.com/markjaylunas)
