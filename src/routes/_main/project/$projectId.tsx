@@ -65,12 +65,12 @@ function RouteComponent() {
 			<PageHeaderAurora title="Project" height="h-[80dvh]" as="p" />
 
 			<div className="relative mx-auto max-w-(--breakpoint-lg) min-h-dvh px-4 py-36">
-				<div className="flex justify-end">
+				<div className="flex justify-end mb-6">
 					<FadeDownMotion>
 						<Link
 							to="/project"
 							className={buttonVariants({
-								variant: "outline",
+								variant: "secondary",
 								size: "sm",
 							})}
 						>
