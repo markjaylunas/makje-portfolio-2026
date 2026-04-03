@@ -22,6 +22,15 @@ const config = defineConfig({
 		tailwindcss(),
 		tanstackStart({
 			prerender: {
+				filter: (route) => {
+					return (
+						route.path !== "/_protected/*" &&
+						route.path !== "/_auth/*" &&
+						route.path !== "/admin/*" &&
+						route.path !== "/login" &&
+						route.path !== "/api/*"
+					);
+				},
 				enabled: true,
 				crawlLinks: true,
 			},
