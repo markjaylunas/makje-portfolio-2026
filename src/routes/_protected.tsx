@@ -14,6 +14,6 @@ export const Route = createFileRoute("/_protected")({
 
 		const isAdmin = session?.user?.role === "admin";
 
-		if (!session || !isAdmin) notFound();
+		if (!session || !isAdmin) throw notFound();
 	},
 });
