@@ -34,7 +34,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			{
 				name: "keywords",
 				content:
-					"Web Developer, Full Stack Developer, Mark Jay Lunas, TypeScript, React 19, Next.js, PostgreSQL, Supabase, Drizzle ORM, Tailwind CSS, Google Gemini AI, Vercel, Cloudflare, Software Engineer Lipa City, Responsive Design, Enterprise Applications",
+					"Web Developer, Full Stack, Mark Jay Lunas, Makje, TypeScript, React, Next.js, TanStack Start, TanStack Query, Drizzle ORM, Tailwind CSS, PostgreSQL, Supabase, Cloudflare Workers, Cloudflare R2, Google Gemini AI integration, Software Engineer Philippines, Web Developer Lipa City, Enterprise Web Solutions, Scalable Architecture",
 			},
 		],
 		links: [
