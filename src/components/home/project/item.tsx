@@ -91,10 +91,10 @@ export default function ProjectCard({
 					params={{ projectId }}
 					className="group/project-link"
 				>
-					<ItemTitle className="line-clamp-2 text-xl transition-all group-hover/project-link:text-chart-2 duration-300 ease-in-out">
+					<ItemTitle className="line-clamp-1 text-xl transition-all group-hover/project-link:text-chart-2 duration-300 ease-in-out">
 						{name}
 					</ItemTitle>
-					<ItemDescription className="line-clamp-2 sm:line-clamp-3 mt-2 transition-opacity group-hover/project-link:opacity-70">
+					<ItemDescription className="line-clamp-2 mt-2 transition-opacity group-hover/project-link:opacity-70">
 						{description}
 					</ItemDescription>
 				</Link>
@@ -141,7 +141,7 @@ export default function ProjectCard({
 					>
 						<HugeiconsIcon
 							icon={Like}
-							className={` size-4 ${isLiked ? "fill-primary" : ""}`}
+							className={`size-4 ${isLiked ? "fill-primary" : ""}`}
 						/>
 						{formatCompactCount(likesCount)}
 					</Button>
