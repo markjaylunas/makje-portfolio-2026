@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, notFound, Outlet } from "@tanstack/react-router";
 import { getSessionFn } from "@/lib/auth.server";
 
 export const Route = createFileRoute("/_protected")({
@@ -9,16 +9,11 @@ export const Route = createFileRoute("/_protected")({
 		],
 	}),
 	component: () => <Outlet />,
-	beforeLoad: async ({ location }) => {
+	beforeLoad: async () => {
 		const session = await getSessionFn();
 
 		const isAdmin = session?.user?.role === "admin";
 
-		if (!session || !isAdmin) {
-			throw redirect({
-				to: "/login",
-				search: { callbackURL: location.href },
-			});
-		}
+		if (!session || !isAdmin) notFound();
 	},
 });
