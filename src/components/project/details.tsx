@@ -33,6 +33,7 @@ export type ProjectDetailsProps = {
 	onToggleLike?: () => void;
 	isLikePending?: boolean;
 	isLiked?: boolean;
+	carousel?: boolean;
 };
 
 export default function ProjectDetailsData({
@@ -110,6 +111,7 @@ export function ProjectDetails({
 	onToggleLike,
 	isLikePending = false,
 	isLiked = false,
+	carousel = true,
 }: ProjectDetailsProps) {
 	const allPhotos = [coverImage, ...photos].filter(
 		(v): v is string => v !== null && v !== undefined,
@@ -200,7 +202,10 @@ export function ProjectDetails({
 
 			{/* Hero Image / Carousel */}
 			<section className="relative aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-muted/20">
-				<ImageCarousel imageList={allPhotos} autoplay="auto" />
+				<ImageCarousel
+					imageList={allPhotos}
+					autoplay={carousel ? "auto" : undefined}
+				/>
 			</section>
 
 			{/* Main Content & Sidebar Layout */}

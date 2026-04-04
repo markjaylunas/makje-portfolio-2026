@@ -109,6 +109,7 @@ export default function CreateProjectForm() {
 				{(project) => (
 					<div className="w-sm mx-auto">
 						<ProjectDetails
+							carousel={false}
 							content={project.content || ""}
 							createdAt={new Date()}
 							projectId=""

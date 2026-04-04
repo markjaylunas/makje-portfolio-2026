@@ -166,6 +166,7 @@ export default function EditProjectForm({
 					project.coverImage ? (
 						<div className="w-sm mx-auto">
 							<ProjectDetails
+								carousel={false}
 								projectId={project.id}
 								coverImage={project.coverImage.url}
 								photos={project.photos
