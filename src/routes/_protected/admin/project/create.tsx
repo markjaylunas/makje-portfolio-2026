@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_protected/admin/project/create")({
 
 function RouteComponent() {
 	return (
-		<main className="mx-4">
+		<main className="mx-4 my-6">
 			<CreateProjectForm />
 		</main>
 	);
