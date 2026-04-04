@@ -37,10 +37,10 @@ const config = defineConfig({
 			// 	enabled: true,
 			// 	crawlLinks: true,
 			// },
-			sitemap: {
-				enabled: true,
-				host: process.env.SERVER_URL,
-			},
+			// sitemap: {
+			// 	enabled: true,
+			// 	host: process.env.SERVER_URL,
+			// },
 		}),
 		viteReact({
 			babel: {
