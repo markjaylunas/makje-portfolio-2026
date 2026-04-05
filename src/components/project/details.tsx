@@ -133,7 +133,7 @@ export function ProjectDetails({
 						{name}
 					</h1>
 					{description && (
-						<p className="text-base sm:text-lg md:text-xl text-muted-foreground font-medium max-w-2xl leading-relaxed">
+						<p className="text-base sm:text-lg md:text-xl text-muted-foreground font-medium leading-relaxed">
 							{description}
 						</p>
 					)}
