@@ -6,6 +6,7 @@ import {
 	CarouselContent,
 	CarouselItem,
 } from "@/components/ui/carousel";
+import { ZoomableImageModal } from "./zoomable-image";
 
 export default function ImageCarousel({
 	imageList,
@@ -73,12 +74,7 @@ export default function ImageCarousel({
 			<CarouselContent className="size-full ml-0">
 				{imageList.map((image) => (
 					<CarouselItem key={image} className="size-full pl-0">
-						<img
-							src={image}
-							alt=""
-							className="size-full object-cover select-none pointer-events-none"
-							draggable={false}
-						/>
+						<ZoomableImageModal src={image} />
 					</CarouselItem>
 				))}
 			</CarouselContent>
