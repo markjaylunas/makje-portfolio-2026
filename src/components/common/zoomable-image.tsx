@@ -132,7 +132,7 @@ export function ZoomableImageModal({ src, alt = "" }: ZoomableImageModalProps) {
 						>
 							<HugeiconsIcon icon={ZoomInAreaIcon} className="size-5" />
 						</Button>
-						<div className="w-[1px] h-4 bg-white/20 mx-1" />
+						<div className="w-px h-4 bg-white/20 mx-1" />
 						<Button
 							variant="ghost"
 							size="icon"
