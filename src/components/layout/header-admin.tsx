@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { readableHref } from "@/lib/utils";
 
 export default function HeaderAdmin() {
 	const { pathname } = useLocation();
@@ -17,7 +18,11 @@ export default function HeaderAdmin() {
 	const paths = pathname
 		.split("/")
 		.slice(2)
-		.filter((path) => path !== "");
+		.filter((path) => path !== "")
+		.map((path) => ({
+			label: readableHref(path),
+			href: `/admin/${path}`,
+		}));
 
 	return (
 		<header className="bg-background flex h-16 shrink-0 items-center gap-2 border-b px-4 sticky top-0 z-20">
@@ -28,17 +33,17 @@ export default function HeaderAdmin() {
 				<BreadcrumbList>
 					{paths.map((path, index) => {
 						const isLast = index === paths.length - 1;
-						const href = `/admin/${paths.slice(0, index + 1).join("/")}`;
-						// Capitalize the label
-						const label = path.charAt(0).toUpperCase() + path.slice(1);
+						const href = `/admin/${path.href}`;
 
 						return (
 							<Fragment key={href}>
 								<BreadcrumbItem>
 									{isLast ? (
-										<BreadcrumbPage>{label}</BreadcrumbPage>
+										<BreadcrumbPage>{path.label}</BreadcrumbPage>
 									) : (
-										<BreadcrumbLink render={<Link to={href}>{label}</Link>} />
+										<BreadcrumbLink
+											render={<Link to={href}>{path.label}</Link>}
+										/>
 									)}
 								</BreadcrumbItem>
 								{!isLast && <BreadcrumbSeparator />}

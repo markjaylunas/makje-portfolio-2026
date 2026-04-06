@@ -129,6 +129,14 @@ export const adminNavLinks = linkOptions([
 			exact: false,
 		},
 	},
+	{
+		title: "Messages",
+		to: "/admin/contact-message",
+		icon: Message02Icon,
+		activeOptions: {
+			exact: false,
+		},
+	},
 ]);
 
 export type AdminNavigationLink = (typeof adminNavLinks)[number];

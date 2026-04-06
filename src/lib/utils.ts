@@ -79,3 +79,7 @@ export const formatCompactCount = (count: number): string => {
 		maximumFractionDigits: 1,
 	}).format(count);
 };
+
+export const readableHref = (title: string): string => {
+	return title.replace(/-/g, " ").charAt(0).toUpperCase() + title.slice(1);
+};
