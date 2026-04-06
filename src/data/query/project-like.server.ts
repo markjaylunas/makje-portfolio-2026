@@ -1,6 +1,6 @@
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { projectLike } from "@/db/schema";
+import { project, projectLike } from "@/db/schema";
 
 export const updateProjectLikeUserIdForAnonymousUser = async ({
 	anonymousUserId,
@@ -39,5 +39,73 @@ export const updateProjectLikeUserIdForAnonymousUser = async ({
 		.where(eq(projectLike.userId, anonymousUserId))
 		.returning();
 
+	await syncProjectLikesCount(userId);
+
 	return updatedProjectLikes;
+};
+
+/**
+ * Synchronizes likesCount for specific projects or the entire table.
+ * @param userId - If provided, only syncs projects liked by this user.
+ */
+export const syncProjectLikesCount = async (userId?: string) => {
+	// 1. Determine which project IDs need an update
+	let projectIdsToUpdate: string[] = [];
+
+	if (userId) {
+		// Get all project IDs the specific user has liked
+		const userLikes = await db
+			.select({ projectId: projectLike.projectId })
+			.from(projectLike)
+			.where(eq(projectLike.userId, userId));
+
+		projectIdsToUpdate = userLikes.map((l) => l.projectId);
+
+		if (projectIdsToUpdate.length === 0) return { success: true, updated: 0 };
+	}
+
+	// 2. Get the actual up-to-date counts for these projects
+	const actualCounts = await db
+		.select({
+			projectId: projectLike.projectId,
+			count: sql<number>`count(${projectLike.id})`,
+		})
+		.from(projectLike)
+		.where(
+			userId ? inArray(projectLike.projectId, projectIdsToUpdate) : undefined,
+		)
+		.groupBy(projectLike.projectId);
+
+	// 3. Update the project table with the fresh counts
+	const updatePromises = actualCounts.map((record) =>
+		db
+			.update(project)
+			.set({
+				likesCount: record.count,
+				updatedAt: new Date(),
+			})
+			.where(eq(project.id, record.projectId)),
+	);
+
+	// 4. Handle projects that might now have 0 likes
+	// (Important if the last like was deleted during migration)
+	if (userId) {
+		const foundProjectIds = actualCounts.map((c) => c.projectId);
+		const zeroLikeProjectIds = projectIdsToUpdate.filter(
+			(id) => !foundProjectIds.includes(id),
+		);
+
+		if (zeroLikeProjectIds.length > 0) {
+			updatePromises.push(
+				db
+					.update(project)
+					.set({ likesCount: 0 })
+					.where(inArray(project.id, zeroLikeProjectIds)),
+			);
+		}
+	}
+
+	await Promise.all(updatePromises);
+
+	return { success: true, updatedCount: updatePromises.length };
 };
