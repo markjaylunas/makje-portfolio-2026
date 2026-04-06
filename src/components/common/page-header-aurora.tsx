@@ -18,7 +18,7 @@ export default function PageHeaderAurora({
 	return (
 		<FadeDownMotion
 			className={cn(
-				"aurora-midnight-background pointer-events-none absolute inset-0 z-0 select-none",
+				"aurora-midnight-background pointer-events-none absolute inset-0 z-10 select-none",
 				height,
 				className,
 			)}

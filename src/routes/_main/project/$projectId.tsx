@@ -62,6 +62,7 @@ function RouteComponent() {
 	const { projectId } = Route.useParams();
 	return (
 		<main className="relative min-h-screen pt-16 sm:pt-42">
+			<div className="dark-dot-matrix-background absolute inset-0 h-full z-0" />
 			<PageHeaderAurora title="Project" height="h-[80dvh]" as="p" />
 
 			<div className="relative mx-auto max-w-5xl min-h-dvh px-4 py-36">
