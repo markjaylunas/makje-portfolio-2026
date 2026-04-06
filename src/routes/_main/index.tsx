@@ -54,7 +54,7 @@ function App() {
 
 			<div id="final-cta" className="relative mt-16 pb-32">
 				<div className="h-12 md:h-24" />
-				<div className="left-masked-noise-background absolute inset-0 h-full z-0" />
+				<div className="prismatic-aurora-background absolute inset-0 h-full z-0" />
 				<ContentMotion>
 					<FinalCTASection />
 				</ContentMotion>
