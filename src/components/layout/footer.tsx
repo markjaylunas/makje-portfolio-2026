@@ -9,7 +9,7 @@ export default function Footer() {
 	const currentYear = new Date().getFullYear();
 
 	return (
-		<footer className="relative w-full py-12 max-w-(--breakpoint-lg) mx-auto px-6">
+		<footer className="relative w-full py-12 max-w-5xl mx-auto px-6">
 			<div className="absolute inset-0 -z-10 top-16 left-2 overflow-hidden">
 				<div className="absolute inset-0 bg-linear-to-b from-background/80 via-background/90 to-background" />
 

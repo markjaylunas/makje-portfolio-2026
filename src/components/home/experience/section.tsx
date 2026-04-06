@@ -11,7 +11,7 @@ export default function ExperienceTimelineSection() {
 
 	return (
 		<section
-			className="mx-auto max-w-(--breakpoint-lg) px-6"
+			className="mx-auto max-w-5xl px-6"
 			aria-labelledby={sectionHeadingId}
 		>
 			<SectionHeader

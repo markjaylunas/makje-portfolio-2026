@@ -10,7 +10,7 @@ export default function FinalCTASection() {
 
 	return (
 		<section
-			className="mx-auto max-w-(--breakpoint-lg) px-4"
+			className="mx-auto max-w-5xl px-4 sm:px-0"
 			aria-labelledby={sectionHeadingId}
 		>
 			<SectionHeader
