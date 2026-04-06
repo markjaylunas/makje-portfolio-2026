@@ -76,7 +76,7 @@ export default function ProjectCard({
 			<div className="relative">
 				<ItemMedia
 					variant="image"
-					className="h-auto w-full sm:h-48  aspect-video sm:w-auto bg-muted"
+					className="h-auto w-full sm:h-48  aspect-video sm:w-auto bg-muted border border-muted"
 				>
 					<ImageCarousel
 						imageList={allPhotos}
