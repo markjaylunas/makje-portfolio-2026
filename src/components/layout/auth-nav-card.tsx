@@ -6,7 +6,7 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Link, useLocation } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { authClient } from "@/lib/auth-client";
 import { queryKey } from "@/lib/query-key";
 import { cn, getInitials } from "@/lib/utils";
@@ -16,13 +16,14 @@ import { InternalLink } from "./nav-expanded";
 
 export default function AuthNavCard() {
 	const queryClient = useQueryClient();
+	const navigate = useNavigate();
 	const { data: session } = authClient.useSession();
 	const user = session?.user;
 	const isAnonymous = session?.user.isAnonymous;
 	const isAdmin = session?.user.role === "admin";
 
 	const pathname = useLocation({
-		select: (location) => location.pathname,
+		select: (location) => location.href,
 	});
 
 	const invalidate = async () => {
@@ -43,7 +44,9 @@ export default function AuthNavCard() {
 		if (isAnonymous) return;
 		invalidate();
 		authClient.signOut();
+		navigate({ reloadDocument: true });
 	};
+
 	return (
 		<div>
 			{user ? (
@@ -79,7 +82,7 @@ export default function AuthNavCard() {
 							search={{ callbackURL: pathname, isLinkAccount: true }}
 							className={cn(
 								buttonVariants({ variant: "outline", size: "sm" }),
-								"w-full mt-4 rounded-full cursor-pointer",
+								"w-full mt-2 rounded-full cursor-pointer",
 							)}
 						>
 							<HugeiconsIcon icon={UserSwitchIcon} className="size-5 mr-2" />
@@ -88,9 +91,9 @@ export default function AuthNavCard() {
 					) : (
 						<Button
 							onClick={handleLogout}
-							variant="outline"
 							size="sm"
-							className="w-full mt-4 rounded-full cursor-pointer"
+							variant="destructive"
+							className="w-full mt-2 rounded-full cursor-pointer"
 						>
 							<HugeiconsIcon icon={LogoutIcon} className="size-5 mr-2" />
 							Logout

@@ -17,6 +17,7 @@ export default function AnonymousButton() {
 				onSuccess: () => {
 					router.navigate({
 						to: search.callbackURL,
+						reloadDocument: true,
 					});
 				},
 			},
