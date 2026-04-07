@@ -1,97 +1,143 @@
-# Mark Jay Lunas Portfolio (makje-portfolio-2026)
+# 🚀 makje-portfolio-2026
 
-This project is a personal portfolio website built with modern web technologies, primarily using React, TanStack Start, and TypeScript, with a focus on performance, scalability, and ease of content management. It showcases projects, experience, and contact info, with an admin dashboard for content updates.
+A high-performance, professional portfolio website built with the cutting-edge **TanStack Start** ecosystem. This project serves as a comprehensive showcase of work, experience, and technical expertise, featuring a robust admin dashboard and seamless Cloudflare integration.
 
-## Core Technologies
+![Banner](https://img.shields.io/badge/Status-In%20Development-blue?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-- **React & TypeScript:** The main framework and language for building UI components.
-- **Vite:** The build tool, indicated by `vite.config.ts`.
-- **Tailwind CSS:** For styling, inferred from the class-based styling approach.
-- **TanStack (formerly React Query & Router):** For data fetching and routing, suggested by the project structure and naming conventions.
-- **Drizzle ORM:** For database interactions, as seen in the `drizzle.config.ts` and `db/` directory.
-- **SQLite:** The database system, implied by the migrations and schema files.
-- **Cloudflare Workers / Vercel:** Deployment targets, suggested by the presence of worker configuration and server files.
-- **Auth & User Management:** Custom auth logic, with files like `lib/auth.ts`, `lib/auth.server.ts`, and `data/query/` files for server-side data fetching.
+## ✨ Overview
 
-## Project Structure Highlights
+This portfolio is designed for speed, scalability, and modern UX. It leverages server-side rendering (SSR) via **TanStack Start**, a type-safe database layer with **Drizzle ORM**, and is deployed on **Cloudflare's** global edge network.
 
-- **`src/` Directory:** Contains all source code, including components, hooks, data queries, server handlers, and UI elements.
-- **`components/`:** Modular React components for layout, UI, forms, and admin features.
-- **`routes/`:** Defines the app's routing structure, including protected routes (`_protected/`) and admin pages.
-- **`data/`:** Contains server-side data fetching logic, options, and database queries.
-- **`db/`:** Database schema, migrations, and types.
-- **`lib/`:** Utility functions, constants, and auth helpers.
-- **`assets/`:** Icons, images, and SVGs used across the site.
-- **`styles.css`:** Tailwind and custom styles.
+---
 
-## Getting Started
+## 🛠️ Technology Stack
 
-### Prerequisites
+### **Core Framework & Language**
 
-- **Node.js & pnpm:** Ensure you have Node.js installed, and `pnpm` package manager.
+- **[React 19](https://react.dev/):** The latest version of the world's most popular UI library, utilizing the **React Compiler** for automatic memoization.
+- **[TypeScript](https://www.typescriptlang.org/):** Strong typing for reliable and maintainable code.
+- **[TanStack Start](https://tanstack.com/start/latest):** Full-stack React framework with built-in SSR and type-safe routing.
 
-### Installation
+### **Data & State Management**
 
-1. Clone the repository:
+- **[TanStack Query (v5)](https://tanstack.com/query/latest):** Powerful asynchronous state management.
+- **[TanStack Router](https://tanstack.com/router/latest):** Fully type-safe routing for React.
+- **[TanStack Table](https://tanstack.com/table/latest):** Headless UI for building powerful tables & datagrids.
+- **[TanStack Form](https://tanstack.com/form/latest):** Type-safe form logic and validation.
+
+### **Database & Authentication**
+
+- **[Drizzle ORM](https://orm.drizzle.team/):** TypeScript ORM for safe and fast database interactions.
+- **[Cloudflare D1](https://developers.cloudflare.com/d1/):** Distributed SQLite database at the edge.
+- **[Better Auth](https://www.better-auth.com/):** Modern authentication with Google, GitHub, and Anonymous session support.
+
+### **Styling & UI**
+
+- **[Tailwind CSS v4](https://tailwindcss.com/):** The next generation of utility-first CSS.
+- **[Motion (Framer Motion)](https://motion.dev/):** Fluid animations and transitions.
+- **[HugeIcons](https://hugeicons.com/):** High-quality, professional icon set.
+- **[Shadcn UI](https://ui.shadcn.com/):** Reusable, accessible component library.
+
+### **Infrastructure & Utilities**
+
+- **[Cloudflare Pages & Workers](https://workers.cloudflare.com/):** Edge computing and hosting.
+- **[Cloudflare R2](https://developers.cloudflare.com/r2/):** S3-compatible object storage for images and assets.
+- **[Resend](https://resend.com/):** Email delivery platform for contact forms.
+- **[React Email](https://react.email/):** Modular email templates built with React.
+- **[Biome](https://biomejs.dev/):** Ultra-fast toolchain for linting and formatting.
+
+---
+
+## 📂 Project Structure
+
+```bash
+src/
+├── assets/           # Static assets, icons, and images
+├── components/       # Reusable UI components (common, home, admin)
+├── data/             # Server-side queries, mutations, and API logic
+├── db/               # Database schema, migrations, and Drizzle config
+├── form-validators/  # Zod schemas for form validation
+├── hooks/            # Custom React hooks
+├── lib/              # Shared utilities, auth setup, and constants
+├── routes/           # TanStack Router page definitions
+└── styles.css        # Tailwind V4 and global CSS
+```
+
+---
+
+## 🚀 Getting Started
+
+### **Prerequisites**
+
+- [Node.js](https://nodejs.org/) (v18+)
+- [pnpm](https://pnpm.io/) (v8+)
+- [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/install-cli/) (for Cloudflare)
+
+### **1. Clone & Install**
 
 ```bash
 git clone https://github.com/markjaylunas/makje-portfolio-2026.git
 cd makje-portfolio-2026
-```
-
-2. Install dependencies:
-
-```bash
 pnpm install
 ```
 
-3. Configure environment variables:
+### **2. Environment Setup**
 
-- Copy `.env.example` to `.env` or `.env.local`.
-- Set database connection strings, secrets, and API keys as needed.
-
-4. Set up the database:
-
-- Run migrations to sync schema:
+Copy the example environment file and fill in your credentials:
 
 ```bash
-pnpm dlx drizzle-kit push
+cp .env.example .env.local
 ```
 
-### Running the Development Server
+*Required: `BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `CLOUDFLARE_ACCOUNT_ID`, `RESEND_API_KEY`.*
 
-Start the local dev server:
+### **3. Database Setup (D1)**
+
+Initialize your local or remote database and run migrations:
+
+```bash
+# Generate migrations
+pnpm db:generate
+
+# Push to local/remote D1
+pnpm db:push
+```
+
+### **4. Local Development**
+
+Start the development server with Vite:
 
 ```bash
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the site.
+Access the site at `http://localhost:3000`.
 
-## Building & Deployment
+---
 
-- Build for production:
+## 🚢 Deployment
+
+The project is optimized for **Cloudflare Pages**.
 
 ```bash
+# Build the application
 pnpm build
+
+# Deploy via Wrangler
+pnpm deploy
 ```
 
-- Preview production build locally:
+---
 
-```bash
-pnpm start
-```
+## 📝 License
 
-- Deployment targets include Cloudflare Workers and Vercel, configured via project settings and deployment scripts.
+Distributed under the MIT License. See `LICENSE` for more information.
 
-## Content Management & Admin
+---
 
-- The admin dashboard, located under `routes/_protected/admin/`, allows managing projects, technologies, experience, and contact messages.
-- Authentication is handled via custom logic in `lib/auth.ts`, enabling Google Sign-In and session management.
-- Data queries and mutations are managed through server files in `data/query/` and `data/server/`.
+## 📬 Contact
 
-## Additional Notes
+**Mark Jay Lunas** - [LinkedIn](https://linkedin.com/in/markjaylunas) - [Website](https://markjay.dev)
 
-- The project uses a modular, component-based architecture for scalability.
-- Styling is consistent with Tailwind CSS, ensuring responsiveness.
-- The codebase is organized to separate client-side UI, server-side data, and database schema.
+Project Link: [https://github.com/markjaylunas/makje-portfolio-2026](https://github.com/markjaylunas/makje-portfolio-2026)
