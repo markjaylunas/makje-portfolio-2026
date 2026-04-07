@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
+import NotFound from "./components/common/not-found";
 import { STALE_TIME } from "./lib/constants";
 import { routeTree } from "./routeTree.gen";
 
@@ -20,7 +21,7 @@ export function getRouter() {
 		defaultPendingComponent: () => <div />,
 		defaultHashScrollIntoView: { behavior: "smooth" },
 		defaultNotFoundComponent: () => {
-			return <p>This page doesn't exist!</p>;
+			return <NotFound />;
 		},
 	});
 

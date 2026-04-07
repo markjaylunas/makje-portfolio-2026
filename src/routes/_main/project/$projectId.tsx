@@ -1,6 +1,11 @@
 import { ArrowLeft } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	isNotFound,
+	Link,
+	notFound,
+} from "@tanstack/react-router";
 import PageHeaderAurora from "@/components/common/page-header-aurora";
 import ContentMotion from "@/components/motion/content-motion";
 import FadeDownMotion from "@/components/motion/fade-down-motion";
@@ -13,22 +18,26 @@ import { getProjectFnSchema } from "@/form-validators/project";
 export const Route = createFileRoute("/_main/project/$projectId")({
 	params: getProjectFnSchema,
 	loader: async ({ context, params: { projectId } }) => {
-		const sessionData = await context.queryClient.ensureQueryData(
-			getSessionOptions(),
-		);
+		try {
+			const [sessionData, data] = await Promise.all([
+				context.queryClient.ensureQueryData(getSessionOptions()),
+				context.queryClient.ensureQueryData(getProjectOptions({ projectId })),
+			]);
 
-		const data = await context.queryClient.ensureQueryData(
-			getProjectOptions({ projectId }),
-		);
+			if (!data) {
+				throw notFound();
+			}
 
-		if (!data) {
+			return {
+				project: data,
+				session: sessionData,
+			};
+		} catch (error) {
+			if (isNotFound(error)) {
+				throw error;
+			}
 			throw notFound();
 		}
-
-		return {
-			project: data,
-			session: sessionData,
-		};
 	},
 	head: ({ loaderData }) => {
 		const title = loaderData
