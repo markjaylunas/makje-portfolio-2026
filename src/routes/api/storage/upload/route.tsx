@@ -1,5 +1,6 @@
 import { env as cfEnv } from "cloudflare:workers";
 import { createFileRoute } from "@tanstack/react-router";
+import sharp from "sharp";
 import { ensureAdminMiddleware } from "@/data/middleware/auth";
 import { env } from "@/env";
 
@@ -23,13 +24,42 @@ export const Route = createFileRoute("/api/storage/upload")({
 						return new Response("No file uploaded", { status: 400 });
 					}
 
-					if (file.size > 1024 * 1024 * 5) {
-						return new Response("File size exceeds 5MB limit", { status: 400 });
+					const arrayBuffer = await file.arrayBuffer();
+					const initialBuffer = Buffer.from(new Uint8Array(arrayBuffer));
+					let bufferToUpload: Buffer | Uint8Array = initialBuffer;
+					const contentType = file.type;
+					const finalKey = key;
+
+					const supportedFormats = [
+						"image/jpeg",
+						"image/jpg",
+						"image/png",
+						"image/webp",
+						"image/avif",
+					];
+
+					if (supportedFormats.includes(file.type)) {
+						let image = sharp(initialBuffer).resize({
+							width: 2000,
+							withoutEnlargement: true,
+						});
+
+						if (file.type === "image/jpeg" || file.type === "image/jpg") {
+							image = image.jpeg({ quality: 80, progressive: true });
+						} else if (file.type === "image/png") {
+							image = image.png({ compressionLevel: 9, palette: true });
+						} else if (file.type === "image/webp") {
+							image = image.webp({ quality: 80 });
+						} else if (file.type === "image/avif") {
+							image = image.avif({ quality: 60 });
+						}
+
+						bufferToUpload = await image.toBuffer();
 					}
 
-					const object = await bucket.put(key, file.stream(), {
+					const object = await bucket.put(finalKey, bufferToUpload, {
 						httpMetadata: {
-							contentType: file.type,
+							contentType,
 						},
 					});
 
@@ -39,7 +69,7 @@ export const Route = createFileRoute("/api/storage/upload")({
 						});
 					}
 
-					const publicUrl = `${env.R2_PUBLIC_URL}/${key}`;
+					const publicUrl = `${env.R2_PUBLIC_URL}/${finalKey}`;
 
 					return new Response(
 						JSON.stringify({
