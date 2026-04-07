@@ -160,7 +160,7 @@ export function ProjectDetails({
 						>
 							<HugeiconsIcon
 								icon={Like}
-								className={isLiked ? "fill-primary" : ""}
+								className={isLiked ? "fill-white" : ""}
 							/>
 							<span className="text-xs sm:text-sm">
 								{formatCompactCount(likesCount)}
@@ -223,24 +223,24 @@ export function ProjectDetails({
 							Technologies
 						</h3>
 						<div className="flex flex-wrap gap-2">
-							{technologyList.map((t) => (
+							{technologyList.map((tech) => (
 								<a
-									key={t.id}
-									href={t.url}
+									href={tech.url}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="group block bg-background outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xs"
+									aria-label={`Learn more about ${tech.name}`}
+									key={`tech-${tech.id}`}
 								>
 									<Badge
+										className="rounded-full hover:opacity-80"
 										variant="secondary"
-										className="rounded-full px-3 py-1.5 flex items-center gap-2 bg-white/5 hover:bg-white/10 transition-colors border-white/5"
 									>
 										<img
-											src={getOptimizedImageUrl(t.icon, IMAGE_VARIANTS.ICON)}
-											alt={t.name}
+											src={getOptimizedImageUrl(tech.icon, IMAGE_VARIANTS.ICON)}
+											alt={tech.name}
 											className="size-4"
 										/>
-										<span className="text-sm">{t.name}</span>
+										{tech.name}
 									</Badge>
 								</a>
 							))}

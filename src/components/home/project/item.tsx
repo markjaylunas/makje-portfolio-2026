@@ -145,7 +145,7 @@ export default function ProjectCard({
 					>
 						<HugeiconsIcon
 							icon={Like}
-							className={`size-4 ${isLiked ? "fill-primary" : ""}`}
+							className={`size-4 ${isLiked ? "fill-white" : ""}`}
 						/>
 						{formatCompactCount(likesCount)}
 					</Button>
@@ -156,12 +156,16 @@ export default function ProjectCard({
 					initial={3}
 					list={technologyList.map((tech) => (
 						<a
-							key={tech.name}
 							href={tech.url}
 							target="_blank"
 							rel="noopener noreferrer"
+							aria-label={`Learn more about ${tech.name}`}
+							key={`project-${projectId}-tech-${tech.name}`}
 						>
-							<Badge variant="secondary" className="whitespace-nowrap">
+							<Badge
+								className="rounded-full hover:opacity-80"
+								variant="secondary"
+							>
 								<img
 									src={getOptimizedImageUrl(tech.icon, IMAGE_VARIANTS.ICON)}
 									alt={tech.name}
