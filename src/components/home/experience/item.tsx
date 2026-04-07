@@ -1,6 +1,7 @@
 import { Calendar } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Badge } from "@/components/ui/badge";
+import { getOptimizedImageUrl, IMAGE_VARIANTS } from "@/lib/cloudflare-images";
 import type { TechnologyWithIcon } from "@/lib/types";
 
 export function ExperienceItem({
@@ -37,7 +38,7 @@ export function ExperienceItem({
 								aria-hidden="true"
 							>
 								<img
-									src={logo}
+									src={getOptimizedImageUrl(logo || "", IMAGE_VARIANTS.ICON)}
 									alt={company}
 									className="text-muted-foreground rounded-full overflow-hidden"
 								/>
@@ -87,7 +88,10 @@ export function ExperienceItem({
 										variant="secondary"
 									>
 										<img
-											src={tech.icon.url}
+											src={getOptimizedImageUrl(
+												tech.icon.url,
+												IMAGE_VARIANTS.ICON,
+											)}
 											alt={tech.icon.altText || tech.name}
 											className="size-4"
 										/>

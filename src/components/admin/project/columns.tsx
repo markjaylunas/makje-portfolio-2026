@@ -20,6 +20,7 @@ import {
 } from "@/data/server/featured-project.server";
 import { deleteProjectFn } from "@/data/server/project.server";
 import type { Media } from "@/db/types";
+import { getOptimizedImageUrl, IMAGE_VARIANTS } from "@/lib/cloudflare-images";
 import { queryKey } from "@/lib/query-key";
 import type { ProjectWithRelations } from "@/lib/types";
 
@@ -71,7 +72,7 @@ export const ProjectCoverImageImage = ({
 			className="cursor-pointer"
 		>
 			<img
-				src={coverImage.url}
+				src={getOptimizedImageUrl(coverImage.url, IMAGE_VARIANTS.ICON)}
 				alt={coverImage.altText ?? undefined}
 				className="size-12 p-1"
 			/>

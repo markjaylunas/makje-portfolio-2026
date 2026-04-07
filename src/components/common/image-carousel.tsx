@@ -12,10 +12,14 @@ export default function ImageCarousel({
 	imageList,
 	autoplay = null,
 	delay = 5000,
+	size = "sm",
+	priority = false,
 }: {
 	imageList: string[];
 	autoplay?: "auto" | "onHover" | null;
 	delay?: number;
+	size?: "sm" | "lg";
+	priority?: boolean;
 }) {
 	const [api, setApi] = useState<CarouselApi>();
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -72,9 +76,13 @@ export default function ImageCarousel({
 			onMouseLeave={() => setIsHovered(false)}
 		>
 			<CarouselContent className="size-full ml-0">
-				{imageList.map((image) => (
+				{imageList.map((image, index) => (
 					<CarouselItem key={image} className="size-full pl-0">
-						<ZoomableImageModal src={image} />
+						<ZoomableImageModal
+							src={image}
+							variant={size === "lg" ? "HERO" : "CARD"}
+							priority={priority && index === 0}
+						/>
 					</CarouselItem>
 				))}
 			</CarouselContent>

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/item";
 import { useToggleProjectLike } from "@/hooks/use-toggle-project-like";
 import type { Session } from "@/lib/auth.server";
+import { getOptimizedImageUrl, IMAGE_VARIANTS } from "@/lib/cloudflare-images";
 import { formatCompactCount } from "@/lib/utils";
 
 type ProjectCardProps = {
@@ -31,6 +32,7 @@ type ProjectCardProps = {
 	tagList?: { name: string; slug: string }[];
 	isLiked?: boolean;
 	session?: Session;
+	priority?: boolean;
 };
 
 export default function ProjectCard({
@@ -46,6 +48,7 @@ export default function ProjectCard({
 	tagList = [],
 	isLiked = false,
 	session,
+	priority = false,
 }: ProjectCardProps) {
 	const navigate = useNavigate();
 	const pathname = useLocation({
@@ -82,6 +85,7 @@ export default function ProjectCard({
 						imageList={allPhotos}
 						autoplay="onHover"
 						delay={2000}
+						priority={priority}
 					/>
 				</ItemMedia>
 			</div>
@@ -158,7 +162,11 @@ export default function ProjectCard({
 							rel="noopener noreferrer"
 						>
 							<Badge variant="secondary" className="whitespace-nowrap">
-								<img src={tech.icon} alt={tech.name} className="size-4" />
+								<img
+									src={getOptimizedImageUrl(tech.icon, IMAGE_VARIANTS.ICON)}
+									alt={tech.name}
+									className="size-4"
+								/>
 								{tech.name}
 							</Badge>
 						</a>

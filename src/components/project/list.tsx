@@ -14,7 +14,7 @@ export default function ProjectList() {
 
 	return (
 		<ItemGroup className="gap-12">
-			{projects?.map((project) => (
+			{projects?.map((project, index) => (
 				<ProjectCard
 					key={project.id}
 					projectId={project.id}
@@ -25,6 +25,7 @@ export default function ProjectList() {
 					repositoryUrl={project.repositoryUrl}
 					liveUrl={project.liveUrl}
 					likesCount={project.likesCount}
+					priority={index < 2}
 					isLiked={
 						project.likes.filter((v) => v.userId === session?.user.id).length >
 						0

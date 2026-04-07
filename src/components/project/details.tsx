@@ -13,6 +13,7 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { getProjectOptions } from "@/data/options/project";
 import { getSessionOptions } from "@/data/options/user";
 import { useToggleProjectLike } from "@/hooks/use-toggle-project-like";
+import { getOptimizedImageUrl, IMAGE_VARIANTS } from "@/lib/cloudflare-images";
 import { dateToMonthYear, formatCompactCount } from "@/lib/utils";
 import ImageCarousel from "../common/image-carousel";
 import { MarkdownRenderer } from "../common/md-render";
@@ -205,6 +206,8 @@ export function ProjectDetails({
 				<ImageCarousel
 					imageList={allPhotos}
 					autoplay={carousel ? "auto" : undefined}
+					size="lg"
+					priority={true}
 				/>
 			</section>
 
@@ -232,7 +235,11 @@ export function ProjectDetails({
 										variant="secondary"
 										className="rounded-full px-3 py-1.5 flex items-center gap-2 bg-white/5 hover:bg-white/10 transition-colors border-white/5"
 									>
-										<img src={t.icon} alt={t.name} className="size-4" />
+										<img
+											src={getOptimizedImageUrl(t.icon, IMAGE_VARIANTS.ICON)}
+											alt={t.name}
+											className="size-4"
+										/>
 										<span className="text-sm">{t.name}</span>
 									</Badge>
 								</a>

@@ -1,4 +1,5 @@
 import PixelCard from "@/components/common/pixel-card";
+import { getOptimizedImageUrl, IMAGE_VARIANTS } from "@/lib/cloudflare-images";
 
 type TechCardProps = {
 	icon?: string;
@@ -34,7 +35,7 @@ export function TechCardPixel({ colors, name, alt, icon }: TechCardProps) {
 			<PixelCard colors={colors} noFocus={true}>
 				<div className="absolute flex flex-col items-center justify-center">
 					<img
-						src={icon}
+						src={getOptimizedImageUrl(icon || "", IMAGE_VARIANTS.ICON)}
 						alt={alt}
 						className="size-12 md:size-16 transition-all duration-500 grayscale-0 sm:grayscale-100 group-hover:grayscale-0 -mt-2 sm:mt-6 group-hover:mt-0"
 					/>

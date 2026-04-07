@@ -17,12 +17,21 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 
+import { getOptimizedImageUrl, IMAGE_VARIANTS } from "@/lib/cloudflare-images";
+
 interface ZoomableImageModalProps {
 	src: string;
 	alt?: string;
+	variant?: keyof typeof IMAGE_VARIANTS;
+	priority?: boolean;
 }
 
-export function ZoomableImageModal({ src, alt = "" }: ZoomableImageModalProps) {
+export function ZoomableImageModal({
+	src,
+	alt = "",
+	variant = "CARD",
+	priority = false,
+}: ZoomableImageModalProps) {
 	const [zoom, setZoom] = useState(1);
 	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const [isDragging, setIsDragging] = useState(false);
@@ -64,7 +73,6 @@ export function ZoomableImageModal({ src, alt = "" }: ZoomableImageModalProps) {
 
 	const onMouseUp = () => setIsDragging(false);
 
-	// Global listener to catch mouse up outside the container
 	useEffect(() => {
 		if (isDragging) {
 			window.addEventListener("mouseup", onMouseUp);
@@ -77,9 +85,15 @@ export function ZoomableImageModal({ src, alt = "" }: ZoomableImageModalProps) {
 			<DialogTrigger>
 				<div className="relative cursor-zoom-in size-full">
 					<img
-						src={src}
+						src={getOptimizedImageUrl(src, IMAGE_VARIANTS[variant])}
 						alt={alt}
 						className="size-full object-cover select-none"
+						loading={priority ? "eager" : "lazy"}
+						{...{ fetchPriority: priority ? "high" : "auto" }}
+						style={{
+							backgroundImage: `url(${getOptimizedImageUrl(src, IMAGE_VARIANTS.BLUR)})`,
+							backgroundSize: "cover",
+						}}
 					/>
 				</div>
 			</DialogTrigger>
@@ -99,7 +113,7 @@ export function ZoomableImageModal({ src, alt = "" }: ZoomableImageModalProps) {
 					onMouseUp={onMouseUp}
 				>
 					<img
-						src={src}
+						src={getOptimizedImageUrl(src, IMAGE_VARIANTS.FULL)}
 						alt={alt}
 						style={{
 							transform: `translate(${position.x}px, ${position.y}px) scale(${zoom})`,

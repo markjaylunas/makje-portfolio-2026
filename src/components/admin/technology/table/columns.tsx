@@ -21,6 +21,7 @@ import {
 } from "@/data/server/featured-technology.server";
 import { deleteTechnologyFn } from "@/data/server/technology.server";
 import type { Media } from "@/db/types";
+import { getOptimizedImageUrl, IMAGE_VARIANTS } from "@/lib/cloudflare-images";
 import { queryKey } from "@/lib/query-key";
 import type { TechnologyWithRelations } from "@/lib/types";
 import { getContrastColor } from "@/lib/utils";
@@ -76,7 +77,7 @@ export const TechnologyIconImage = ({
 			className="cursor-pointer"
 		>
 			<img
-				src={icon.url}
+				src={getOptimizedImageUrl(icon.url, IMAGE_VARIANTS.ICON)}
 				alt={icon.altText ?? undefined}
 				className="size-full max-w-12 p-1"
 			/>

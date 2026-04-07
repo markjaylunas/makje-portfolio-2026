@@ -12,7 +12,7 @@ export default function FeaturedProjectList({
 }) {
 	return (
 		<ItemGroup className="flex flex-col gap-6">
-			{featuredProjectList?.map((featuredProject) => {
+			{featuredProjectList?.map((featuredProject, index) => {
 				const p = featuredProject.project;
 				const technologyList = p.technologies.map((t) => ({
 					name: t.technology.name,
@@ -42,6 +42,7 @@ export default function FeaturedProjectList({
 						tagList={tagList}
 						session={session}
 						isLiked={isLiked}
+						priority={index < 2}
 					/>
 				);
 			})}
