@@ -205,7 +205,7 @@ export function ProjectDetails({
 			<section className="relative aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-muted/20">
 				<ImageCarousel
 					imageList={allPhotos}
-					autoplay={carousel ? "auto" : undefined}
+					autoplay={carousel && allPhotos.length > 1 ? "auto" : undefined}
 					size="lg"
 					priority={true}
 				/>
