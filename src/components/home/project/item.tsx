@@ -83,7 +83,7 @@ export default function ProjectCard({
 				>
 					<ImageCarousel
 						imageList={allPhotos}
-						autoplay="onHover"
+						autoplay={allPhotos.length > 1 ? "onHover" : undefined}
 						delay={2000}
 						priority={priority}
 					/>
