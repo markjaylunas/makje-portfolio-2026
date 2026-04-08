@@ -33,16 +33,15 @@ export default function HeaderAdmin() {
 				<BreadcrumbList>
 					{paths.map((path, index) => {
 						const isLast = index === paths.length - 1;
-						const href = `/admin/${path.href}`;
 
 						return (
-							<Fragment key={href}>
+							<Fragment key={path.href}>
 								<BreadcrumbItem>
 									{isLast ? (
 										<BreadcrumbPage>{path.label}</BreadcrumbPage>
 									) : (
 										<BreadcrumbLink
-											render={<Link to={href}>{path.label}</Link>}
+											render={<Link to={path.href}>{path.label}</Link>}
 										/>
 									)}
 								</BreadcrumbItem>
