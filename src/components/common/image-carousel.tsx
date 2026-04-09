@@ -80,6 +80,7 @@ export default function ImageCarousel({
 					<CarouselItem key={image} className="size-full pl-0">
 						<ZoomableImageModal
 							src={image}
+							images={imageList}
 							variant={size === "lg" ? "HERO" : "CARD"}
 							priority={priority && index === 0}
 						/>

@@ -3,12 +3,15 @@
 "use client";
 
 import {
+	ArrowLeft01Icon,
+	ArrowRight01Icon,
+	Loading03Icon,
 	RotateClockwiseIcon,
 	ZoomInAreaIcon,
 	ZoomOutAreaIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -22,6 +25,7 @@ import { getOptimizedImageUrl, IMAGE_VARIANTS } from "@/lib/cloudflare-images";
 interface ZoomableImageModalProps {
 	src: string;
 	alt?: string;
+	images?: string[] | { src: string; alt?: string }[];
 	variant?: keyof typeof IMAGE_VARIANTS;
 	priority?: boolean;
 }
@@ -29,13 +33,31 @@ interface ZoomableImageModalProps {
 export function ZoomableImageModal({
 	src,
 	alt = "",
+	images,
 	variant = "CARD",
 	priority = false,
 }: ZoomableImageModalProps) {
+	const normalizedImages = images
+		? images.map((img) =>
+				typeof img === "string" ? { src: img, alt: "" } : img,
+			)
+		: [{ src, alt }];
+
+	const initialIndex = normalizedImages.findIndex((img) => img.src === src);
+	const [currentIndex, setCurrentIndex] = useState(
+		initialIndex !== -1 ? initialIndex : 0,
+	);
+	const currentImage = normalizedImages[currentIndex];
+
 	const [zoom, setZoom] = useState(1);
 	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const [isDragging, setIsDragging] = useState(false);
 	const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+	const [imageIsLoading, setImageIsLoading] = useState(true);
+
+	useEffect(() => {
+		setImageIsLoading(true);
+	}, [currentImage.src]);
 
 	const handleZoomIn = () => setZoom((prev) => Math.min(prev + 0.5, 4));
 
@@ -47,10 +69,29 @@ export function ZoomableImageModal({
 		});
 	};
 
-	const handleReset = () => {
+	const resetZoomAndPan = useCallback(() => {
 		setZoom(1);
 		setPosition({ x: 0, y: 0 });
-	};
+	}, []);
+
+	const handleReset = useCallback(() => {
+		resetZoomAndPan();
+		setCurrentIndex(initialIndex !== -1 ? initialIndex : 0);
+	}, [initialIndex, resetZoomAndPan]);
+
+	const handleNext = useCallback(() => {
+		if (normalizedImages.length <= 1) return;
+		resetZoomAndPan();
+		setCurrentIndex((prev) => (prev + 1) % normalizedImages.length);
+	}, [normalizedImages.length, resetZoomAndPan]);
+
+	const handlePrev = useCallback(() => {
+		if (normalizedImages.length <= 1) return;
+		resetZoomAndPan();
+		setCurrentIndex(
+			(prev) => (prev - 1 + normalizedImages.length) % normalizedImages.length,
+		);
+	}, [normalizedImages.length, resetZoomAndPan]);
 
 	// --- Pan Logic ---
 	const onMouseDown = (e: React.MouseEvent) => {
@@ -79,6 +120,15 @@ export function ZoomableImageModal({
 		}
 		return () => window.removeEventListener("mouseup", onMouseUp);
 	}, [isDragging]);
+
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === "ArrowRight") handleNext();
+			if (e.key === "ArrowLeft") handlePrev();
+		};
+		window.addEventListener("keydown", handleKeyDown);
+		return () => window.removeEventListener("keydown", handleKeyDown);
+	}, [handleNext, handlePrev]);
 
 	return (
 		<Dialog onOpenChange={(open) => !open && handleReset()}>
@@ -114,8 +164,9 @@ export function ZoomableImageModal({
 					onMouseUp={onMouseUp}
 				>
 					<img
-						src={getOptimizedImageUrl(src, IMAGE_VARIANTS.FULL)}
-						alt={alt}
+						src={getOptimizedImageUrl(currentImage.src, IMAGE_VARIANTS.FULL)}
+						alt={currentImage.alt}
+						onLoad={() => setImageIsLoading(false)}
 						style={{
 							transform: `translate(${position.x}px, ${position.y}px) scale(${zoom})`,
 							transition: isDragging ? "none" : "transform 0.2s ease-out",
@@ -124,8 +175,31 @@ export function ZoomableImageModal({
 						draggable={false}
 					/>
 
-					{/* Zoom Controls */}
+					{/* Loading Indicator */}
+					{imageIsLoading && (
+						<div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+							<HugeiconsIcon
+								icon={Loading03Icon}
+								className="size-10 text-white animate-spin opacity-50"
+							/>
+						</div>
+					)}
+
+					{/* Zoom & Navigation Controls */}
 					<div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-background/20 backdrop-blur-md p-2 rounded-sm border border-white/10 z-50">
+						{normalizedImages.length > 1 && (
+							<>
+								<Button
+									variant="ghost"
+									size="icon"
+									onClick={handlePrev}
+									className="text-white hover:bg-white/20"
+								>
+									<HugeiconsIcon icon={ArrowLeft01Icon} className="size-5" />
+								</Button>
+								<div className="w-px h-4 bg-white/20 mx-1" />
+							</>
+						)}
 						<Button
 							variant="ghost"
 							size="icon"
@@ -151,11 +225,24 @@ export function ZoomableImageModal({
 						<Button
 							variant="ghost"
 							size="icon"
-							onClick={handleReset}
+							onClick={resetZoomAndPan}
 							className="text-white hover:bg-white/20"
 						>
 							<HugeiconsIcon icon={RotateClockwiseIcon} className="size-4" />
 						</Button>
+						{normalizedImages.length > 1 && (
+							<>
+								<div className="w-px h-4 bg-white/20 mx-1" />
+								<Button
+									variant="ghost"
+									size="icon"
+									onClick={handleNext}
+									className="text-white hover:bg-white/20"
+								>
+									<HugeiconsIcon icon={ArrowRight01Icon} className="size-5" />
+								</Button>
+							</>
+						)}
 					</div>
 				</div>
 			</DialogContent>
