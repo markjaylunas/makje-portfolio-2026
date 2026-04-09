@@ -3,7 +3,7 @@ import FeaturedProjectSection from "@/components/admin/featured-project/section"
 import ProjectList from "@/components/admin/project/list";
 import { buttonVariants } from "@/components/ui/button";
 import { getFeaturedProjectListOptions } from "@/data/options/featured-project";
-import { getProjectListOptions } from "@/data/options/project";
+import { getProjectListForAdminOptions } from "@/data/options/project";
 import { searchSchema } from "@/form-validators/project";
 
 export const Route = createFileRoute("/_protected/admin/project/")({
@@ -15,7 +15,9 @@ export const Route = createFileRoute("/_protected/admin/project/")({
 	loader: async ({ context, deps: { query } }) => {
 		return await Promise.all([
 			context.queryClient.ensureQueryData(getFeaturedProjectListOptions()),
-			context.queryClient.ensureQueryData(getProjectListOptions({ query })),
+			context.queryClient.ensureQueryData(
+				getProjectListForAdminOptions({ query }),
+			),
 		]);
 	},
 });

@@ -38,3 +38,10 @@ export const toggleProjectLikeFnSchema = z.object({
 export type ToggleProjectLikeFnSchema = z.infer<
 	typeof toggleProjectLikeFnSchema
 >;
+
+export const toggleProjectDisabledFnSchema = z.object({
+	projectId: z.string(),
+});
+export type ToggleProjectDisabledFnSchema = z.infer<
+	typeof toggleProjectDisabledFnSchema
+>;

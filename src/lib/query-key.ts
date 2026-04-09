@@ -16,7 +16,13 @@ export const queryKey = {
 			"list",
 			...(params ? [paramsSerializer(params)] : []),
 		],
+		listForAdmin: (params?: Params) => [
+			"project",
+			"list-admin",
+			...(params ? [paramsSerializer(params)] : []),
+		],
 		item: (id: string) => ["project", "item", id],
+		itemForAdmin: (id: string) => ["project", "item-admin", id],
 		root: ["project"],
 	},
 	experience: {

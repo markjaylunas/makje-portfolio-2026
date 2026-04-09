@@ -6,6 +6,18 @@ import type { InsertFeaturedProject } from "@/db/types";
 export const insertFeaturedProject = async (
 	newFeaturedProject: InsertFeaturedProject,
 ) => {
+	const project = await db.query.project.findFirst({
+		where: (p, { eq }) => eq(p.id, newFeaturedProject.projectId),
+	});
+
+	if (!project) {
+		throw Error("Project not found");
+	}
+
+	if (project.disabled) {
+		throw Error("Cannot feature a disabled project");
+	}
+
 	const isAlreadyExist = await selectFeatureProjectById({
 		projectId: newFeaturedProject.projectId,
 	});

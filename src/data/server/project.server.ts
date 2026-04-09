@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import {
 	getProjectFnSchema,
 	getProjectListFnSchema,
+	toggleProjectDisabledFnSchema,
 	toggleProjectLikeFnSchema,
 } from "@/form-validators/project";
 import { createProjectFnSchema } from "@/form-validators/project/create";
@@ -17,7 +18,10 @@ import {
 	deleteProject,
 	insertProject,
 	selectProject,
+	selectProjectForAdmin,
 	selectProjectList,
+	selectProjectListForAdmin,
+	toggleProjectDisabled,
 	toggleProjectLike,
 	updateProject,
 } from "../query/project.server";
@@ -104,4 +108,26 @@ export const toggleProjectLikeFn = createServerFn({ method: "POST" })
 			projectId,
 			userId: context.session?.user.id,
 		});
+	});
+
+export const getProjectListForAdminFn = createServerFn({ method: "GET" })
+	.middleware([ensureAdminFnMiddleware])
+	.inputValidator(getProjectListFnSchema)
+	.handler(async ({ data }) => {
+		return await selectProjectListForAdmin(data);
+	});
+
+export const getProjectForAdminFn = createServerFn({ method: "GET" })
+	.middleware([ensureAdminFnMiddleware])
+	.inputValidator(getProjectFnSchema)
+	.handler(async ({ data, context }) => {
+		const userId = context.session?.user.id;
+		return await selectProjectForAdmin({ ...data, userId });
+	});
+
+export const toggleProjectDisabledFn = createServerFn({ method: "POST" })
+	.middleware([ensureAdminFnMiddleware])
+	.inputValidator(toggleProjectDisabledFnSchema)
+	.handler(async ({ data: { projectId } }) => {
+		return await toggleProjectDisabled({ projectId });
 	});

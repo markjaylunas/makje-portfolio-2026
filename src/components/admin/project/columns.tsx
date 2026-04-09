@@ -18,7 +18,10 @@ import {
 	createFeaturedProjectFn,
 	deleteFeaturedProjectFn,
 } from "@/data/server/featured-project.server";
-import { deleteProjectFn } from "@/data/server/project.server";
+import {
+	deleteProjectFn,
+	toggleProjectDisabledFn,
+} from "@/data/server/project.server";
 import type { Media } from "@/db/types";
 import { getOptimizedImageUrl, IMAGE_VARIANTS } from "@/lib/cloudflare-images";
 import { queryKey } from "@/lib/query-key";
@@ -99,10 +102,16 @@ export const ProjectActions = ({
 					queryKey: queryKey.project.list(),
 				}),
 				queryClient.invalidateQueries({
+					queryKey: queryKey.project.listForAdmin(),
+				}),
+				queryClient.invalidateQueries({
 					queryKey: queryKey.featuredProject.list(),
 				}),
 				queryClient.invalidateQueries({
 					queryKey: queryKey.project.item(project.id),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.itemForAdmin(project.id),
 				}),
 			]);
 			toast.success(`Deleted ${data.name} successfully!`);
@@ -124,10 +133,16 @@ export const ProjectActions = ({
 					queryKey: queryKey.project.list(),
 				}),
 				queryClient.invalidateQueries({
+					queryKey: queryKey.project.listForAdmin(),
+				}),
+				queryClient.invalidateQueries({
 					queryKey: queryKey.featuredProject.list(),
 				}),
 				queryClient.invalidateQueries({
 					queryKey: queryKey.project.item(project.id),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.itemForAdmin(project.id),
 				}),
 			]);
 			toast.success(`Added ${project.name} as featured successfully!`);
@@ -150,13 +165,49 @@ export const ProjectActions = ({
 					queryKey: queryKey.project.list(),
 				}),
 				queryClient.invalidateQueries({
+					queryKey: queryKey.project.listForAdmin(),
+				}),
+				queryClient.invalidateQueries({
 					queryKey: queryKey.featuredProject.list(),
 				}),
 				queryClient.invalidateQueries({
 					queryKey: queryKey.project.item(project.id),
 				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.itemForAdmin(project.id),
+				}),
 			]);
 			toast.success(`Removed ${project.name} from featured successfully!`);
+		},
+	});
+
+	const { mutate: toggleProjectDisabled } = useMutation({
+		mutationFn: async () => {
+			return await toggleProjectDisabledFn({
+				data: { projectId: project.id },
+			});
+		},
+		onSuccess: async (data) => {
+			await Promise.all([
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.list(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.listForAdmin(),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.item(project.id),
+				}),
+				queryClient.invalidateQueries({
+					queryKey: queryKey.project.itemForAdmin(project.id),
+				}),
+			]);
+			toast.success(
+				`${data.disabled ? "Disabled" : "Enabled"} ${data.name} successfully!`,
+			);
+		},
+		onError: (e) => {
+			toast.warning(e.message);
 		},
 	});
 
@@ -209,6 +260,12 @@ export const ProjectActions = ({
 							</Link>
 						}
 					/>
+					<DropdownMenuItem
+						onClick={() => toggleProjectDisabled()}
+						variant={project.disabled ? "default" : "destructive"}
+					>
+						{project.disabled ? "Enable" : "Disable"}
+					</DropdownMenuItem>
 					<DropdownMenuItem
 						variant="destructive"
 						onClick={() => deleteProject()}

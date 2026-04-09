@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { notFound, useParams } from "@tanstack/react-router";
-import { getProjectOptions } from "@/data/options/project";
+import { getProjectForAdminOptions } from "@/data/options/project";
 import type { ProjectWithRelations } from "@/lib/types";
 
 export default function EditProjectData({
@@ -13,7 +13,7 @@ export default function EditProjectData({
 	});
 
 	const { data: defaultProject } = useSuspenseQuery(
-		getProjectOptions({ projectId }),
+		getProjectForAdminOptions({ projectId }),
 	);
 
 	if (!defaultProject) {

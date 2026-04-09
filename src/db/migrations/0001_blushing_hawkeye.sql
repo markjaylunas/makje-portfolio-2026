@@ -1,0 +1,1 @@
+ALTER TABLE `project` ADD `disabled` integer DEFAULT false NOT NULL;

@@ -1,7 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import EditProjectData from "@/components/admin/project/edit-data";
 import EditProjectForm from "@/components/admin/project/edit-form";
-import { getProjectOptions } from "@/data/options/project";
+import { getProjectForAdminOptions } from "@/data/options/project";
 import { adminProjectIdRouteParamsSchema } from "@/form-validators/project";
 
 export const Route = createFileRoute(
@@ -11,7 +11,7 @@ export const Route = createFileRoute(
 	params: adminProjectIdRouteParamsSchema,
 	loader: async ({ context, params }) => {
 		const data = await context.queryClient.ensureQueryData(
-			getProjectOptions({ projectId: params.projectId }),
+			getProjectForAdminOptions({ projectId: params.projectId }),
 		);
 
 		if (!data) {

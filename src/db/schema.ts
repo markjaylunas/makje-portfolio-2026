@@ -143,6 +143,7 @@ export const project = sqliteTable("project", {
 	repositoryUrl: text(),
 	liveUrl: text(),
 	likesCount: integer().default(0).notNull(),
+	disabled: integer("disabled", { mode: "boolean" }).default(false).notNull(),
 	...timestamps,
 });
 

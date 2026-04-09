@@ -77,6 +77,75 @@ export const selectProjectList = async (params: {
 					)
 				: undefined;
 
+			return and(queryCondition, tagCondition, eq(project.disabled, false));
+		},
+		orderBy: (project, { desc }) => desc(project.createdAt),
+	});
+};
+
+export const selectProjectListForAdmin = async (params: {
+	userId?: string;
+	query?: string;
+	tag?: string;
+}) => {
+	const { userId, query, tag: tagSlug } = params;
+	return await db.query.project.findMany({
+		with: {
+			coverImage: true,
+			tags: {
+				orderBy: (pt, { asc }) => asc(pt.order),
+				with: {
+					tag: true,
+				},
+			},
+			photos: {
+				orderBy: (pt, { asc }) => asc(pt.order),
+				with: {
+					media: true,
+				},
+			},
+			featured: true,
+			likes: {
+				...(userId
+					? {
+							with: {
+								user: true,
+							},
+							where: (like, { eq }) => eq(like.userId, userId),
+						}
+					: false),
+			},
+			technologies: {
+				orderBy: (pt, { asc }) => asc(pt.order),
+				with: {
+					technology: {
+						with: {
+							icon: true,
+						},
+					},
+				},
+			},
+		},
+		where: (project, { like, and, eq }) => {
+			const queryCondition = query
+				? like(project.name, `%${query}%`)
+				: undefined;
+
+			const tagCondition = tagSlug
+				? exists(
+						db
+							.select()
+							.from(projectToTags)
+							.innerJoin(tag, eq(projectToTags.tagId, tag.id))
+							.where(
+								and(
+									eq(projectToTags.projectId, project.id),
+									eq(tag.slug, tagSlug),
+								),
+							),
+					)
+				: undefined;
+
 			return and(queryCondition, tagCondition);
 		},
 		orderBy: (project, { desc }) => desc(project.createdAt),
@@ -84,6 +153,55 @@ export const selectProjectList = async (params: {
 };
 
 export const selectProject = async ({
+	projectId,
+	userId,
+}: {
+	projectId: string;
+	userId?: string;
+}) => {
+	return await db.query.project.findFirst({
+		with: {
+			coverImage: true,
+			tags: {
+				orderBy: (pt, { asc }) => asc(pt.order),
+				with: {
+					tag: true,
+				},
+			},
+			photos: {
+				orderBy: (pt, { asc }) => asc(pt.order),
+				with: {
+					media: true,
+				},
+			},
+			featured: true,
+			likes: {
+				...(userId
+					? {
+							with: {
+								user: true,
+							},
+							where: (like, { eq }) => eq(like.userId, userId),
+						}
+					: false),
+			},
+			technologies: {
+				orderBy: (pt, { asc }) => asc(pt.order),
+				with: {
+					technology: {
+						with: {
+							icon: true,
+						},
+					},
+				},
+			},
+		},
+		where: (project, { eq, and }) =>
+			and(eq(project.id, projectId), eq(project.disabled, false)),
+	});
+};
+
+export const selectProjectForAdmin = async ({
 	projectId,
 	userId,
 }: {
@@ -381,4 +499,38 @@ export const toggleProjectLike = async ({
 			.returning();
 		return { liked: true, likesCount: updatedProject.likesCount };
 	}
+};
+
+export const toggleProjectDisabled = async ({
+	projectId,
+}: {
+	projectId: string;
+}) => {
+	const currentProject = await db.query.project.findFirst({
+		where: (p, { eq }) => eq(p.id, projectId),
+		with: {
+			featured: true,
+		},
+	});
+
+	if (!currentProject) {
+		throw new Error("Project not found");
+	}
+
+	if (!currentProject.disabled && currentProject.featured) {
+		throw new Error(
+			"Project is featured, please remove it from featured projects first before disabling",
+		);
+	}
+
+	const [updated] = await db
+		.update(project)
+		.set({
+			disabled: !currentProject.disabled,
+			updatedAt: new Date(),
+		})
+		.where(eq(project.id, projectId))
+		.returning();
+
+	return updated;
 };

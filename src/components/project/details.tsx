@@ -10,7 +10,10 @@ import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
-import { getProjectOptions } from "@/data/options/project";
+import {
+	getProjectForAdminOptions,
+	getProjectOptions,
+} from "@/data/options/project";
 import { getSessionOptions } from "@/data/options/user";
 import { useToggleProjectLike } from "@/hooks/use-toggle-project-like";
 import { getOptimizedImageUrl, IMAGE_VARIANTS } from "@/lib/cloudflare-images";
@@ -39,15 +42,21 @@ export type ProjectDetailsProps = {
 
 export default function ProjectDetailsData({
 	projectId,
+	admin = false,
 }: {
 	projectId: string;
+	admin?: boolean;
 }) {
 	const navigate = useNavigate();
 	const pathname = useLocation({
 		select: (location) => location.pathname,
 	});
 
-	const { data: p } = useSuspenseQuery(getProjectOptions({ projectId }));
+	const { data: p } = useSuspenseQuery(
+		admin
+			? getProjectForAdminOptions({ projectId })
+			: getProjectOptions({ projectId }),
+	);
 	const { data: session } = useSuspenseQuery(getSessionOptions());
 
 	const isLiked = p
