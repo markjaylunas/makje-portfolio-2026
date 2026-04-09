@@ -241,7 +241,13 @@
 
 .text-content {
   @apply inline-block relative z-2 bg-clip-text text-transparent;
-	}
+  animation: gradient-ping-pong var(--animation-duration, 8s) ease-in-out infinite alternate;
+}
+
+@keyframes gradient-ping-pong {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
 }
 
 .grid-subtle-background {
