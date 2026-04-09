@@ -87,12 +87,13 @@ export function ZoomableImageModal({
 					<img
 						src={getOptimizedImageUrl(src, IMAGE_VARIANTS[variant])}
 						alt={alt}
-						className="size-full object-cover select-none"
+						className="size-full object-cover object-top select-none"
 						loading={priority ? "eager" : "lazy"}
 						{...{ fetchPriority: priority ? "high" : "auto" }}
 						style={{
 							backgroundImage: `url(${getOptimizedImageUrl(src, IMAGE_VARIANTS.BLUR)})`,
 							backgroundSize: "cover",
+							backgroundPosition: "top",
 						}}
 					/>
 				</div>

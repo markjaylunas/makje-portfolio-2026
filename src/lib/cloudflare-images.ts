@@ -10,6 +10,7 @@ export interface CloudflareImageOptions {
 	quality?: number;
 	format?: "auto" | "avif" | "webp" | "json";
 	fit?: "scale-down" | "contain" | "cover" | "crop" | "pad";
+	gravity?: "top" | "bottom" | "left" | "right" | "center" | "auto";
 	blur?: number;
 	sharpen?: number;
 	dpr?: number;
@@ -84,8 +85,18 @@ export const IMAGE_VARIANTS = {
 		height: 150,
 		fit: "cover",
 	} as CloudflareImageOptions,
-	CARD: { width: 600, height: 400, fit: "cover" } as CloudflareImageOptions,
-	HERO: { width: 1200, height: 800, fit: "cover" } as CloudflareImageOptions,
+	CARD: {
+		width: 600,
+		height: 400,
+		fit: "cover",
+		gravity: "top",
+	} as CloudflareImageOptions,
+	HERO: {
+		width: 1200,
+		height: 800,
+		fit: "cover",
+		gravity: "top",
+	} as CloudflareImageOptions,
 	PREVIEW: {
 		width: 800,
 		height: 600,
