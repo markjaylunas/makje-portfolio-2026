@@ -1,6 +1,7 @@
-import { AnimatePresence, type HTMLMotionProps, motion } from "motion/react";
+import { type ComponentProps, useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
-type ZoomMotionProps = HTMLMotionProps<"div"> & {
+type ZoomMotionProps = ComponentProps<"div"> & {
 	isOpen: boolean;
 };
 
@@ -8,26 +9,29 @@ export default function ZoomMotion({
 	children,
 	isOpen,
 	style,
+	className,
 	...props
 }: ZoomMotionProps) {
+	const [render, setRender] = useState(isOpen);
+
+	useEffect(() => {
+		if (isOpen) {
+			setRender(true);
+		} else {
+			const timer = setTimeout(() => setRender(false), 200);
+			return () => clearTimeout(timer);
+		}
+	}, [isOpen]);
+
+	if (!render) return null;
+
 	return (
-		<AnimatePresence initial={false}>
-			{isOpen && (
-				<motion.div
-					key="nav-menu"
-					initial={{ opacity: 0, scale: 0.92, y: -6 }}
-					animate={{ opacity: 1, scale: 1, y: 0 }}
-					exit={{ opacity: 0, scale: 0.92, y: -6 }}
-					transition={{
-						duration: 0.2,
-						ease: [0.25, 0.1, 0.25, 1],
-					}}
-					style={{ transformOrigin: "top center", ...style }}
-					{...props}
-				>
-					{children}
-				</motion.div>
-			)}
-		</AnimatePresence>
+		<div
+			className={cn(isOpen ? "animate-zoom-in" : "animate-zoom-out", className)}
+			style={{ transformOrigin: "top center", ...style }}
+			{...props}
+		>
+			{children}
+		</div>
 	);
 }

@@ -148,7 +148,63 @@
         }
     }
 
-    --font-heading: var(--font-sans)}
+    --animate-zoom-in: zoom-in 0.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    --animate-zoom-out: zoom-out 0.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+
+    @keyframes zoom-in {
+        from {
+            opacity: 0;
+            transform: scale(0.92) translateY(-6px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    @keyframes zoom-out {
+        from {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: scale(0.92) translateY(-6px);
+        }
+    }
+
+    /* Content Motion */
+    --animate-content-in: content-in 0.4s ease-out 0.2s both;
+    @keyframes content-in {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+            filter: blur(5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0px);
+        }
+    }
+
+    /* Fade Down Motion */
+    --animate-fade-down-in: fade-down-in 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    @keyframes fade-down-in {
+        from {
+            opacity: 0;
+            transform: translateY(-20px) scale(1.05);
+            filter: blur(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0px);
+        }
+    }
+
+    --font-heading: var(--font-sans)
+}
 
 @layer base {
   * {

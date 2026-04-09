@@ -1,59 +1,42 @@
-import {
-	type HTMLMotionProps,
-	motion,
-	useMotionValue,
-	useTransform,
-} from "motion/react";
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: <ignore> */
+import { type ComponentProps, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export default function PopOutMotion({
 	children,
+	className,
+	style,
 	...props
-}: HTMLMotionProps<"div">) {
-	const x = useMotionValue(0);
-	const y = useMotionValue(0);
-
-	const rotateX = useTransform(y, [-100, 100], [5, -5]);
-	const rotateY = useTransform(x, [-100, 100], [-5, 5]);
-
-	function handleMouseMove(event: React.MouseEvent<HTMLDivElement>) {
-		const rect = event.currentTarget.getBoundingClientRect();
-		const mouseX = event.clientX - rect.left;
-		const mouseY = event.clientY - rect.top;
-
-		const xPct = (mouseX / rect.width - 0.5) * 200;
-		const yPct = (mouseY / rect.height - 0.5) * 200;
-
-		x.set(xPct);
-		y.set(yPct);
-	}
+}: ComponentProps<"div">) {
+	const [rotate, setRotate] = useState({ x: 0, y: 0 });
+	const [isHovered, setIsHovered] = useState(false);
 
 	function handleMouseLeave() {
-		x.set(0);
-		y.set(0);
+		setRotate({ x: 0, y: 0 });
+		setIsHovered(false);
+	}
+
+	function handleMouseEnter() {
+		setIsHovered(true);
 	}
 
 	return (
-		<motion.div
-			onMouseMove={handleMouseMove}
+		<div
 			onMouseLeave={handleMouseLeave}
+			onMouseEnter={handleMouseEnter}
+			className={cn("transition-all duration-200 ease-out", className)}
 			style={{
-				rotateX,
-				rotateY,
+				transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) ${isHovered ? "translateY(-8px)" : "translateY(0)"}`,
 				transformStyle: "preserve-3d",
-			}}
-			whileHover={{
-				y: -8, // The "Pop" lift effect
-				transition: { duration: 0.2, ease: "easeOut" },
-				outline: "1px solid var(--muted)",
-			}}
-			transition={{
-				type: "spring",
-				stiffness: 300,
-				damping: 20,
+				outline: isHovered ? "1px solid var(--muted)" : "none",
+				transition: isHovered
+					? "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), outline 0.2s ease-out"
+					: "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), outline 0.2s ease-out",
+				...style,
 			}}
 			{...props}
 		>
 			{children}
-		</motion.div>
+		</div>
 	);
 }

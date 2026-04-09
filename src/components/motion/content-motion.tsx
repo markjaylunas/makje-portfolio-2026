@@ -1,25 +1,23 @@
-import { AnimatePresence, type HTMLMotionProps, motion } from "motion/react";
+import type { ComponentProps } from "react";
+import { useInView } from "@/hooks/use-in-view";
+import { cn } from "@/lib/utils";
+
+const IN_VIEW_OPTIONS = { threshold: 0.2 };
 
 export default function ContentMotion({
 	children,
+	className,
 	...props
-}: HTMLMotionProps<"div">) {
+}: ComponentProps<"div">) {
+	const [ref, isInView] = useInView(IN_VIEW_OPTIONS);
+
 	return (
-		<AnimatePresence>
-			<motion.div
-				initial={{ opacity: 0, y: 10, filter: "blur(5px)" }}
-				whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-				exit={{ opacity: 0, y: 10, filter: "blur(5px)" }}
-				transition={{
-					delay: 0.2,
-					duration: 0.4,
-					scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
-				}}
-				viewport={{ once: true }}
-				{...props}
-			>
-				{children}
-			</motion.div>
-		</AnimatePresence>
+		<div
+			ref={ref}
+			className={cn(isInView ? "animate-content-in" : "opacity-0", className)}
+			{...props}
+		>
+			{children}
+		</div>
 	);
 }
