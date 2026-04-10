@@ -34,20 +34,20 @@ function App() {
 			<div id="featured-projects" className="relative">
 				<div className="h-12 md:h-24" />
 				<div className="left-masked-noise-background absolute inset-0 h-[110%] z-0" />
-				<ContentMotion>
+				<ContentMotion animateOnView={true}>
 					<FeaturedProjectSection />
 				</ContentMotion>
 			</div>
 
 			<div id="tech-stack" className="h-24 mt-32" />
-			<ContentMotion>
+			<ContentMotion animateOnView={true}>
 				<TechListSection />
 			</ContentMotion>
 
 			<div id="experience" className="relative mt-16 pb-32">
 				<div className="h-12 md:h-24" />
 				<div className="dashed-top-right-fade-grid absolute inset-0 h-full z-0" />
-				<ContentMotion>
+				<ContentMotion animateOnView={true}>
 					<ExperienceTimelineSection />
 				</ContentMotion>
 			</div>
@@ -55,7 +55,7 @@ function App() {
 			<div id="final-cta" className="relative mt-16 pb-32">
 				<div className="h-12 md:h-24" />
 				<div className="prismatic-aurora-background absolute inset-0 h-full z-0" />
-				<ContentMotion>
+				<ContentMotion animateOnView={true}>
 					<FinalCTASection />
 				</ContentMotion>
 			</div>

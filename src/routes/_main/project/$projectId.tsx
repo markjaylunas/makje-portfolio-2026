@@ -74,7 +74,7 @@ function RouteComponent() {
 			<div className="dark-dot-matrix-background absolute inset-0 h-full z-0" />
 			<PageHeaderAurora title="Project" height="h-[80dvh]" as="p" />
 
-			<div className="relative mx-auto max-w-5xl min-h-dvh px-4 py-36">
+			<div className="relative mx-auto max-w-5xl min-h-dvh px-4 py-24 sm:py-36">
 				<div className="flex justify-end mb-6">
 					<FadeDownMotion>
 						<Link
@@ -84,7 +84,8 @@ function RouteComponent() {
 								size: "sm",
 							})}
 						>
-							<HugeiconsIcon icon={ArrowLeft} /> Back to Projects
+							<HugeiconsIcon icon={ArrowLeft} />
+							<span className="sr-only sm:not-sr-only">Back to Projects</span>
 						</Link>
 					</FadeDownMotion>
 				</div>

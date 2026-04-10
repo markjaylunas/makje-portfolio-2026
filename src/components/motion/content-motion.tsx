@@ -7,6 +7,30 @@ const IN_VIEW_OPTIONS = { threshold: 0.2 };
 export default function ContentMotion({
 	children,
 	className,
+	animateOnView = false,
+	...props
+}: ComponentProps<"div"> & { animateOnView?: boolean }) {
+	if (!animateOnView) {
+		return (
+			<div
+				className={cn("relative z-10 sm:animate-content-in", className)}
+				{...props}
+			>
+				{children}
+			</div>
+		);
+	}
+
+	return (
+		<ContentMotionAnimationOnView className={className} {...props}>
+			{children}
+		</ContentMotionAnimationOnView>
+	);
+}
+
+function ContentMotionAnimationOnView({
+	children,
+	className,
 	...props
 }: ComponentProps<"div">) {
 	const [ref, isInView] = useInView(IN_VIEW_OPTIONS);
@@ -14,7 +38,11 @@ export default function ContentMotion({
 	return (
 		<div
 			ref={ref}
-			className={cn(isInView ? "animate-content-in" : "opacity-0", className)}
+			className={cn(
+				"relative z-10",
+				isInView ? "sm:animate-content-in" : "sm:opacity-0",
+				className,
+			)}
 			{...props}
 		>
 			{children}
