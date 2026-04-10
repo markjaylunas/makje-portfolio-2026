@@ -2,7 +2,7 @@ import type { ComponentProps } from "react";
 import { useInView } from "@/hooks/use-in-view";
 import { cn } from "@/lib/utils";
 
-const IN_VIEW_OPTIONS = { threshold: 0.2 };
+const IN_VIEW_OPTIONS = { threshold: 0.1 };
 
 export default function ContentMotion({
 	children,
