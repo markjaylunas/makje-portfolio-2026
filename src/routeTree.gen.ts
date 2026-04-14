@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as MainRouteRouteImport } from './routes/_main/route'
@@ -40,6 +41,11 @@ import { Route as ProtectedAdminTechnologyTechnologyIdEditRouteImport } from './
 import { Route as ProtectedAdminProjectProjectIdEditRouteImport } from './routes/_protected/admin/project/$projectId/edit'
 import { Route as ProtectedAdminExperienceExperienceIdEditRouteImport } from './routes/_protected/admin/experience/$experienceId/edit'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
   id: '/robots.txt',
   path: '/robots.txt',
@@ -204,6 +210,7 @@ const ProtectedAdminExperienceExperienceIdEditRoute =
 export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/contact': typeof MainContactRouteRouteWithChildren
   '/admin': typeof ProtectedAdminRouteRouteWithChildren
   '/api/health': typeof ApiHealthRouteRoute
@@ -233,6 +240,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
   '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/api/health': typeof ApiHealthRouteRoute
   '/login': typeof AuthLoginRoute
   '/api/storage/upload': typeof ApiStorageUploadRouteRoute
@@ -263,6 +271,7 @@ export interface FileRoutesById {
   '/_main': typeof MainRouteRouteWithChildren
   '/_protected': typeof ProtectedRouteWithChildren
   '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_main/contact': typeof MainContactRouteRouteWithChildren
   '/_protected/admin': typeof ProtectedAdminRouteRouteWithChildren
   '/api/health': typeof ApiHealthRouteRoute
@@ -295,6 +304,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/robots.txt'
+    | '/sitemap.xml'
     | '/contact'
     | '/admin'
     | '/api/health'
@@ -324,6 +334,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/robots.txt'
+    | '/sitemap.xml'
     | '/api/health'
     | '/login'
     | '/api/storage/upload'
@@ -353,6 +364,7 @@ export interface FileRouteTypes {
     | '/_main'
     | '/_protected'
     | '/robots.txt'
+    | '/sitemap.xml'
     | '/_main/contact'
     | '/_protected/admin'
     | '/api/health'
@@ -386,6 +398,7 @@ export interface RootRouteChildren {
   MainRouteRoute: typeof MainRouteRouteWithChildren
   ProtectedRoute: typeof ProtectedRouteWithChildren
   RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiHealthRouteRoute: typeof ApiHealthRouteRoute
   ApiStorageUploadRouteRoute: typeof ApiStorageUploadRouteRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
@@ -393,6 +406,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/robots.txt': {
       id: '/robots.txt'
       path: '/robots.txt'
@@ -712,6 +732,7 @@ const rootRouteChildren: RootRouteChildren = {
   MainRouteRoute: MainRouteRouteWithChildren,
   ProtectedRoute: ProtectedRouteWithChildren,
   RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiHealthRouteRoute: ApiHealthRouteRoute,
   ApiStorageUploadRouteRoute: ApiStorageUploadRouteRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
