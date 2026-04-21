@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { Toaster } from "sonner";
+import ErrorPage from "@/components/common/error-page";
 import NotFound from "@/components/common/not-found";
 import appCss from "../styles.css?url";
 
@@ -71,6 +72,9 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 	}),
 	shellComponent: RootDocument,
 	notFoundComponent: NotFound,
+	errorComponent: ({ error, reset }) => (
+		<ErrorPage error={error} reset={reset} />
+	),
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
