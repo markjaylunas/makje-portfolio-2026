@@ -178,16 +178,16 @@ export function ProjectDetails({
 					</div>
 
 					<div className="flex items-center gap-3 w-full sm:w-auto">
-						<ButtonGroup className="w-full sm:w-auto">
+						<ButtonGroup>
 							{liveUrl && (
 								<Button
 									variant="default"
+									size="sm"
 									nativeButton={false}
-									className="flex-1 sm:flex-none rounded-full px-6 group"
 									render={
 										<Link to={liveUrl} target="_blank">
-											<span className="text-sm">Live</span>
-											<HugeiconsIcon icon={ArrowUpRight} className="size-4" />
+											View Site
+											<HugeiconsIcon icon={ArrowUpRight} />
 										</Link>
 									}
 								/>
@@ -195,12 +195,12 @@ export function ProjectDetails({
 							{repositoryUrl && (
 								<Button
 									variant="secondary"
+									size="sm"
 									nativeButton={false}
-									className="flex-1 sm:flex-none rounded-full px-6"
 									render={
 										<Link to={repositoryUrl} target="_blank">
-											<HugeiconsIcon icon={Github} className="size-4" />
-											<span className="text-sm">Repo</span>
+											<HugeiconsIcon icon={Github} />
+											Repo
 										</Link>
 									}
 								/>
